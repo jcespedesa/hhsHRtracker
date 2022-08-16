@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="ISO-8859-1">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>hhsHRtracker</title>
+
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" th:href="@{/css/menus.css}">
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		
+  		<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>  
+    	  		
+	</head>
+
+	<body>
+
+  <!-- Navigation -->
+  		<div id='hcssmenu'>
+			<ul>
+			   <li>
+			   		<form th:action="@{/hhsHRtracker/clients/list}" method="post">
+               			<button type="submit" class="btn btn-light" style="font-size:11px;">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${project.projectid}" name="projectId"> 
+	           				           			        			
+	           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           			<input type="hidden" th:value="${qproject}" name="qproject">
+	           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           		</form>
+         		</li>
+         		<li>
+			   		<form th:action="@{/hhsHRtracker/assigCerts/edit}" method="post">
+               			<button type="submit" class="btn btn-light" style="font-size:11px;">Assign New Certificate</button>	
+	           			
+	           			<input type="hidden" th:value="${client.clientid}" name="id">
+	           			<input type="hidden" th:value="${project.projectid}" name="projectId">
+	           			
+	           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           			<input type="hidden" th:value="${qproject}" name="qproject">
+	           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           		</form>
+         		</li>
+         		
+			</ul>
+		</div>   
+  		
+  		<div class="row">&nbsp;</div>
+  		
+  		<div class="row">
+  			<div class="col-lg-4" style="color:#330099;" ></div>
+  		</div>
+              
+        <div class="row">
+             <div class="col-lg-6">        
+           		<div class="card">
+					<div class="card-body">
+						<label style="color:violet;font-size:8px;" th:text="${qdivision.dnumber}"></label>
+						
+						<table style="border-collapse:separate;border-spacing:15px;">
+							<tr>
+								<td>
+									<table class="table-condensed table-bordered">					        			
+        								<tr>
+        									<td noWrap style="padding:5px;"><label style="color:#880000;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></td>
+        									<td style="padding:5px;"><label style="color:teal;font-size:11px;" th:text="${qdivision.dname}"></label></td>
+        									<td style="padding:5px;"><label style="color:blue;font-size:12px;font-weight: bold;" th:text="${qperiod}"></label></td> 
+        								</tr>
+        				 			</table>
+	        					</td><td>
+	        						<table><tr><td>&nbsp;</td></tr></table>	
+	        					</td>
+	        				</tr>
+	        			</table>
+	        			
+	        			<table class="table table-sm table-bordered table-warning">					        			
+	        				<tr>
+	        					<td noWrap><label style="color:green;font-weight:bold" th:text="'Stored Certificates for: '+ ${client.cname}"></label></td>
+	        				</tr>
+	        			</table>
+	        				 
+        				 <div class="row">&nbsp;</div>
+        				 <table  class="table-condensed table-bordered table-striped">					        			
+        				 	<thead>
+  						<tr>
+  							<th style="color:#006400;font-size:12px;">#</th>
+  							<th style="color:#006400;font-size:12px;text-align:center;">Certification</th>
+  							<th style="color:#006400;font-size:12px;text-align:center;" noWrap>Expiration Date</th>
+  							<th style="color:#006400;font-size:12px;text-align:center;">Status</th>
+  							<th style="color:#006400;font-size:12px;text-align:center;">Update</th>
+  						</tr>
+  					</thead>
+  					<tbody>
+  						<tr th:each="cert,itemNum : ${certs}">
+  							<td th:text="${itemNum.count}" style="font-size:12px;padding:5px;"></td>
+  							<td th:text="${cert.certName}" style="font-size:12px;"></td>
+  							<td th:text="${cert.expirationDate}" style="font-size:12px;"></td>
+  							
+  							<td th:if="${cert.status=='Expired'}" th:text="${cert.status}" style="font-size:12px;background-color:#ff69b4;"></td>
+  							<td th:unless="${cert.status=='Expired'}" th:text="${cert.status}" style="font-size:12px;"></td>
+  							
+                            <td>
+                                
+                            	<form th:action="@{/hhsHRtracker/assigCerts/modify}" method="post">
+                            	
+	           						<button type="submit" style="border: 0; background: transparent;">
+ 										<img th:src="@{/icons/iconEdit.png}" width="20" height="20" alt="Edit"/>
+ 									</button>	
+	           			
+	           						<input type="hidden" th:value="${cert.recordid}" name="id">
+	           						<input type="hidden" th:value="${project.projectid}" name="projectId"> 
+	           						
+	           						<input type="hidden" th:value="${client.clientid}" name="clientId">  
+	           						<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           						<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           						<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           						<input type="hidden" th:value="${qproject}" name="qproject">
+	           						
+	           					</form>	
+                            	
+                            </td>
+                                                                                   
+  						</tr>	
+  					</tbody>	        				 
+        				 </table>
+               		</div>
+           		</div>
+       		</div>
+                  
+     	</div>
+       	
+	</body>
+</html>			

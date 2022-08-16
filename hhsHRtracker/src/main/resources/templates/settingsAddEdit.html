@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="ISO-8859-1">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>hhsHRtracker</title>
+
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" th:href="@{/css/menus.css}">
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		
+  		    	  		
+	</head>
+
+	<body>
+
+  <!-- Navigation -->
+  		<div id='hcssmenu'>
+			<ul>
+			   <li>
+			   		<form th:action="@{/hhsHRtracker/settings/list}" method="post">
+               			<button type="submit" class="btn btn-light" style="font-size:11px;">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           		</form>
+         		</li>
+         		         		         		
+			</ul>
+		</div>   
+  		
+  		<div class="row">&nbsp;</div>
+  		
+  		<div class="row">
+  			<div class="col-lg-2" style="color:#000088;">Add/Edit Periods</div>
+  		</div>
+              
+        <div class="row">
+             <div class="col-lg-4">        
+           		<div class="card">
+					<div class="card-body">
+						<label style="color:violet;font-size:9px;" th:text="${setting.settingid}"></label>
+						<table class="table-condensed table-bordered">					        			
+        					<tr>
+        						<td noWrap style="padding:5px;"><label style="color:#880000;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></td>
+        						<td style="padding:5px;"><label style="color:teal;font-size:11px;" th:text="${qdivision.dname}"></label></td>
+        					</tr>
+        				 </table>
+        				 <div class="row">&nbsp;</div>
+        				 
+        				 <form class="form-main" th:action="@{/hhsHRtracker/settings/createSetting}" th:object="${setting}" method="post">
+                    
+                                            	
+		                	<div class="form-group">
+		                       	<label for="sname" class="col-form-label">Description<sup>*</sup>:</label> 
+		                       	<input type="text" th:field="*{sname}" id="sname" placeholder="Description" required  size="50" maxlength="50"/>
+		                    </div>
+		                    
+		                    <div class="form-group">
+		                       	<label for="path" class="col-form-label">Path:</label> 
+		                       	<input type="text" th:field="*{path}" id="path" placeholder="Path" size="70" maxlength="100"/>
+		                    </div>
+		                    
+		                    <div class="form-group">
+		                       	<label for="param1" class="col-form-label">Param 1:</label> 
+		                       	<input type="text" th:field="*{param1}" id="param1" placeholder="Param 1" size="50" maxlength="50"/>
+		                    </div>
+		                    
+		                    <div class="form-group">
+		                       	<label for="param2" class="col-form-label">Param 2:</label> 
+		                       	<input type="text" th:field="*{param2}" id="param2" placeholder="Param 2" size="50" maxlength="50"/>
+		                    </div>
+		                    
+		                    
+		                    <div class="form-group">
+		                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
+		                       	
+		                    </div>
+		                            	
+		                    <input type="hidden" id="id" th:field="*{settingid}">
+		     
+		     				<input type="hidden" name="qperiod" th:value="${qperiod}">
+			     			<input type="hidden" name="qdivisionId" th:value="${qdivision.divisionid}">
+			                <input type="hidden" name="quserId" th:value="${quser.userid}">	    
+                        	
+            			</form>
+  						   				 
+        				 
+               		</div>
+           		</div>
+       		</div>
+                  
+     	</div>
+       	
+	</body>
+</html>			

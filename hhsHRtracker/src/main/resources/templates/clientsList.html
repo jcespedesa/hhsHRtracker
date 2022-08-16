@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="ISO-8859-1">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>hhsHRtracker</title>
+
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" th:href="@{/css/menus.css}">
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		
+  		<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>  
+    	  		
+	</head>
+
+	<body>
+
+  <!-- Navigation -->
+  		<div id='hcssmenu'>
+			<ul>
+			   <li>
+			   		<form th:action="@{/hhsHRtracker/mainMenu}" method="post">
+               			<button type="submit" class="btn btn-light" style="font-size:11px;">Back</button>	
+	           			
+	           						
+	           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           		</form>
+         		</li>
+         		<li th:if="${quser.role}=='admin' OR ${quser.role}=='user'">
+			   		<form th:action="@{/hhsHRtracker/clients/add}" method="post">
+               			<button type="submit" class="btn btn-light" style="font-size:11px;">Create New Client</button>	
+	           			
+	           			<input type="hidden" th:value="${project.projectid}" name="projectId"> 
+	           				           			
+	           			<input type="hidden" th:value="${qproject}" name="qproject"> 
+	           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           		</form>
+         		</li>
+         		
+			</ul>
+		</div>   
+  		
+  		<div class="row">&nbsp;</div>
+  		
+  		<div class="row">
+  			<div class="col-lg-2" style="color:#000088;" th:text="'Period: '+ ${qperiod}">List of Clients</div>
+  		</div>
+              
+        <div class="row">
+             <div class="col-lg-9">        
+           		<div class="card">
+					<div class="card-body">
+						<table class="table-condensed table-bordered">					        			
+        					<tr>
+        						<td noWrap style="padding:5px;"><label style="color:#880000;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></td>
+        						<td style="padding:5px;"><label style="color:teal;font-size:11px;" th:text="${qdivision.dname}"></label></td>
+        					</tr>
+        					<tr>
+        						<td colspan="2" style="padding:5px;"><label style="color:purple;font-size:11px;" th:text="${project.projectName} +' ('+ ${project.project} +')'"></label></td>	
+        					</tr>
+        				 </table>
+        				 <div class="row">&nbsp;</div>
+        				 
+        				 <table class="table-striped table-bordered">					        			
+        				 	<thead>
+  								<tr>
+		  							<th noWrap style="color:#006400;font-size:12px;">#</th>
+		  							<th noWrap style="color:#006400;font-size:12px;text-align:center;">ID</th>
+		  							<th noWrap style="color:#006400;font-size:12px;text-align:center;">Client Name</th>
+		  							<th noWrap style="color:#006400;font-size:12px;text-align:center;">Date Hired</th>
+		  							<th style="color:#006400;font-size:12px;text-align:center;">Project</th>
+		  							<!-- <th noWrap style="color:#006400;font-size:12px;text-align:center;">Project Name</th>  -->
+		  							<th style="color:#006400;font-size:12px;text-align:center;">Contract</th>
+		  							<th style="color:#006400;font-size:12px;text-align:center;">Position/Title</th>
+		  							<th style="color:#006400;font-size:12px;text-align:center;">Status</th>
+		  							<th style="color:#006400;font-size:12px;text-align:center;">Active</th>
+		  							<th style="color:#006400;font-size:12px;text-align:center;">Expired Certificates</th>
+		  							<th style="color:#006400;font-size:12px;text-align:center;">Edit</th>
+		  							<th style="color:#006400;font-size:12px;text-align:center;">Delete</th>
+		  							<th style="color:#006400;font-size:12px;text-align:center;">Tracking</th>
+		  						</tr>
+		  					</thead>
+  							<tbody>
+  								<tr th:each="client,itemNum : ${clients}">
+		  							<td th:text="${itemNum.count}" style="font-size:11px;padding:5px;"></td>
+		  							<td noWrap th:text="${client.clientid}" style="font-size:12px;"></td>
+		  							<td noWrap th:text="${client.cname}" style="font-size:12px;"></td>
+		  							<td th:text="${client.dateHire}" style="font-size:12px;text-align:center;"></td>
+		  							<td th:text="${client.project}" style="font-size:12px;text-align:center;"></td>
+		  							<!-- <td noWrap th:text="${client.projectName}" style="font-size:12px;text-align:center;"></td>  -->
+		  							<td noWrap th:text="${client.contract}" style="font-size:12px;text-align:center;"></td>
+		  							<td noWrap th:text="${client.title}" style="font-size:12px;text-align:center;"></td>
+		  							  							  							  						  						
+		  							<td th:if="${client.status}=='FT'" th:text="${client.status}" style="font-size:12px;text-align:center;"></td>
+		  							<td th:unless="${client.status}=='FT'" th:text="${client.status}" style="font-size:12px;background-color:#98fb98;text-align:center;"></td>
+		  							
+		  							<td th:if="${client.active}=='Yes'" th:text="${client.active}" style="font-size:12px;text-align:center;"></td>
+		  							<td th:unless="${client.active}=='Yes'" th:text="${client.active}" style="font-size:12px;background-color:#ffb6c1;text-align:center;"></td>
+		  							
+		  							<td th:if="${client.expiredCert=='Yes'}" th:text="${client.expiredCert}" style="font-size:12px;background-color:#ff69b4;text-align:center;"></td>
+  									<td th:unless="${client.expiredCert=='Yes'}" th:text="${client.expiredCert}" style="font-size:12px;text-align:center;"></td>
+  									 							
+		  							<td th:if="${quser.role}=='admin' OR ${quser.role}=='user'">
+		                            	<form th:action="@{/hhsHRtracker/clients/edit}" method="post">
+		                            	
+			           						<button type="submit" style="border: 0; background: transparent">
+		 										<img th:src="@{/icons/iconEdit.png}" width="20" height="20" alt="Edit" />
+											</button>	
+			           			
+			           						<input type="hidden" th:value="${client.clientid}" name="id">
+			           						<input type="hidden" th:value="${project.projectid}" name="projectId"> 
+			           				           			
+						           			<input type="hidden" th:value="${qproject}" name="qproject"> 
+						           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+						           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+						           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+			           						
+			           					</form>	
+		                                
+		                            </td>
+		                            <td th:unless="${quser.role}=='admin' OR ${quser.role}=='user'">
+		                            	<form>
+		                            	
+			           						<button type="submit" style="border: 0; background: transparent" disabled>
+		 										<img th:src="@{/icons/iconZhamok.png}" width="18" height="18" alt="Not permited" />
+											</button>	
+			           			
+			           					</form>	
+		                                
+		                            </td>
+		                            <td th:if="${quser.role}=='admin' OR ${quser.role}=='user'">
+		                            	<form th:action="@{/hhsHRtracker/clients/delete}" method="post">
+		                            	
+			           						<button type="submit" style="border: 0; background: transparent" onClick="return confirmDelete();">
+		 										<img th:src="@{/icons/iconDeleteRed.png}" width="20" height="20" alt="Edit" />
+											</button>	
+			           			
+			           						<input type="hidden" th:value="${client.clientid}" name="id">
+			           						<input type="hidden" th:value="${project.projectid}" name="projectId"> 
+			           				           			
+						           			<input type="hidden" th:value="${qproject}" name="qproject"> 
+						           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+						           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+						           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+			           						
+			           					</form>	
+		                                
+		                            </td>
+		                            <td th:unless="${quser.role}=='admin' OR ${quser.role}=='user'">
+		                            	<form>
+		                            	
+			           						<button type="submit" style="border: 0; background: transparent" disabled>
+		 										<img th:src="@{/icons/iconZhamok.png}" width="18" height="18" alt="Not permited" />
+											</button>	
+			           			
+			           					</form>	
+		                                
+		                            </td>
+		                            <td>
+		                            	<form th:action="@{/hhsHRtracker/assigCerts/list}" method="post">
+		                            	
+			           						<button type="submit" style="border: 0; background: transparent">
+		 										<img th:src="@{/icons/iconTracking.png}" width="25" height="25" alt="Tracking" />
+											</button>	
+			           			
+			           						<input type="hidden" th:value="${client.clientid}" name="id">
+			           						<input type="hidden" th:value="${project.projectid}" name="projectId"> 
+			           				           			
+						           			<input type="hidden" th:value="${qproject}" name="qproject"> 
+						           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+						           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+						           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+			           						
+			           					</form>	
+		                                
+		                            </td>                                                        
+  								</tr>	
+  							</tbody>	        				 
+        				</table>
+               		</div>
+           		</div>
+       		</div>
+                  
+     	</div>
+       	
+	</body>
+</html>			

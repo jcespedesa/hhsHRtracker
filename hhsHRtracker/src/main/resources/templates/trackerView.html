@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="ISO-8859-1">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>hhsHRtracker</title>
+
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" th:href="@{/css/menus.css}">
+		<link rel="stylesheet" th:href="@{/css/calendarControl.css}">
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		<script th:src="@{/js/calendarControl.js}"></script>
+  		    	  		
+	</head>
+
+	<body>
+
+  <!-- Navigation -->
+  		<div id='hcssmenu'>
+			<ul>
+			   <li>
+			   		<form th:action="@{/hhsHRtracker/clients/list}" method="post">
+               			<button type="submit" class="btn btn-light" style="font-size:11px;">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${project.projectid}" name="projectId"> 
+	           			
+	           			<input type="hidden" th:value="${qproject}" name="qproject"> 
+	           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           		</form>
+         		</li>
+         		
+			</ul>
+		</div>   
+  		
+  		<div class="row">&nbsp;</div>
+  		
+  		<div class="row">
+  			<div class="col-lg-2" style="color:#000088;" th:text="'Period: '+ ${qperiod}">Edit Information</div>
+  		</div>
+              
+        <div class="row">
+             <div class="col-lg-10">        
+           		<div class="card">
+					<div class="card-body">
+						<label style="color:violet;font-size:9px;" th:text="${client.clientid}"></label>
+						
+						<table>
+							<tr>
+								<td>
+									<table class="table-condensed table-bordered">					        			
+			        					<tr>
+			        						<td noWrap style="padding:5px;"><label style="color:#880000;font-size:12px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></td>
+			        						<td style="padding:5px;"><label style="color:teal;font-size:12px;" th:text="${qdivision.dname}"></label></td>
+			        					</tr>
+			        					<tr>
+			        						<td style="padding:5px;"><label style="color:#880000;font-size:12px;" th:text="'Project Number : '+ ${project.project}"></label></td>
+			        						<td noWrap style="padding:5px;"><label style="color:navyBlue;font-size:12px;" th:text="' Project Name : '+ ${project.projectName}"></label></td>
+			        					</tr>
+			        				 </table>
+		        				 </td>
+		        				 <td>
+		        				 	<table><tr><td>&nbsp;</td></tr></table>
+		        				 </td>
+		        				 <td>
+		        				 	<table class="table-condensed table-bordered">					        			
+			        					<tr>
+			        						<td noWrap style="padding:5px;"><label style="color:darkGreen;font-size:12px;font-weight:bold;background-color:#ffe4b5;" th:text="'Tracking information for  : '+ ${client.cname}"></label></td>
+			        					</tr>
+			        				</table>
+		        				 </td>
+		        			</tr>		 
+		        		</table>		 
+		        				 
+        				 <div class="row">&nbsp;</div>
+        				 
+        				 <form class="form-main" th:action="@{/hhsHRtracker/tracker/update}" th:object="${client}" method="post">
+        				 
+        				 	<table class="table-striped">					        			
+        				
+        						<tr>
+			                    	<td>
+			                       		<label for="mpd" class="col-form-label">Metropolitan Police Department (mpd) :</label> 
+			                       		<input type="text" th:field="*{mpd}" id="mpd" size="10" maxlength="10" placeholder="Date Only" onfocus="showCalendarControl(this);"/>
+			                    	</td>
+                    		        <td>
+			                       		<label for="fbi" class="col-form-label">FBI (Due Date) Renew every 2 years :</label> 
+			                       		<input type="text" th:field="*{fbi}" id="fbi" size="10" maxlength="10" placeholder="Date Only" onfocus="showCalendarControl(this);"/>
+			                    	</td>           				
+                    			</tr>
+                    			<tr>
+                    		      	<td>
+			                       		<label for="sor" class="col-form-label">Sex Offenders Register (SOR) Due Date :</label> 
+			                       		<input type="text" th:field="*{sor}" id="sor" size="10" maxlength="10" placeholder="Date Only" onfocus="showCalendarControl(this);"/>
+			                    	</td>
+			                       	<td>
+			                       		<label for="cps" class="col-form-label">CPS (Due Date) Results every 2 years :</label> 
+			                       		<input type="text" th:field="*{cps}" id="cps" size="10" maxlength="10" placeholder="Date Only" onfocus="showCalendarControl(this);"/>
+			                    	</td>
+                        		</tr>
+                        		<tr>
+                    		      	<td>
+			                       		<label for="iniPpd" class="col-form-label">Ini PPD :</label> 
+			                       		<input type="text" th:field="*{iniPpd}" id="iniPpd" size="10" maxlength="10" placeholder="Date Only" onfocus="showCalendarControl(this);"/>
+			                    	</td>
+			                       	<td>
+			                       		<label for="iniAlcohol" class="col-form-label">Ini Alcohol & Drug Screening :</label> 
+			                       		<input type="text" th:field="*{iniAlcohol}" id="iniAlcohol" size="10" maxlength="10" placeholder="Date Only" onfocus="showCalendarControl(this);"/>
+			                    	</td>
+                        		</tr>
+                        		<tr>
+                    		      	<td>
+			                       		<label for="annPpd" class="col-form-label">Ann PPD (Due Date):</label> 
+			                       		<input type="text" th:field="*{annPpd}" id="iniPpd" size="10" maxlength="10" placeholder="Date Only" onfocus="showCalendarControl(this);"/>
+			                    	</td>
+			                       	<td>
+			                       		<label for="toxicology" class="col-form-label">Bi-Annual Toxicology (Due Date) :</label> 
+			                       		<input type="text" th:field="*{toxicology}" id="toxicology" size="10" maxlength="10" placeholder="Date Only" onfocus="showCalendarControl(this);"/>
+			                    	</td>
+                        		</tr>
+                        		
+                    			<tr><td>&nbsp;</td></tr>
+                    			<tr>
+			                    	<td th:if="${quser.role}=='admin' OR ${quser.role}=='user'">
+			                       		<input type="submit" class="btn btn-secondary btn-sm" value=" Submit ">
+			                       	
+			                       	</td>
+                   				</tr>
+     						</table>
+     			
+     						<input type="hidden" id="id" th:field="*{clientid}">
+     						<input type="hidden" th:value="${project.projectid}" name="projectId">
+     					
+     						<input type="hidden" name="qproject" th:value="${qproject}">
+	     					<input type="hidden" name="qperiod" th:value="${qperiod}">
+	     					<input type="hidden" name="qdivisionId" th:value="${qdivision.divisionid}">
+	                        <input type="hidden" name="quserId" th:value="${quser.userid}">	
+            			</form>	 	
+  						       				 
+        				 
+               		</div>
+           		</div>
+       		</div>
+                  
+     	</div>
+       	
+	</body>
+</html>

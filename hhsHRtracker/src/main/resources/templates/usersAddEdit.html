@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="ISO-8859-1">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>hhsHRtracker</title>
+
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" th:href="@{/css/menus.css}">
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		
+  		    	  		
+	</head>
+
+	<body>
+
+  <!-- Navigation -->
+  		<div id='hcssmenu'>
+			<ul>
+			   <li>
+			   		<form th:action="@{/hhsHRtracker/users/list}" method="post">
+               			<button type="submit" class="btn btn-light" style="font-size:11px;">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           		</form>
+         		</li>
+         		
+         		<li th:if="${user.userid}==null">
+			   			<button type="submit" class="btn btn-transparent" style="font-size:11px;">Assigned Projects</button>
+               	</li>
+         		
+         		<li th:unless="${user.userid}==null">
+			   		<form th:action="@{/hhsHRtracker/assigProjects/list}" method="post">
+               			<button type="submit" class="btn btn-light" style="font-size:11px;">Modify Assigned Projects</button>
+               			
+               			<input type="hidden" th:value="${user.userid}" name="id"> 	
+	           			
+	           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           		</form>
+         		</li>
+         		
+			</ul>
+		</div>   
+  		
+  		<div class="row">&nbsp;</div>
+  		
+  		<div class="row">
+  			<div class="col-lg-2" style="color:#000088;">Add/Edit User</div>
+  		</div>
+              
+        <div class="row">
+             <div class="col-lg-6">        
+           		<div class="card">
+					<div class="card-body">
+						<label style="color:violet;font-size:9px;" th:text="${user.userid}"></label>
+						<table class="table-condensed table-bordered">					        			
+        					<tr>
+        						<td noWrap style="padding:5px;"><label style="color:#880000;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></td>
+        						<td style="padding:5px;"><label style="color:teal;font-size:11px;" th:text="${qdivision.dname}"></label></td>
+        					</tr>
+        				 </table>
+        				 <div class="row">&nbsp;</div>
+        				 
+        				 <form class="form-main" th:action="@{/hhsHRtracker/users/createUser}" th:object="${user}" method="post">
+        				 
+        				 	<table class="table-striped">					        			
+        				
+        						<tr>
+			                    	<td noWrap>
+			                       		<label for="project" class="col-form-label">Username<sup>*</sup>:</label> 
+			                       		<input type="text" th:field="*{username}" id="username" required   maxlength="50"/>
+			                    	</td>
+                    		
+			                    	<td noWrap th:if="${priznakNew}=='true'">
+			                       		<label for="project" class="col-form-label">CC Email<sup>*</sup>:</label> 
+			                       		<input type="email" th:field="*{email}" id="email" size="30" required  maxlength="70"/>
+			                    	</td>
+			                    	
+			                    	<td th:unless="${priznakNew}=='true'">
+			                       		<label for="project" class="col-form-label">CC Email<sup>*</sup>:</label> 
+			                       		<input type="email" th:field="*{email}" id="email" size="30" required  maxlength="70" readOnly/>
+			                    	</td>
+			                    	
+                        		</tr>	
+                	        	<tr>            
+			                    	
+			                    	<td>   	
+			                       		
+			                       		<label for="hhsDivision">Role</label>
+			     							<select th:field="*{role}" required>
+								     			<option th:value="*{role}" th:text="*{role}"></option>
+								    			<option th:value="'user'" th:text="user"></option>
+										    	<option th:value="'guest'" th:text="guest"></option>
+										    	<option th:value="'admin'" th:text="admin"></option>
+										    	
+			     							</select>
+			     					</td>
+			     				
+			                    	<td>
+			     						<label for="active">Active</label>
+			     						<select th:field="*{active}">
+								     		<option th:value="*{active}" th:text="*{active}"></option>
+								    		<option th:value="'Yes'" th:text="Yes"></option>
+								    		<option th:value="'No'" th:text="No"></option>
+			     						</select>    						
+									</td>
+                    
+                    			</tr>
+                    			<tr>
+                    				<td colspan="2">
+                    					<label for="project" class="col-form-label">Password : [No less than 6 char and at least one capital letter and one number]</label> 
+			                       		<input type="password" th:field="*{password}" id="password" required minlength="6" maxlength="50" pattern="(?=.*\d)(?=.*[A-Z]).{6,}"/>
+                    				</td>
+                    			</tr>
+                    			<tr><td>&nbsp;</td></tr>
+                    			<tr>
+			                    	<td>
+			                       		<input type="submit" class="btn btn-secondary btn-sm" value=" Submit ">
+			                       	
+			                       	</td>
+                   				</tr>
+     						</table>
+     						
+     						<input type="hidden" id="id" th:field="*{userid}">
+     					
+	     					<input type="hidden" name="qperiod" th:value="${qperiod}">
+	     					<input type="hidden" name="qdivisionId" th:value="${qdivision.divisionid}">
+	                        <input type="hidden" name="quserId" th:value="${quser.userid}">	
+            			</form>
+            				 	
+  						<div class="row">&nbsp;</div>
+  						
+  						<table th:if="${user.userid}!=null" class="table-condensed table-bordered table-striped">					        			
+        				 	<thead>
+        				 		<tr><td colspan="3" style="color:#330099;font-size:12px;font-weight:bold;background-color:lightGreen;">Currently Assigned Projects</td></tr>
+  								<tr>
+  									<th style="color:#006400;font-size:12px;">#</th>
+  									<th style="color:#006400;font-size:12px;text-align:center;">Project</th>
+  									<th style="color:#006400;font-size:12px;text-align:center;" noWrap>Project Name</th>
+  								</tr>
+  							</thead>
+  							<tbody>
+  								<tr th:each="project,itemNum : ${projects}">
+  									<td th:text="${itemNum.count}" style="font-size:12px;padding:5px;"></td>
+  									<td th:text="${project.project}" style="font-size:12px;"></td>
+  									<td th:text="${project.projectName}" style="font-size:12px;"></td>
+  								</tr>	   				 
+        					</tbody>
+        				</table>	 
+               		</div>
+           		</div>
+       		</div>
+                  
+     	</div>
+       	
+	</body>
+</html>			

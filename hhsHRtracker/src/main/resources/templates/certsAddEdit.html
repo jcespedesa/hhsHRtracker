@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="ISO-8859-1">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>hhsHRtracker</title>
+
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" th:href="@{/css/menus.css}">
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		
+  		    	  		
+	</head>
+
+	<body>
+		<div id="container">
+  <!-- Navigation -->
+	  		<div id='hcssmenu'>
+				<ul>
+				   <li>
+				   		<form th:action="@{/hhsHRtracker/certificates/list}" method="post">
+	               			<button type="submit" class="btn btn-light" style="font-size:11px;">Back</button>	
+		           			
+		           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+		           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+		           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+		           		</form>
+	         		</li>
+	         		         		         		
+				</ul>
+			</div>   
+	  		
+	  		<div class="row">&nbsp;</div>
+	  		
+	  		<div class="row">
+	  			<div class="col-lg-2" style="color:#000088;">Add/Edit Certificates</div>
+	  		</div>
+	              
+	        <div class="row">
+	             <div class="col-lg-8">        
+	           		<div class="card">
+						<div class="card-body">
+							<label style="color:violet;font-size:9px;" th:text="${cert.certid}"></label>
+							<table class="table-condensed table-bordered">					        			
+	        					<tr>
+	        						<td noWrap style="padding:5px;"><label style="color:#880000;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></td>
+	        						<td style="padding:5px;"><label style="color:teal;font-size:11px;" th:text="${qdivision.dname}"></label></td>
+	        					</tr>
+	        				 </table>
+	        				 <div class="row">&nbsp;</div>
+	        				 
+	        				 <form class="form-main" th:action="@{/hhsHRtracker/certificates/createCert}" th:object="${cert}" method="post">
+	                    
+	                                            	
+			                	<div class="form-group">
+			                       	<label for="certName" class="col-form-label">Description<sup>*</sup>:</label> 
+			                       	<input type="text" th:field="*{certName}" id="certName" placeholder="Description" required  size="50" maxlength="50"/>
+			                    
+			                       	<label for="certNumber" class="col-form-label">Certificate Number:</label> 
+			                       	<input type="text" th:field="*{certNumber}" id="certNumber" placeholder="Number" size="5" maxlength="4"/>
+			                    </div>
+			                    
+			                    <div class="form-group"><label for="notes">Notes/Observations:</label><br>
+      								<textarea id="notes" th:field="*{notes}" rows="5" cols="80"></textarea>
+								</div>
+								
+								<div class="form-group">
+									<label for="active">Active</label>
+			     					<select th:field="*{active}" id="active" required>
+			     						<option th:value="*{active}" th:text="*{active}"></option>
+								    	<option th:value="'Yes'" th:text="Yes"></option>
+								    	<option th:value="'No'" th:text="No"></option>
+			     					</select>  
+			                    </div>
+			                    <div class="form-group">
+			                       	<input type="submit" class="btn btn-primary btn-sm" value=" Submit ">
+			                       	
+			                    </div>
+			                            	
+			                    <input type="hidden" id="id" th:field="*{certid}">
+			     
+			     				<input type="hidden" name="qperiod" th:value="${qperiod}">
+				     			<input type="hidden" name="qdivisionId" th:value="${qdivision.divisionid}">
+				                <input type="hidden" name="quserId" th:value="${quser.userid}">	    
+	                        	
+	            			</form>
+	  						   				 
+	        				 
+	               		</div>
+	           		</div>
+	       		</div>
+	       		
+	       		<div class="col-lg-2">
+	       			<table class="table table-sm table-striped table-dark">
+	       				<thead>
+	       					<tr><td><label>Already Registered Certificate Numbers</label></td></tr>
+	       				</thead>
+	       				<tbody>
+	       					<tr th:each="certificate,itemNum : ${certificates}">
+	  							<td th:text="${certificate.certNumber}"></td>
+	       				</tbody>
+	       				
+	       			</table>
+	       		</div>
+	       		
+	                  
+	     	</div>
+       	</div>
+	</body>
+</html>			

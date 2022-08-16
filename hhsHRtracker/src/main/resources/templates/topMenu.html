@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<div class="row">
+	
+		
+				
+		<div class="col-sm">	
+	  	
+			<div id='hcssmenu'>
+				<ul>
+				   <li>
+				   		<div style="color:#008800;font-weight: bold;">HHS HR Tracker</div>			  
+   					</li>
+   					<li class='active has-sub'>
+   						<a href="#"><span>Projects</span></a>
+   						
+   						<ul>
+         					<li th:each="project : ${projects}">
+         						<form th:action="@{/hhsHRtracker/clients/list}" method="post">
+                            	
+	           						<button type="submit" class="btn btn-info" style="font-size:11px;" th:text="${project.projectName}">Projects</button>	
+	           			
+	           						<input type="hidden" th:value="${project.project}" name="qproject"> 
+	           			
+	           						<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           						<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           						<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           						
+	           					</form>
+         					</li>
+         					
+            			</ul>
+   						
+   					</li>
+   					
+   					<li class='active has-sub' th:if="${quser.role}=='admin'"><a href="#"><span>Lists</span></a>
+   						<ul>
+         					<li>
+         						<form th:action="@{/hhsHRtracker/projects/list}" method="post">
+                            	
+	           						<button type="submit" class="btn btn-info" style="font-size:11px;">Projects</button>	
+	           			
+	           						<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           						<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           						<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           					</form>
+         					</li>
+         					<li>
+         						<form th:action="@{/hhsHRtracker/users/list}" method="post">
+                            	
+	           						<button type="submit" class="btn btn-info" style="font-size:11px;">Users</button>	
+	           			
+	           						<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           						<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           						<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           					</form>
+         					</li>
+         					
+         					<li>
+         						<form th:action="@{/hhsHRtracker/periods/list}" method="post">
+                            	
+	           						<button type="submit" class="btn btn-info" style="font-size:11px;">Periods</button>	
+	           			
+	           						<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           						<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           						<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           					</form>
+         					</li>
+         					
+         					<li>
+         						<form th:action="@{/hhsHRtracker/certificates/list}" method="post">
+                            	
+	           						<button type="submit" class="btn btn-info" style="font-size:11px;">Certificates</button>	
+	           			
+	           						<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           						<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           						<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           					</form>
+         					</li>
+            			</ul>
+   					</li>
+   					
+   					<li class='active has-sub' ><a href="#"><span>Reports</span></a>
+   						<ul>
+   							<li>
+         						<form th:action="@{/hhsHRtracker/logs/list}" method="post">
+                            	
+	           						<button type="submit" class="btn btn-info" style="font-size:11px;">System Logs</button>	
+	           			
+	           						<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           						<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           						<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           					</form>
+         					</li>
+   						</ul>
+   					
+   					</li>
+   					
+   					<li class='active has-sub' th:if="${quser.role}=='admin' OR ${quser.role}=='user'"><a href="#"><span>Admin Tools</span></a>
+   					
+   						<ul>
+   							<li>
+         						<form th:action="@{/hhsHRtracker/settings/list}" method="post">
+                            	
+	           						<button type="submit" class="btn btn-info" style="font-size:11px;">Settings</button>	
+	           			
+	           						<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           						<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           						<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           					</form>
+         					</li>
+         					<li>
+   								<button type="submit" class="btn btn-info" style="font-size:11px;">Tests</button>
+   							</li>
+   						</ul>
+   						   					   					
+   					</li>
+   					
+   					<li>
+   						<form th:action="@{/hhsHRtracker/about}" method="post">
+                            	
+	           				<button type="submit" class="btn btn-transparent" style="font-size:11px;">About</button>	
+	           			
+	           				<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           				<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           				<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           			</form>
+   					</li>
+   					<li>
+   						<form th:action="@{/hhsHRtracker/users/changePass}" method="post">
+                            	
+	           				<button type="submit" class="btn btn-transparent" style="font-size:11px;">Change Password</button>	
+	           			
+	           				<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           				<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           				<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           			</form>
+   					</li>
+   					<li><a href="/hhsHRtracker/index"><span>Log Out</span></a></li>
+				</ul>
+			</div>
+		
+		</div>
+		
+	</div>
+</html>	

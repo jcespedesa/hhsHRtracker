@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="ISO-8859-1">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>hhsHRtracker</title>
+
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" th:href="@{/css/menus.css}">
+		<link rel="stylesheet" th:href="@{/css/calendarControl.css}">
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		<script th:src="@{/js/calendarControl.js}"></script>
+  		    	  		
+	</head>
+
+	<body>
+
+  <!-- Navigation -->
+  		<div id='hcssmenu'>
+			<ul>
+			   <li>
+			   		<form th:action="@{/hhsHRtracker/clients/list}" method="post">
+               			<button type="submit" class="btn btn-light" style="font-size:11px;">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${project.projectid}" name="projectId"> 
+	           			
+	           			<input type="hidden" th:value="${qproject}" name="qproject"> 
+	           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           		</form>
+         		</li>
+         		
+			</ul>
+		</div>   
+  		
+  		<div class="row">&nbsp;</div>
+  		
+  		<div class="row">
+  			<div class="col-lg-2" style="color:#000088;" th:text="'Period: '+ ${qperiod}">Edit Client</div>
+  		</div>
+              
+        <div class="row">
+             <div class="col-lg-10">        
+           		<div class="card">
+					<div class="card-body">
+						<label style="color:violet;font-size:9px;" th:text="${client.clientid}"></label>
+						<table class="table-condensed table-bordered">					        			
+        					<tr>
+        						<td noWrap style="padding:5px;"><label style="color:#880000;font-size:12px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></td>
+        						<td style="padding:5px;"><label style="color:teal;font-size:12px;" th:text="${qdivision.dname}"></label></td>
+        					</tr>
+        					<tr>
+        						<td style="padding:5px;"><label style="color:#880000;font-size:12px;" th:text="'Project Number : '+ ${project.project}"></label></td>
+        						<td noWrap style="padding:5px;"><label style="color:teal;font-size:12px;" th:text="' Project Name : '+ ${project.projectName}"></label></td>
+        					</tr>
+        				 </table>
+        				 <div class="row">&nbsp;</div>
+        				 
+        				 <form class="form-main" th:action="@{/hhsHRtracker/clients/updateClient}" th:object="${client}" method="post">
+        				 
+        				 	<table class="table-striped">					        			
+        				
+        						<tr>
+			                    	<td>
+			                       		<label for="lastName" class="col-form-label">Name<sup>*</sup>:</label> 
+			                       		<input type="text" th:field="*{cname}" id="cname" required  maxlength="30"/>
+			                    	</td>
+                    		                   				
+                    			</tr>
+                    			<tr>
+                    		      	<td>
+			                       		<label for="dateHire" class="col-form-label">Date Hired :</label> 
+			                       		<input type="text" th:field="*{dateHire}" id="dateHire" size="10" maxlength="10" onfocus="showCalendarControl(this);"/>
+			                    	</td>
+			                       	<td>
+			                       		<label for="contract" class="col-form-label">Contract :</label> 
+			                       		<input type="text" th:field="*{contract}" id="contract" size="20" maxlength="20"/>
+			                    	</td>
+                        		</tr>	
+                	        	<tr>            
+			                    	<td colspan="2" noWrap>
+			                       		<label for="title" class="col-form-label">Title : <sup>*</sup>:</label> 
+			                       		<select th:field="*{title}" id="title">
+			                       			<option th:value="${titleNumber}" th:text="*{title}"></option>
+			                       			<option th:each="title : ${titles}" th:value="${title.titleNum}" th:text="${title.titleDesc}" ></option>
+			                       			<option value=""></option>
+			                       		</select>
+			                    	</td>
+			                    </tr><tr>	
+			                    	<td>   	
+			                       		<label for="status">Status : </label>
+			     							<select th:field="*{status}" id="status">
+			     								<option th:value="*{status}" th:text="*{status}"></option>
+								     			<option th:value="'FT'" th:text="FT"></option>
+										    	<option th:value="'PT'" th:text="PT"></option>
+										    	<option value=""></option>
+			     							</select>
+			     					</td>
+			     					
+			     				   	<td>
+			     						<label for="active">Active</label>
+			     						<select th:field="*{active}" id="active">
+			     							<option th:value="*{active}" th:text="*{active}"></option>
+								     		<option th:value="'Yes'" th:text="Yes"></option>
+								    		<option th:value="'No'" th:text="No"></option>
+			     						</select>    						
+									</td>
+                    
+                    			</tr>
+                    			
+                    			<tr>
+                    		      	<td>
+			                       		<label for="licensure" class="col-form-label">Licensure :</label> 
+			                       		<input type="text" th:field="*{licensure}" id="licensure" size="50" maxlength="100"/>
+			                    	</td>
+			                       	<td>
+			                       		<label for="antiBullRec" class="col-form-label">Anti-Bullying Receipt :</label> 
+			                       		<input type="text" th:field="*{antiBullRec}" id="antiBullRec" size="10" maxlength="50"/>
+			                    	</td>
+                        		</tr>
+                        		<tr>
+                    		      	<td colspan="2">
+			                       		<label for="education" class="col-form-label">Education :</label> 
+			                       		<input type="text" th:field="*{education}" id="education" size="50" maxlength="100"/>
+			                    	</td>
+			                       	
+                        		</tr>
+                        		
+                        		<tr>
+                        			<td colspan="2">
+                        				 <div class="form-group"><label for="notes">Notes/Observations:</label><br>
+      										<textarea id="notes" th:field="*{notes}" rows="5" cols="80"></textarea>
+										</div>
+                           			</td>	
+                        		</tr>    
+                    			
+                    			<tr><td>&nbsp;</td></tr>
+                    			<tr>
+			                    	<td>
+			                       		<input type="submit" class="btn btn-secondary btn-sm" value=" Submit ">
+			                       	
+			                       	</td>
+                   				</tr>
+     						</table>
+     			
+     						<input type="hidden" id="id" th:field="*{clientid}">
+     						<input type="hidden" th:value="${project.projectid}" name="projectId">
+     					
+     						<input type="hidden" name="qproject" th:value="${qproject}">
+	     					<input type="hidden" name="qperiod" th:value="${qperiod}">
+	     					<input type="hidden" name="qdivisionId" th:value="${qdivision.divisionid}">
+	                        <input type="hidden" name="quserId" th:value="${quser.userid}">	
+            			</form>	 	
+  						       				 
+        				 
+               		</div>
+           		</div>
+       		</div>
+                  
+     	</div>
+       	
+	</body>
+</html>

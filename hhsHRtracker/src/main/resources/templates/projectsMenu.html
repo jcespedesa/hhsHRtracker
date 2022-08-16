@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="ISO-8859-1">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>hhsHRtracker</title>
+
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" th:href="@{/css/menus.css}">
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	  		
+	</head>
+
+	<body>
+
+  <!-- Navigation -->
+  		<div id='hcssmenu'>
+			<ul>
+			   <li>
+			   		
+         			<form th:action="@{/hhsHRtracker/mainMenu}" method="post">
+                            	
+	           			<button type="submit" class="btn btn-secondary" style="font-size:11px;">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${user.userid}" name="userId"> 
+	           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           			
+	           		</form>
+         							   
+			   </li>
+			</ul>
+		</div>   
+  		
+  		<div class="row">&nbsp;</div>
+  		
+  		<div class="row">
+  			<div class="col-lg-2" style="color:#000088;">HHS HR Tracker</div>
+  		</div>
+              
+        <div class="row">
+             <div class="col-lg-6">        
+           		<div class="card">
+					<div class="card-body">
+						<table class="table-striped">					        			
+        					<tr>
+        						<td noWrap><label style="color:#880000;" th:text="${division.dname} +' ('+ ${division.dnumber} +')'"></label></td>
+        						<td noWrap><label style="color:#880000;" th:text="${user.username} +' ('+ ${user.role} +')'"></label></td>
+        					</tr>
+        					<tr><td colspan="2"><label style="color:teal;" th:text="'Selected Period: '+ ${period}"></label></td></tr>
+        				    <tr  th:each="project : ${projects}">
+        				    	<td  colspan="2">
+        				    	
+        				    		<form th:action="@{/hhsHRtracker/projectTracker}" method="post">
+                            	
+	           							<button type="submit" class="btn btn-success" th:text="${project.project}">Project 1</button>	
+	           			
+	           							<input type="hidden" th:value="${user.userid}" name="userId"> 
+	           							<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           							<input type="hidden" th:value="${division.divisionid}" name="divisionId">
+	           							<input type="hidden" th:value="${project.projectid}" name="projectId">
+	           						</form>
+        				    	
+        				    	</td>
+					     	</tr> 
+					     </table>	                   
+               		</div>
+           		</div>
+       		</div>
+                  
+     	</div>
+       	
+	</body>
+</html>			

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="ISO-8859-1">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>hhsHRtracker</title>
+
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" th:href="@{/css/menus.css}">
+		<link rel="stylesheet" th:href="@{/css/calendarControl.css}">
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		<script th:src="@{/js/calendarControl.js}"></script>
+  		
+  		    	  		
+	</head>
+
+	<body>
+
+  <!-- Navigation -->
+  		<div id='hcssmenu'>
+			<ul>
+			   <li>
+			   		<form th:action="@{/hhsHRtracker/assigCerts/list}" method="post">
+               			<button type="submit" class="btn btn-light" style="font-size:11px;">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${client.clientid}" name="id"> 
+	           			
+	           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           			<input type="hidden" th:value="${qproject}" name="qproject">
+	           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           		</form>
+         		</li>
+         		
+			</ul>
+		</div>   
+  		
+  		<div class="row">&nbsp;</div>
+  		
+  		<div class="row">
+  			<div class="col-lg-2" style="color:#000088;">Modify Certificate</div>
+  			<div class="col-lg-2" style="color:#000088;">(<label th:text="${cert.recordid}"></label>)</div>
+  		</div>
+              
+        <div class="row">
+             <div class="col-lg-10">        
+           		<div class="card">
+					<div class="card-body">
+						
+						<table class="table-condensed table-bordered">					        			
+        					<tr>
+        						<td noWrap style="padding:5px;"><label style="color:#880000;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></td>
+        						<td style="padding:5px;"><label style="color:teal;font-size:11px;" th:text="${qdivision.dname}"></label></td>
+        						<td style="padding:5px;"><label style="color:blue;font-size:12px;font-weight: bold;" th:text="${qperiod}"></label></td>
+        					</tr>
+        				 </table>
+        				 <div class="row">&nbsp;</div>
+        				 
+        				        				         				 
+        				 <table><tr><td valign="top">
+        				 
+        				 	<form class="form-main" th:action="@{/hhsHRtracker/assigCerts/updateCert}" method="post">
+        				         				       				 
+        				 		<table class="table-striped">					        			
+        							<thead>
+        								<tr>
+        									<th noWrap>
+        										<label for="certificate" class="col-form-label">Employee :</label> 
+			                       				<label style="color:brown;font-weight:bold;" th:text="${client.cname}"></label>
+        									</th>
+        								</tr>
+        							</thead>
+        							<tbody>
+        								<tr>
+			                    	     
+			                    			<td noWrap>
+			                       				<label for="certificate" class="col-form-label">Certificate:</label> 
+			                       				<label style="color:green;font-weight:bold;" th:text="${certName}"></label>
+			                    			</td>
+			                    		</tr>
+			                    		<tr>
+			                    			<td>
+			                    				<label for="expirationDate" class="col-form-label">Expiration Date :</label> 
+			                    				<input type="text" name="expirationDate" th:value="${cert.expirationDate}" size="10" maxlength="10" placeholder="Date Only" onfocus="showCalendarControl(this);"/>
+			                    			</td>
+			                    	          
+                    					</tr>
+                    					
+                    					<tr>
+                        					<td colspan="2">
+                        				 		<div class="form-group"><label for="notes">Notes/Observations:</label><br>
+      												<textarea name="notes" th:text="${cert.notes}" rows="5" cols="80"></textarea>
+												</div>
+                           					</td>	
+                        				</tr>  
+                    					<tr><td>&nbsp;</td></tr>
+                    					<tr>
+			                    			<td>
+			                       				<input type="submit" class="btn btn-secondary btn-sm" value=" Update ">
+			                       	
+			                       			</td>
+                   						</tr>
+                   					</tbody>
+     							</table>
+     			
+     							<input type="hidden" name="id" th:value="${cert.recordid}">
+     							
+     							<input type="hidden" th:value="${client.clientid}" name="clientId"> 
+     					
+	     						<input type="hidden" name="qperiod" th:value="${qperiod}">
+	     						<input type="hidden" name="qdivisionId" th:value="${qdivision.divisionid}">
+	                        	<input type="hidden" name="quserId" th:value="${quser.userid}">
+	                        	<input type="hidden" name="qproject" th:value="${qproject}">	
+            				</form>	 	
+  					</td><td valign="top">
+  					
+  					
+               		</div>
+           		</div>
+       		</div>
+                  
+     	</div>
+       	
+	</body>
+</html>

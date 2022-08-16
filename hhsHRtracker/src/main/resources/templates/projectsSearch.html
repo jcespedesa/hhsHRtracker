@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="ISO-8859-1">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>hhsHRtracker</title>
+
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" th:href="@{/css/menus.css}">
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		
+  		    	  		
+	</head>
+
+	<body>
+
+  <!-- Navigation -->
+  		<div id='hcssmenu'>
+			<ul>
+			   <li>
+			   		<form th:action="@{/hhsHRtracker/projects/list}" method="post">
+               			<button type="submit" class="btn btn-light" style="font-size:11px;">Cancel</button>	
+	           			
+	           			<input type="hidden" th:value="${quserId}" name="quserId"> 
+	           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           			<input type="hidden" th:value="${qdivisionId}" name="qdivisionId">
+	           		</form>
+         		</li>
+         		
+			</ul>
+		</div>   
+  		
+  		<div class="row">&nbsp;</div>
+  		
+  		<div class="row">
+  			<div class="col-lg-2" style="color:#000088;">Search Projects</div>
+  		</div>
+              
+        <div class="row">
+             <div class="col-lg-10">        
+           		<div class="card">
+					<div class="card-body">
+						<form class="form-main" th:action="@{/hhsHRtracker/projects/findProjectNum}" method="post">	
+							<table class="table-condensed table-bordered">					        			
+        						<tr>
+        							<td>
+        								<label for="project" class="col-form-label">Project Number<sup> [No spaces]</sup> : </label> 
+		                       			<input type="text" name="stringSearch" required  size="5" maxlength="5"/>
+        							</td>	
+                    			</tr>
+                    			<tr><td>&nbsp;</td></tr>
+                    			<tr>
+			                   		<td>
+			                   			<input type="submit" class="btn btn-secondary btn-sm" value=" Submit ">
+			                   		</td>
+                   				</tr>
+     						</table>
+     			     					
+	     					<input type="hidden" name="qperiod" th:value="${qperiod}">
+	     					<input type="hidden" name="qdivisionId" th:value="${qdivisionId}">
+	                    	<input type="hidden" name="quserId" th:value="${quserId}">	
+            			</form>	 	
+  						       				 
+        				 
+               		</div>
+           		</div>
+       		</div>
+                  
+     	</div>
+       	
+	</body>
+</html>			

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="ISO-8859-1">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>hhsHRtracker</title>
+
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" th:href="@{/css/menus.css}">
+		<link rel="stylesheet" th:href="@{/css/calendarControl.css}">
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		<script th:src="@{/js/calendarControl.js}"></script>
+  		    	  		
+	</head>
+
+	<body>
+
+  <!-- Navigation -->
+  		<div id='hcssmenu'>
+			<ul>
+			   <li>
+			   		<form th:action="@{/hhsHRtracker/clients/list}" method="post">
+               			<button type="submit" class="btn btn-light" style="font-size:11px;">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${project.projectid}" name="projectId"> 
+	           			
+	           			<input type="hidden" th:value="${qproject}" name="qproject"> 
+	           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           		</form>
+         		</li>
+         		
+			</ul>
+		</div>   
+  		
+  		<div class="row">&nbsp;</div>
+  		
+  		<div class="row">
+  			<div class="col-lg-2" style="color:#000088;" th:text="'Period: '+ ${qperiod}">Add/Edit Client</div>
+  		</div>
+              
+        <div class="row">
+             <div class="col-lg-10">        
+           		<div class="card">
+					<div class="card-body">
+						<label style="color:violet;font-size:9px;" th:text="${client.clientid}"></label>
+						<table class="table-condensed table-bordered">					        			
+        					<tr>
+        						<td noWrap style="padding:5px;"><label style="color:#880000;font-size:12px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></td>
+        						<td style="padding:5px;"><label style="color:teal;font-size:12px;" th:text="${qdivision.dname}"></label></td>
+        					</tr>
+        					<tr>
+        						<td style="padding:5px;"><label style="color:#880000;font-size:12px;" th:text="'Project Number : '+ ${project.project}"></label></td>
+        						<td noWrap style="padding:5px;"><label style="color:teal;font-size:12px;" th:text="' Project Name : '+ ${project.projectName}"></label></td>
+        					</tr>
+        				 </table>
+        				 <div class="row">&nbsp;</div>
+        				 
+        				 <form class="form-main" th:action="@{/hhsHRtracker/clients/createClient}" method="post">
+        				 
+        				 	<table class="table-striped">					        			
+        				
+        						<tr>
+			                    	<td>
+			                       		<label for="lastName" class="col-form-label">Last Name<sup>*</sup>:</label> 
+			                       		<input type="text" name="lastName" required  maxlength="30"/>
+			                    	</td>
+                    		
+                    				<td>
+			                       		<label for="firstName" class="col-form-label">First Name<sup>*</sup>:</label> 
+			                       		<input type="text" name="firstName" required  maxlength="30"/>
+			                    	</td>
+                    			</tr>
+                    			<tr>
+                    		      	<td>
+			                       		<label for="dateHire" class="col-form-label">Date Hired :</label> 
+			                       		<input type="text" name="dateHire" size="10" maxlength="10" placeholder="Date Only" onfocus="showCalendarControl(this);"/>
+			                    	</td>
+			                       	<td>
+			                       		<label for="Contract" class="col-form-label">Contract :</label> 
+			                       		<input type="text" name="contract" size="20" maxlength="20"/>
+			                    	</td>
+                        		</tr>	
+                	        	<tr>            
+			                    	<td colspan="2" noWrap>
+			                       		<label for="title" class="col-form-label">Title : <sup>*</sup>:</label> 
+			                       		<select size="1" name="titleNum">
+			                       			<option th:each="title : ${titles}" th:value="${title.titleNum}" th:text="${title.titleDesc}" ></option>
+			                       			<option value=""></option>
+			                       		</select>
+			                    	</td>
+			                    </tr><tr>	
+			                    	<td>   	
+			                       		<label for="status">Status : </label>
+			     							<select size="1" name="status">
+								     			<option th:value="'FT'" th:text="FT"></option>
+										    	<option th:value="'PT'" th:text="PT"></option>
+										    	<option value=""></option>
+			     							</select>
+			     					</td>
+			     					
+			     				   	<td>
+			     						<label for="active">Active</label>
+			     						<select size="1" name="active">
+								     		<option th:value="'Yes'" th:text="Yes"></option>
+								    		<option th:value="'No'" th:text="No"></option>
+			     						</select>    						
+									</td>
+                    
+                    			</tr>
+                    			<tr><td>&nbsp;</td></tr>
+                    			<tr>
+			                    	<td>
+			                       		<input type="submit" class="btn btn-secondary btn-sm" value=" Submit ">
+			                       	
+			                       	</td>
+                   				</tr>
+     						</table>
+     			
+     						<input type="hidden" th:value="${project.projectid}" name="projectId">
+     					
+     						<input type="hidden" name="qproject" th:value="${qproject}">
+	     					<input type="hidden" name="qperiod" th:value="${qperiod}">
+	     					<input type="hidden" name="qdivisionId" th:value="${qdivision.divisionid}">
+	                        <input type="hidden" name="quserId" th:value="${quser.userid}">	
+            			</form>	 	
+  						       				 
+        				 
+               		</div>
+           		</div>
+       		</div>
+                  
+     	</div>
+       	
+	</body>
+</html>

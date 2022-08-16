@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="ISO-8859-1">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>hhsHRtracker</title>
+
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" th:href="@{/css/menus.css}">
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		  
+    	  		
+	</head>
+
+	<body>
+  		
+  		<div class="col-lg-2" style="color:#000088;font-weight:bold;">HHS HR Tracker</div>
+              
+        <div class="row">
+             <div class="col-lg-3">        
+           		<div class="card">
+					<div class="card-body">
+										        			
+        			<div style="color:#880000;background-color:#f5f5dc;" th:text="${message}"></div>
+        			
+        				<form th:action="@{/hhsHRtracker/sendPass}" method="post">
+        					<table class="table-striped">
+        						<tr><td colspan="2">&nbsp;</td></tr>
+           						<tr><td><label> Email : </label></td><td><input type="text" name="email" size="30" required/></td></tr>
+           						
+           						<tr>
+           							<td style="background-color:lightGreen;" colspan="2">
+           								<label>I am not a robot : </label> 
+           								<input type="checkbox" name="captcha" value="true" required>
+           							</td>
+           						</tr>
+           						<tr><td colspan="2">&nbsp;</td></tr>
+           						<tr><td><input class="btn btn-primary" type="submit" value="Send me the code"/></td></tr>
+            				
+           						<tr><td colspan="2">&nbsp;</td></tr>
+           						<tr><td colspan="2">&nbsp;</td></tr>
+            					
+           					</table>	
+        				</form>
+					    	                    
+               		</div>
+               		
+               		
+           		</div>
+           		
+       		</div>
+                  
+     	</div>
+       	
+	</body>
+</html>			
