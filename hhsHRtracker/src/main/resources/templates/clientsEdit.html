@@ -39,6 +39,23 @@
 	           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
 	           		</form>
          		</li>
+         		<li th:if="${quser.role}=='admin'">
+			   		<form th:action="@{/hhsHRtracker/clients/transfer}" method="post">
+               			<button type="submit" class="btn btn-light" style="font-size:11px;">Transfer to Other Project</button>	
+	           			
+	           			<input type="hidden" th:value="${project.projectid}" name="projectId"> 
+	           			
+	           			<input type="hidden" th:value="${qproject}" name="qproject"> 
+	           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           			
+	           			<input type="hidden" th:value="${client.clientid}" name="id">	
+	           		</form>
+         		</li>
+         		<li th:unless="${quser.role}=='admin'">
+			   		<button class="btn btn-light" style="font-size:11px;">Transfer to Other Project</button>	
+	           	</li>
          		
 			</ul>
 		</div>   
@@ -54,7 +71,7 @@
            		<div class="card">
 					<div class="card-body">
 						<label style="color:violet;font-size:9px;" th:text="${client.clientid}"></label>
-						<table class="table-condensed table-bordered">					        			
+						<table class="table-condensed table-bordered" style="background-color:palegoldenrod;">					        			
         					<tr>
         						<td noWrap style="padding:5px;"><label style="color:#880000;font-size:12px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></td>
         						<td style="padding:5px;"><label style="color:teal;font-size:12px;" th:text="${qdivision.dname}"></label></td>

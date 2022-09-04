@@ -29,13 +29,13 @@ public interface AssigCertsRepository  extends CrudRepository<AssigCertsEntity,L
 	@Query("Update AssigCertsEntity u set u.expirationDate=?2,u.realExpirationDate=?2,u.notes=?3 where u.recordid=?1")
 	void updateCert(Long id,String expirationDate,String notes);
 		
-	@Query("Select COUNT(u) from AssigCertsEntity u where (u.recordid=?1 and u.realExpirationDate <= ?2)")
-	int  compareDateExp(Long certId,String todayDate);
+	@Query("Select COUNT(u) from AssigCertsEntity u where (u.recordid=?1 and u.realExpirationDate <= ?2 and u.period=?3)")
+	int  compareDateExp(Long certId,String todayDate,String period);
 	
-	@Query("Select COUNT(u) from AssigCertsEntity u where (u.clientId=?1 and u.realExpirationDate <= ?2)")
-	int  countExpiredRecordsById(String clientId,String todayDate);
+	@Query("Select COUNT(u) from AssigCertsEntity u where (u.clientId=?1 and u.realExpirationDate <= ?2 and u.period=?3)")
+	int  countExpiredRecordsById(String clientId,String todayDate,String period);
 	
-	@Query("Select COUNT(u) from AssigCertsEntity u where (u.recordid=?1 and u.realExpirationDate <= ?2)")
-	int  compareSoonExp(Long certId,String fifteenDaysToDateString);
+	@Query("Select COUNT(u) from AssigCertsEntity u where (u.recordid=?1 and u.realExpirationDate <= ?2 and u.period=?3)")
+	int  compareSoonExp(Long certId,String fifteenDaysToDateString,String period);
 		
 }

@@ -91,7 +91,7 @@ public class ClientsController
         	clientIdString=String.valueOf(client.getClientid());
         	
         	//Finding expired certs
-        	String expiredCert=service.findingNumExpiredCerts(clientIdString,todayDateString);
+        	String expiredCert=service.findingNumExpiredCerts(clientIdString,todayDateString,qperiod);
         	
         	client.setExpiredCert(expiredCert);
         	client.setProjectName(projectName);
@@ -334,5 +334,86 @@ public class ClientsController
 		
 		
 	}
+	
+	@RequestMapping(path="/transfer", method=RequestMethod.POST)
+	public String transferClient(Model model,Long id,Long quserId,String qperiod,Long qdivisionId,Long projectId,Long qproject) throws RecordNotFoundException 
+	{
+		String department=null;
+		
+		//Retrieving user information
+		UsersEntity quser=serviceUsers.getUserById(quserId);
+					
+		//Retrieving division
+		DivisionsEntity qdivision=serviceDivisions.getDivisionById(qdivisionId);
+		
+		department=qdivision.getDnumber();
+		
+		//Retrieving list of projects
+		List<ProjectsEntity> listProjects=serviceProjects.getAllProjectsByDiv(department);
+		
+		//Retrieving current project
+		ProjectsEntity projectEntity=serviceProjects.getProjectById(projectId);
+		
+				
+		//Creating entity based in selected client ID
+		ClientsEntity entity=service.getClientById(id);
+										
+		model.addAttribute("client",entity);
+						
+		model.addAttribute("project",projectEntity);
+		model.addAttribute("projects",listProjects);
+				
+		model.addAttribute("clientId",id);
+		
+		model.addAttribute("qproject",qproject);
+		model.addAttribute("quser",quser);
+		model.addAttribute("qperiod",qperiod);
+		model.addAttribute("qdivision",qdivision);
+		
+		return "clientsTransfer";
+	}
+	
+	@RequestMapping(path="/transferEmployee", method=RequestMethod.POST)
+	public String tranferringEmployee(Model model, Long id, Long quserId,String qperiod,Long qdivisionId,String qproject,String projectNumber) throws RecordNotFoundException
+	{
+		LogsEntity log=new LogsEntity();
+		
+		String clientName=null;
+		String projectName=null;
+		
+		//Retrieving user
+		UsersEntity quser=serviceUsers.getUserById(quserId);
+						
+		//Retrieving client information
+		ClientsEntity entity=service.getClientById(id);
+		
+		clientName=entity.getCname();
+		
+		String message="Employee was tranferred successfully...Please notice that although the transferring, the period remains the same.";
+		
+		//finding project name
+		projectName=serviceProjects.getProjectNameByNumber(qproject);
+		
+		
+		service.tranferringEmployee(id,projectNumber,projectName);
+				
+		log.setSubject(quser.getEmail());
+		log.setAction("Tranferring employee from one project to another in the same period.");
+		log.setObject(clientName +"From Project "+ qproject +" to Project "+ projectNumber);
+		
+		serviceLogs.saveLog(log);
+		
+		model.addAttribute("message",message);
+		
+		model.addAttribute("qproject",qproject);
+		model.addAttribute("quserId",quserId);
+		model.addAttribute("qperiod",qperiod);
+		model.addAttribute("qdivisionId",qdivisionId);
+		
+		return "clientsRedirect";
+		
+		
+	}
+	
 	
 }

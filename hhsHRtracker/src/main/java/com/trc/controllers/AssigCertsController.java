@@ -123,10 +123,10 @@ public class AssigCertsController
 			String certName=service.getCertName(cert.getCertNumber());
 			
 			//Setting the status for every field
-			status=service.compareDates(cert.getRecordid(),todayDateString);
+			status=service.compareDates(cert.getRecordid(),todayDateString,qperiod);
 			
 			//Setting the priznak of expiration in the next fifteen days
-			priznakSoonExpiration=service.expireIn15days(cert.getRecordid(),fifteenDaysToDateString);
+			priznakSoonExpiration=service.expireIn15days(cert.getRecordid(),fifteenDaysToDateString,qperiod);
 			
 			if(cert.getExpirationDate()==null)
 			{

@@ -121,26 +121,22 @@ public class ClientsService
 	public ClientsEntity saveTracker(ClientsEntity entity)
 	{
 		Optional<ClientsEntity> client=repository.findById(entity.getClientid());
-					
-				
+						
 		ClientsEntity newEntity=client.get();
-				
-						
-		
-						
+								
 		newEntity=repository.save(newEntity);
 				
 		return newEntity;
 				
 	}
 
-	public String findingNumExpiredCerts(String clientId,String todayDate) 
+	public String findingNumExpiredCerts(String clientId,String todayDate,String period) 
 	{
 		int totalRecords=0;
 		
 		String expiredCert=null;
 		
-		totalRecords=repositoryAssigCerts.countExpiredRecordsById(clientId,todayDate);
+		totalRecords=repositoryAssigCerts.countExpiredRecordsById(clientId,todayDate,period);
 		
 		//System.out.println("total records found is "+ totalRecords);
 		
@@ -153,4 +149,13 @@ public class ClientsService
 		
 		return expiredCert;
 	}
+	
+	public void tranferringEmployee(Long clientId,String projectNumber,String projectName)
+	{
+		repository.tranferEmployee(clientId,projectNumber,projectName);
+		
+		
+	}
+	
+	
 }

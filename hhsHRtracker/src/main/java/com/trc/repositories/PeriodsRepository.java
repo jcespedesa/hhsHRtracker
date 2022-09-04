@@ -12,7 +12,7 @@ import com.trc.entities.PeriodsEntity;
 @Repository
 public interface PeriodsRepository extends CrudRepository<PeriodsEntity,Long> 
 {
-	@Query("Select u from PeriodsEntity u Where u.active='Yes' Order by u.udelnyBes")
+	@Query("Select u from PeriodsEntity u Where u.active='Yes' Order by u.udelnyBes Desc")
 	List<PeriodsEntity>  getActivesByUdelnyBes();
 	
 	@Query("Select u from PeriodsEntity u Order by u.udelnyBes")

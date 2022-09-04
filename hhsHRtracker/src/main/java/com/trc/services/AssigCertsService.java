@@ -109,13 +109,13 @@ public class AssigCertsService
 		
 	}
 	
-	public String compareDates(Long recordId, String todayDate) 
+	public String compareDates(Long recordId, String todayDate, String period) 
 	{
 		int priznakCompare=0;
 		
 		String status=null;
 		
-		priznakCompare=repository.compareDateExp(recordId,todayDate);
+		priznakCompare=repository.compareDateExp(recordId,todayDate,period);
 		
 		if(priznakCompare==1)
 			status="Expired";
@@ -126,13 +126,13 @@ public class AssigCertsService
 		
 	}
 	
-	public String expireIn15days(Long recordId, String fifteenDaysToDateString) 
+	public String expireIn15days(Long recordId, String fifteenDaysToDateString, String period) 
 	{
 		int priznakCompare=0;
 		
 		String aboutToExpire=null;
 		
-		priznakCompare=repository.compareSoonExp(recordId,fifteenDaysToDateString);
+		priznakCompare=repository.compareSoonExp(recordId,fifteenDaysToDateString,period);
 		
 		if(priznakCompare==1)
 			aboutToExpire="Yes";
