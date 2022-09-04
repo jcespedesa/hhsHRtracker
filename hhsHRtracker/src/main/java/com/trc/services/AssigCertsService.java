@@ -126,4 +126,20 @@ public class AssigCertsService
 		
 	}
 	
+	public String expireIn15days(Long recordId, String fifteenDaysToDateString) 
+	{
+		int priznakCompare=0;
+		
+		String aboutToExpire=null;
+		
+		priznakCompare=repository.compareSoonExp(recordId,fifteenDaysToDateString);
+		
+		if(priznakCompare==1)
+			aboutToExpire="Yes";
+		else
+			aboutToExpire="No";
+		
+		return aboutToExpire;
+		
+	}
 }

@@ -40,7 +40,7 @@
          		</li>
          		<li th:if="${quser.role}=='admin' OR ${quser.role}=='user'">
 			   		<form th:action="@{/hhsHRtracker/clients/add}" method="post">
-               			<button type="submit" class="btn btn-light" style="font-size:11px;">Create New Client</button>	
+               			<button type="submit" class="btn btn-light" style="font-size:11px;">Create New Employee</button>	
 	           			
 	           			<input type="hidden" th:value="${project.projectid}" name="projectId"> 
 	           				           			
@@ -57,7 +57,7 @@
   		<div class="row">&nbsp;</div>
   		
   		<div class="row">
-  			<div class="col-lg-2" style="color:#000088;" th:text="'Period: '+ ${qperiod}">List of Clients</div>
+  			<div class="col-lg-2" style="color:#000088;" th:text="'Period: '+ ${qperiod}">List of Employees in this project</div>
   		</div>
               
         <div class="row">
@@ -80,7 +80,7 @@
   								<tr>
 		  							<th noWrap style="color:#006400;font-size:12px;">#</th>
 		  							<th noWrap style="color:#006400;font-size:12px;text-align:center;">ID</th>
-		  							<th noWrap style="color:#006400;font-size:12px;text-align:center;">Client Name</th>
+		  							<th noWrap style="color:#006400;font-size:12px;text-align:center;">Name</th>
 		  							<th noWrap style="color:#006400;font-size:12px;text-align:center;">Date Hired</th>
 		  							<th style="color:#006400;font-size:12px;text-align:center;">Project</th>
 		  							<!-- <th noWrap style="color:#006400;font-size:12px;text-align:center;">Project Name</th>  -->

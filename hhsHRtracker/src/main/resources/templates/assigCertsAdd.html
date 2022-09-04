@@ -67,16 +67,16 @@
         				 
         				 <table><tr><td valign="top">
         				 
-        				 	<form class="form-main" th:action="@{/hhsHRtracker/assigCerts/createCert}" th:object="${cert}" method="post">
+        				 	<form class="form-main" th:action="@{/hhsHRtracker/assigCerts/voidCert}" th:object="${cert}" method="post">
         				         				       				 
         				 		<table class="table-striped">					        			
-        				
+        							<tr><td th:text="${message}" style="font-size:12px;font-color:brown;background-color:peachpuff;"></td></tr>
         							<tr>
 			                    	     
 			                    		<td noWrap>
-			                       			<label for="project" class="col-form-label">Certificate: <sup>*</sup>:</label> 
+			                       			<label for="listCerts" class="col-form-label">Certificate: <sup>*</sup>:</label> 
 			                       			<select th:field="*{certNumber}" id="certNumber">
-			                       				<option th:each="cert : ${certs}" th:value="${cert.certNumber}" th:text="${cert.certName}" ></option>
+			                       				<option th:each="option : ${options}" th:value="${option.optionNumber}" th:text="${option.optionName}" ></option>
 			                       			
 			                       			</select>
 			                    		</td>
@@ -85,8 +85,8 @@
                     				<tr><td>&nbsp;</td></tr>
                     				<tr>
 			                    		<td>
-			                       			<input type="submit" class="btn btn-secondary btn-sm" value=" Submit ">
-			                       	
+			                       			<input th:if="${message}=='null'" type="submit" class="btn btn-secondary btn-sm" value="Submit">
+			                       			<input th:unless="${message}=='null'" type="text" class="btn btn-secondary btn-sm" value="Submit" disabled>
 			                       		</td>
                    					</tr>
      							</table>
@@ -97,21 +97,22 @@
 	     						<input type="hidden" name="qdivisionId" th:value="${qdivision.divisionid}">
 	                        	<input type="hidden" name="quserId" th:value="${quser.userid}">	
             				</form>	 	
-  					</td><td valign="top">
+  						</td><td valign="top">
   					
-  					<table class="table table-bordered table-sm table-dark">
-  						<thead>
-    						<tr>
-      							<th colspan="3"><label style="font-size:11px;">Certificates Already Assigned to this employee</th>
-     						</tr>
-  						</thead>
-  						<tbody>
-    						<tr th:each="cert,itemNum : ${assigCerts}">
-    							<td th:text="${itemNum.count}" style="font-size:12px;padding:5px;"></td>
-  								<td th:text="${cert.certName}" style="font-size:12px;"></td>
-  								<td th:text="${cert.certNumber}" style="font-size:12px;"></td>	
-    						</tr>
-        				 </tbody>
+  						<table class="table table-bordered table-sm table-dark">
+  							<thead>
+    							<tr>
+      								<th colspan="3"><label style="font-size:11px;">Certificates Already Assigned to this employee</label></th>
+     							</tr>
+  							</thead>
+  							<tbody>
+    							<tr th:each="cert,itemNum : ${assigCerts}">
+    								<td th:text="${itemNum.count}" style="font-size:12px;padding:5px;"></td>
+  									<td th:text="${cert.certName}" style="font-size:12px;"></td>
+  									<td th:text="${cert.certNumber}" style="font-size:12px;"></td>	
+    							</tr>
+        				 	</tbody>
+        				</table>
         			</table>	 		
                		</div>
            		</div>

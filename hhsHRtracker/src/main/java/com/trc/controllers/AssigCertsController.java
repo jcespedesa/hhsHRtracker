@@ -2,7 +2,9 @@ package com.trc.controllers;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -56,19 +58,44 @@ public class AssigCertsController
 	{
 				
 		String clientIdString=null;
+		
 		String todayDateString=null;
+		String yesterdayDateString=null;
+		String fifteenDaysAgoDateString=null;
+		String fifteenDaysToDateString=null;
+		
 		String status=null;
+		String priznakSoonExpiration=null;
 		
 		//Trying to get todayDate
-		java.sql.Date todayDate = new java.sql.Date(System.currentTimeMillis());
+		java.sql.Date todayDate=new java.sql.Date(System.currentTimeMillis());
+		
+		//Trying to get yesterday date
+		java.sql.Date yesterdayDate=new java.sql.Date(System.currentTimeMillis()-24*60*60*1000);
+		
+		//Trying to get fifteen days ago date
+		java.sql.Date fifteenDaysAgoDate=new java.sql.Date(System.currentTimeMillis()-360*60*60*1000);
+		
+		//Trying to get fifteen days ago date
+		java.sql.Date fifteenDaysToDate=new java.sql.Date(System.currentTimeMillis()+360*60*60*1000);
 		
 		//System.out.println("Today Date is "+ todayDate);
+		//System.out.println("Yesterday Date is "+ yesterdayDate);
+		//System.out.println("15 days ago Date is "+ fifteenDaysAgoDate);
 		
-		//Converting date to string
+		//Preparing the required custom format
 		DateFormat todayDateFormat=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");  
-		todayDateString=todayDateFormat.format(todayDate); 
+		
+		//Converting dates to strings
+		todayDateString=todayDateFormat.format(todayDate);
+		yesterdayDateString=todayDateFormat.format(yesterdayDate);
+		fifteenDaysAgoDateString=todayDateFormat.format(fifteenDaysAgoDate);
+		fifteenDaysToDateString=todayDateFormat.format(fifteenDaysToDate);
 				
 		//System.out.println("Today Date in string format is "+ todayDateString);
+		//System.out.println("Yesterday Date in string format is "+ yesterdayDateString);
+		//System.out.println("Fifteen Days Ago Date in string format is "+ fifteenDaysAgoDateString);
+		//System.out.println("Fifteen Days To Date in string format is "+ fifteenDaysToDateString);
 		
 		//Retrieving project information
 		ProjectsEntity projectEntity=serviceProjects.getProjectByNumber(qproject);
@@ -95,11 +122,31 @@ public class AssigCertsController
 		{
 			String certName=service.getCertName(cert.getCertNumber());
 			
-			//Setting the status for every field;
+			//Setting the status for every field
 			status=service.compareDates(cert.getRecordid(),todayDateString);
 			
-			cert.setStatus(status);
+			//Setting the priznak of expiration in the next fifteen days
+			priznakSoonExpiration=service.expireIn15days(cert.getRecordid(),fifteenDaysToDateString);
+			
+			if(cert.getExpirationDate()==null)
+			{
+				cert.setStatus(null);
+				cert.setAboutToExpire(null);
+			}
+			else
+			{	
+			
+				if(status.equals("Expired"))
+					cert.setAboutToExpire(null);
+				else
+					cert.setAboutToExpire(priznakSoonExpiration);
+				
+				cert.setStatus(status);
+			}
+			
+			
 			cert.setCertName(certName);
+			
 			
 		}
 		
@@ -204,7 +251,14 @@ public class AssigCertsController
 	public String editCertById(Model model,Long id,Long quserId,String qperiod,Long qdivisionId,String qproject) throws RecordNotFoundException 
 	{
 		String clientIdString=null;
+		String certNameLocal=null;
+		String message=null;
 		
+		List<String> optionsLongList=new ArrayList<String>();  
+		List<String> optionsShortList=new ArrayList<String>(); 
+		
+		List<CertificatesEntity> availablesList=new ArrayList<CertificatesEntity>();
+						
 		//Retrieving quser information
 		UsersEntity quser=serviceUsers.getUserById(quserId);
 		
@@ -215,13 +269,23 @@ public class AssigCertsController
 		ClientsEntity client=serviceClients.getClientById(id);
 		
 		//Retrieving list of active certificates
-		List<CertificatesEntity> list=serviceCertificates.getActives();
+		List<CertificatesEntity> listCerts=serviceCertificates.getActives();
+		
+		//Converting active certificates to list of options
+		for(CertificatesEntity certificate : listCerts)
+		{
+			optionsLongList.add(certificate.getCertNumber());
+			
+		}
+		
+		System.out.println("The long list options is "+ optionsLongList);	
 		
 		clientIdString=String.valueOf(id);
 		
 		//Finally retrieving the list of already assigned certifications
 		List<AssigCertsEntity> listAssigCerts=service.getAllCertsByClientId(qperiod,clientIdString);
 		
+				
 		//Getting the names for the assigned certificates
 		for(AssigCertsEntity cert : listAssigCerts)
 		{
@@ -233,13 +297,63 @@ public class AssigCertsController
 					
 		}
 		
+		//Converting active certificates to short list of options
+		for(AssigCertsEntity certificate : listAssigCerts)
+		{
+			optionsShortList.add(certificate.getCertNumber());
+			
+		}
+				
+		System.out.println("The short list options is "+ optionsShortList);	
+		
+		//Removing duplicates from one list using the ones from other list	
+		optionsLongList.removeAll(optionsShortList);
+		
+		if(optionsLongList.isEmpty())
+		{
+			message="No options available, seems like all certs were already assigned to this employee...";
+		}
+		else
+		{	
+		
+			//Creating the list of available certificates for current user from a list of strings
+			for(String option : optionsLongList)
+			{
+				CertificatesEntity cert=new CertificatesEntity();
+				
+				cert.setCertNumber(option);
+				
+				certNameLocal=service.getCertName(option);
+				
+				cert.setCertName(certNameLocal);
+				
+				availablesList.add(cert);
+				
+			}
+			
+			//Getting the names for the resulting list of certificates
+			for(CertificatesEntity cert : availablesList)
+			{
+				String certName=service.getCertName(cert.getCertNumber());
+						
+				//System.out.println("found name of the cert is "+ certName);
+						
+				cert.setCertName(certName);
+						
+			}
+		}
+		
+		System.out.println("The resulting list of certs "+ optionsLongList);
+		System.out.println("The resulting list of options "+ availablesList);
+		
 		
 		model.addAttribute("cert",new AssigCertsEntity());
 				
-		model.addAttribute("certs",list);
+		model.addAttribute("options",optionsLongList);
 		model.addAttribute("assigCerts",listAssigCerts);
 		
 		model.addAttribute("client",client);
+		model.addAttribute("message",message);
 		
 		model.addAttribute("quser",quser);
 		model.addAttribute("qperiod",qperiod);
@@ -314,6 +428,27 @@ public class AssigCertsController
 		
 		serviceLogs.saveLog(log);
 							
+		model.addAttribute("message",message);
+					
+		model.addAttribute("clientId",clientId);
+		
+		model.addAttribute("quserId",quserId);
+		model.addAttribute("qperiod",qperiod);
+		model.addAttribute("qdivisionId",qdivisionId);
+		model.addAttribute("qproject",qproject);
+		
+		return "assigCertsRedirect";
+			
+	}
+	
+	
+	@RequestMapping(path="/voidCert", method=RequestMethod.POST)
+	public String voidCertificate(Model model,Long quserId,Long clientId,String qperiod,Long qdivisionId,String qproject,Long id) throws RecordNotFoundException
+	{
+									
+		String message="This option is not available, please contact to your System Administrator for more information...";
+						
+									
 		model.addAttribute("message",message);
 					
 		model.addAttribute("clientId",clientId);

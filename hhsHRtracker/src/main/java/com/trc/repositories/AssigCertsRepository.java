@@ -15,10 +15,10 @@ import com.trc.entities.AssigCertsEntity;
 @Repository
 public interface AssigCertsRepository  extends CrudRepository<AssigCertsEntity,Long>
 {
-	@Query("Select u from AssigCertsEntity u where (u.period=?1) Order by u.certNumber")
+	@Query("Select u from AssigCertsEntity u where (u.period=?1) Order by u.certName")
 	List<AssigCertsEntity>  getAllCerts(String period);
 	
-	@Query("Select u from AssigCertsEntity u where (u.period=?1 and u.clientId=?2) Order by u.certNumber")
+	@Query("Select u from AssigCertsEntity u where (u.period=?1 and u.clientId=?2) Order by u.certName")
 	List<AssigCertsEntity>  getAllCertsByClientId(String period,String clientId);
 	
 	@Query("Select COUNT(u) from AssigCertsEntity u where (u.certNumber=?1 and u.clientId=?2 and u.period=?3)")
@@ -34,5 +34,8 @@ public interface AssigCertsRepository  extends CrudRepository<AssigCertsEntity,L
 	
 	@Query("Select COUNT(u) from AssigCertsEntity u where (u.clientId=?1 and u.realExpirationDate <= ?2)")
 	int  countExpiredRecordsById(String clientId,String todayDate);
+	
+	@Query("Select COUNT(u) from AssigCertsEntity u where (u.recordid=?1 and u.realExpirationDate <= ?2)")
+	int  compareSoonExp(Long certId,String fifteenDaysToDateString);
 		
 }

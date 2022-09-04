@@ -37,6 +37,9 @@ public class AssigCertsEntity
 	@Column(name="status")
 	private String status;
 	
+	@Column(name="abouttoexpire")
+	private String aboutToExpire;
+	
 	@Column(name="notes")
 	private String notes;
 	
@@ -45,7 +48,7 @@ public class AssigCertsEntity
 	@Override
 	public String toString()
 	{
-		return "AssigCertsEntity[recordid="+ recordid +",clientId="+ clientId +",period="+ period +",certNumber="+ certNumber +",certName="+ certName +",expirationDate="+ expirationDate +",realExpirationDate="+ realExpirationDate +",status="+ status +",notes="+ notes +"]";				
+		return "AssigCertsEntity[recordid="+ recordid +",clientId="+ clientId +",period="+ period +",certNumber="+ certNumber +",certName="+ certName +",expirationDate="+ expirationDate +",realExpirationDate="+ realExpirationDate +",status="+ status +",aboutToExpire="+ aboutToExpire +",notes="+ notes +"]";				
 				
 	}
 
@@ -119,6 +122,14 @@ public class AssigCertsEntity
 
 	public void setCertName(String certName) {
 		this.certName = certName;
+	}
+
+	public String getAboutToExpire() {
+		return aboutToExpire;
+	}
+
+	public void setAboutToExpire(String aboutToExpire) {
+		this.aboutToExpire = aboutToExpire;
 	}
 	
 			
