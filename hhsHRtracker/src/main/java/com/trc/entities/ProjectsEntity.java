@@ -45,12 +45,20 @@ public class ProjectsEntity
 	@Column(name="udelnybes")
 	private String udelnyBes;
 	
+	@Column(name="numexpcerts")
+	private Integer numExpCerts;
+	
 	//Constructors
 		
+	public void setNumExpCerts(Integer numExpCerts) 
+	{
+		this.numExpCerts=numExpCerts;
+	}
+
 	@Override
 	public String toString()
 	{
-		return "ProjectsEntity[projectid="+ projectid +",project="+ project +",projectName="+ projectName +",department="+ department +",active="+ active +",siteNumber1="+ siteNumber1 +",siteNumber2="+ siteNumber2 +",buffer1="+ buffer1 +",buffer2="+ buffer2 +",hhsDivision="+ hhsDivision +",udelnyBes="+ udelnyBes+"]";				
+		return "ProjectsEntity[projectid="+ projectid +",project="+ project +",projectName="+ projectName +",department="+ department +",active="+ active +",siteNumber1="+ siteNumber1 +",siteNumber2="+ siteNumber2 +",buffer1="+ buffer1 +",buffer2="+ buffer2 +",hhsDivision="+ hhsDivision +",udelnyBes="+ udelnyBes+",numExpCerts="+ numExpCerts +"']";				
 		
 	}
 	
@@ -166,5 +174,17 @@ public class ProjectsEntity
 	{
 		this.udelnyBes=udelnyBes;
 	}
+
+	public int getNumExpCerts() 
+	{
+		return numExpCerts;
+	}
+
+	public void setNumExpCerts(int numExpCerts) 
+	{
+		this.numExpCerts=numExpCerts;
+	}
+	
+	
 	
 }

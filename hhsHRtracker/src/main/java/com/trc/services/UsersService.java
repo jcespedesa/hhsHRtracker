@@ -1,5 +1,7 @@
 package com.trc.services;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -8,7 +10,12 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.trc.entities.ClientsEntity;
+import com.trc.entities.ProjectsEntity;
 import com.trc.entities.UsersEntity;
+import com.trc.repositories.AssigCertsRepository;
+import com.trc.repositories.ClientsRepository;
+import com.trc.repositories.ProjectsRepository;
 import com.trc.repositories.UsersRepository;
 
 @Service
@@ -17,6 +24,15 @@ public class UsersService
 
 	@Autowired
 	UsersRepository repository;
+	
+	@Autowired
+	ProjectsRepository repositoryProjects;
+	
+	@Autowired
+	ClientsRepository repositoryClients;
+	
+	@Autowired
+	AssigCertsRepository repositoryAssigCerts;
 	
 	public List<UsersEntity> getAllUsers()
 	{
@@ -200,5 +216,67 @@ public class UsersService
     	
         return s;
     }
+	
+	public List<ProjectsEntity> getProjectsWithExpCerts(String divisionNumber,String period) 
+    {
+		int numExpCerts=0;
+		
+		String todayDateString=null;
+						
+		List<ProjectsEntity> projects=repositoryProjects.getAllProjByDiv(divisionNumber);
+		
+		//Trying to get todayDate
+		java.sql.Date todayDate=new java.sql.Date(System.currentTimeMillis());
+		
+		//System.out.println("Today Date is "+ todayDate);
+		
+		//Converting date to string
+		DateFormat todayDateFormat=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");  
+		todayDateString=todayDateFormat.format(todayDate); 
+		
+		//System.out.println("Today Date String is "+ todayDateString);
+		//System.out.println("Current Period is "+ period);
+		
+		for(ProjectsEntity project : projects)
+		{
+			//Checking if every project is having expired certs for current period
+			numExpCerts=this.getExpiredCertsByProject(project.getProject(),period,todayDateString);
+			
+			//System.out.println(numExpCerts);
+			
+			project.setNumExpCerts(numExpCerts);
+					
+		}
+		         
+        return projects;
+    }
+	
+	
+	public int getExpiredCertsByProject(String project,String period,String todayDate) 
+    {
+		int totalExpCerts=0;
+		int expCerts=0;
+		
+		String clientIdString=null;
+		
+		List<ClientsEntity> clients=repositoryClients.getAllByProject(project);
+		
+		//System.out.println("Revised projects "+ project);
+		
+		for(ClientsEntity client : clients)
+		{
+			clientIdString=String.valueOf(client.getClientid());
+			
+			//Checking if each client is having an expired cert
+			expCerts=repositoryAssigCerts.countExpiredRecordsById(clientIdString,todayDate,period);
+			
+			totalExpCerts=totalExpCerts + expCerts;
+					
+		}
+		
+		return totalExpCerts;
+				
+    }
+	
 	
 }

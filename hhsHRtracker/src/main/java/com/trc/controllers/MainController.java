@@ -177,8 +177,13 @@ public class MainController
 		//Retrieving user
 		UsersEntity quser=service.getUserById(quserId);
 		
+		
 		//Retrieving division
-		DivisionsEntity qdivision=serviceDivisions.getDivisionById(qdivisionId);	
+		DivisionsEntity qdivision=serviceDivisions.getDivisionById(qdivisionId);
+		
+		//Retrieving certs expiration situation
+		List<ProjectsEntity> expiredCertsProjects=service.getProjectsWithExpCerts(qdivision.getDnumber(),qperiod);
+				
 		
 		//Finding variables for lists
 		
@@ -200,6 +205,7 @@ public class MainController
 		model.addAttribute("quser",quser);
 		model.addAttribute("qdivision",qdivision);
 		
+		model.addAttribute("expiredCertsProjects",expiredCertsProjects);
 				
 		return "mainMenu";
 	}

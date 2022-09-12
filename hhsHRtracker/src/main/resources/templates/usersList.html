@@ -90,7 +90,7 @@
 	  							<td th:if="${user.active}=='Yes'" th:text="${user.active}" style="font-size:12px;text-align:center;"></td>
 	  							<td th:if="${user.active}=='No'" th:text="${user.active}" style="font-size:12px;background-color: #ffcc99;text-align:center;"></td>
 	  							  							
-	  							<td>
+	  							<td th:if="${user.username}!='root'">
 	                            	<form th:action="@{/hhsHRtracker/users/edit}" method="post">
 	                            	
 		           						<button type="submit" style="border: 0; background: transparent">
@@ -106,7 +106,7 @@
 	                                	
 	                                
 	                            </td>
-	                            <td>
+	                            <td th:if="${user.username}!='root'">
 	                                
 	                            	<form th:action="@{/hhsHRtracker/users/delete}" method="post">
 	                            	
