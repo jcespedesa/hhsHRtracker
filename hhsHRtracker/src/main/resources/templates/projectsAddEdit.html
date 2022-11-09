@@ -87,7 +87,7 @@
 			                    	</td>
 			                    	<td>   	
 			                       		<label th:text="${division}"></label>
-			                       		<label for="hhsDivision">HHS Division Number (Optional)</label>
+			                       		<label for="hhsDivision">HHS Portfolio</label>
 			     							<select th:field="*{hhsDivision}">
 								     			<option th:value="*{hhsDivision}" th:text="*{hhsDivision}"></option>
 								    			<option th:value="'10'" th:text="10"></option>
@@ -101,7 +101,7 @@
 			     					
 			     				</tr>
 			     				<tr>
-			     					<td colspan="2">	
+			     					<td>	
 			     						<label for="udelnyBes" class="col-form-label"> Form Order:</label> 
 			                       		<select th:field="*{udelnyBes}" id="udelnyBes">
 			                       			<option th:value="*{udelnyBes}" th:text="*{udelnyBes}"></option>
@@ -109,6 +109,15 @@
 			                       			<option value=""></option>
 			                       		</select> 
 			                    	</td> 
+			                    	<td>	
+			     						<label for="type" class="col-form-label"> Project type :</label> 
+			                       		<select th:field="*{type}" id="type">
+			                       			<option th:value="*{type}" th:text="${typeName}"></option>
+			                       			<option th:each="type : ${types}" th:value="${type.typeNumber}" th:text="${type.type}" ></option>
+			                       			<option value=""></option>
+			                       		</select> 
+			                    	</td> 
+			                    	
                     			</tr>
                     			
                     			<tr>

@@ -57,6 +57,15 @@ public class ClientsService
 		
 	}
 	
+	public List<ClientsEntity> getAllActives() 
+	{
+	
+		List<ClientsEntity> result=(List<ClientsEntity>) repository.getAllActives();
+		
+		return result;
+	}
+	
+	
 	public ClientsEntity save(ClientsEntity entity)
 	{
 		Optional<ClientsEntity> client=repository.findById(entity.getClientid());
@@ -111,6 +120,14 @@ public class ClientsService
 			throw new RecordNotFoundException("No record exist for given id");
 	}
 	
+	public String getName(Long id) 
+	{
+		String cname=repository.getNameById(id);
+		
+		return cname;
+		
+	}
+	
 	public ClientsEntity create(ClientsEntity entity)
 	{
 		entity=repository.save(entity);
@@ -156,6 +173,8 @@ public class ClientsService
 		
 		
 	}
+	
+	
 	
 	
 }

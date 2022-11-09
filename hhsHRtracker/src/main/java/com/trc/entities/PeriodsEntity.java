@@ -25,6 +25,7 @@ public class PeriodsEntity
 	@Column(name="udelnybes")
 	private String udelnyBes;
 	
+		
 	//Constructors
 	
 		@Override
@@ -73,7 +74,6 @@ public class PeriodsEntity
 		{
 			this.udelnyBes=udelnyBes;
 		}
+
 		
-		
-	
 }

@@ -26,6 +26,7 @@ public class ProjectsService
 	@Autowired
 	DivisionsRepository repositoryDivisions;
 	
+		
 	public List<ProjectsEntity> getAllProjects()
 	{
 		List<ProjectsEntity> result=(List<ProjectsEntity>) repository.getAllByProject();
@@ -136,6 +137,9 @@ public class ProjectsService
 				
 				newEntity.setHhsDivision(entity.getHhsDivision());
 				newEntity.setUdelnyBes(entity.getUdelnyBes());
+				
+				newEntity.setType(entity.getType());
+				newEntity.setContract(entity.getContract());
 				
 				newEntity=repository.save(newEntity);
 				
@@ -268,5 +272,6 @@ public class ProjectsService
 		
 		return priznakDuplicate;
 	}
+		
 	
 }

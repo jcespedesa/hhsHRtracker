@@ -48,6 +48,15 @@ public class ProjectsEntity
 	@Column(name="numexpcerts")
 	private Integer numExpCerts;
 	
+	@Column(name="type")
+	private String type;
+	
+	@Column(name="contract")
+	private String contract;
+	
+	@Column(name="buffername")
+	private String bufferName;
+	
 	//Constructors
 		
 	public void setNumExpCerts(Integer numExpCerts) 
@@ -58,7 +67,7 @@ public class ProjectsEntity
 	@Override
 	public String toString()
 	{
-		return "ProjectsEntity[projectid="+ projectid +",project="+ project +",projectName="+ projectName +",department="+ department +",active="+ active +",siteNumber1="+ siteNumber1 +",siteNumber2="+ siteNumber2 +",buffer1="+ buffer1 +",buffer2="+ buffer2 +",hhsDivision="+ hhsDivision +",udelnyBes="+ udelnyBes+",numExpCerts="+ numExpCerts +"']";				
+		return "ProjectsEntity[projectid="+ projectid +",project="+ project +",projectName="+ projectName +",department="+ department +",active="+ active +",siteNumber1="+ siteNumber1 +",siteNumber2="+ siteNumber2 +",buffer1="+ buffer1 +",buffer2="+ buffer2 +",hhsDivision="+ hhsDivision +",udelnyBes="+ udelnyBes+",numExpCerts="+ numExpCerts +",type="+ type +",contract="+ contract +",bufferName="+ bufferName +"]";				
 		
 	}
 	
@@ -184,7 +193,36 @@ public class ProjectsEntity
 	{
 		this.numExpCerts=numExpCerts;
 	}
-	
+
+	public String getType() 
+	{
+		return type;
+	}
+
+	public void setType(String type) 
+	{
+		this.type=type;
+	}
+
+	public String getContract() 
+	{
+		return contract;
+	}
+
+	public void setContract(String contract) 
+	{
+		this.contract=contract;
+	}
+
+	public String getBufferName() 
+	{
+		return bufferName;
+	}
+
+	public void setBufferName(String bufferName) 
+	{
+		this.bufferName=bufferName;
+	}
 	
 	
 }

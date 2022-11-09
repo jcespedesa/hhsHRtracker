@@ -22,5 +22,10 @@ public interface ClientsRepository extends CrudRepository<ClientsEntity,Long>
 	@Transactional
 	@Query("Update ClientsEntity u set u.project=?2,u.projectName=?3 where u.clientid=?1")
 	void tranferEmployee(Long clientId,String projectNumber,String projectName);
-		
+	
+	@Query("Select u from ClientsEntity u where u.active='Yes' Order by u.cname")
+	List<ClientsEntity>  getAllActives();
+	
+	@Query("Select u.cname from ClientsEntity u where u.clientid=?1")
+	String  getNameById(Long id);
 }

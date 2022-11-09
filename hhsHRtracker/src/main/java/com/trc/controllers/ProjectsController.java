@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.trc.entities.DivisionsEntity;
 import com.trc.entities.LogsEntity;
+import com.trc.entities.ProjectTypesEntity;
 import com.trc.entities.ProjectsEntity;
 import com.trc.entities.UsersEntity;
 import com.trc.services.DivisionsService;
 import com.trc.services.LogsService;
+import com.trc.services.ProjectTypesService;
 import com.trc.services.ProjectsService;
 import com.trc.services.RecordNotFoundException;
 import com.trc.services.UsersService;
@@ -36,6 +38,9 @@ public class ProjectsController
 	@Autowired
 	LogsService serviceLogs;
 	
+	@Autowired
+	ProjectTypesService serviceProjectTypes;
+	
 	//CRUD operations for projects
 	
 	
@@ -44,7 +49,8 @@ public class ProjectsController
 	{
 		String department=null;
 		String localDivision=null;
-			
+		String typeName=null;
+					
 		//System.out.println("qdivisionId is "+ qdivisionId);
 		
 		//Retrieving user information
@@ -57,13 +63,17 @@ public class ProjectsController
 		
 		//Retrieving list of projects
 		List<ProjectsEntity> list=service.getAllProjectsByDiv(department);
+		
+		
 				
 		//Trying to get divisions and sites name
-		for(ProjectsEntity dname : list)
+		for(ProjectsEntity project : list)
         {
-        	localDivision=serviceDivisions.getDivisionByNumber(dname.getDepartment());
+        	localDivision=serviceDivisions.getDivisionByNumber(project.getDepartment());
+        	typeName=serviceProjectTypes.getTypeName(project.getType());
         	
-        	dname.setBuffer1(localDivision);
+        	project.setBuffer1(localDivision);
+        	project.setBufferName(typeName);
         }
 		
 		model.addAttribute("quser",quser);
@@ -83,10 +93,11 @@ public class ProjectsController
 		{
 			
 			String department="300";
-			
+			String typeName=null;
+						
 			List<DivisionsEntity> listDivisions=serviceDivisions.getAllByName();
 			List<Integer> listUB=service.findNonRepeatedUB(department);
-			
+			List<ProjectTypesEntity> projectTypes=serviceProjectTypes.getActives();
 			
 			String site1="";
 			String site2="";
@@ -117,6 +128,10 @@ public class ProjectsController
 				//Finding division name
 				divisionName=serviceDivisions.getDivisionByNumber(entity.getDepartment());
 				
+				//Finding project type name
+				typeName=serviceProjectTypes.getTypeName(entity.getType());
+				
+								
 				priznakNewRecord="false";
 				
 			}
@@ -128,10 +143,13 @@ public class ProjectsController
 				
 			}
 			
+						
 			model.addAttribute("divisions",listDivisions);
 			model.addAttribute("udelnyBeses",listUB);
 			model.addAttribute("divisionName",divisionName);
 			model.addAttribute("priznakNew",priznakNewRecord);
+			model.addAttribute("typeName",typeName);
+			model.addAttribute("types",projectTypes);
 			
 			model.addAttribute("quser",quser);
 			model.addAttribute("qperiod",qperiod);
