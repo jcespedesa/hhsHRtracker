@@ -121,4 +121,14 @@ public class TitlesService
 			return new ArrayList<TitlesEntity>();
 		
 	}
+	
+	public int findDuplicates(String titleNum)
+	{
+		int priznakDuplicate=0;
+		
+		priznakDuplicate=repository.findTitleDuplicity(titleNum);
+		
+		
+		return priznakDuplicate;
+	}
 }

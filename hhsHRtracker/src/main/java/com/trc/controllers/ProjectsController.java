@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.trc.entities.ContractsEntity;
 import com.trc.entities.DivisionsEntity;
 import com.trc.entities.LogsEntity;
 import com.trc.entities.ProjectTypesEntity;
 import com.trc.entities.ProjectsEntity;
 import com.trc.entities.UsersEntity;
+import com.trc.services.ContractsService;
 import com.trc.services.DivisionsService;
 import com.trc.services.LogsService;
 import com.trc.services.ProjectTypesService;
@@ -41,6 +43,9 @@ public class ProjectsController
 	@Autowired
 	ProjectTypesService serviceProjectTypes;
 	
+	@Autowired
+	ContractsService serviceContracts;
+	
 	//CRUD operations for projects
 	
 	
@@ -64,8 +69,7 @@ public class ProjectsController
 		//Retrieving list of projects
 		List<ProjectsEntity> list=service.getAllProjectsByDiv(department);
 		
-		
-				
+					
 		//Trying to get divisions and sites name
 		for(ProjectsEntity project : list)
         {
@@ -94,10 +98,17 @@ public class ProjectsController
 			
 			String department="300";
 			String typeName=null;
-						
+			
+			//Retrieving divisions
 			List<DivisionsEntity> listDivisions=serviceDivisions.getAllByName();
+			
 			List<Integer> listUB=service.findNonRepeatedUB(department);
+			
+			//Retrieving list of project types
 			List<ProjectTypesEntity> projectTypes=serviceProjectTypes.getActives();
+			
+			//Retrieving list of contracts
+			List<ContractsEntity> contracts=serviceContracts.getActives();
 			
 			String site1="";
 			String site2="";
@@ -150,6 +161,7 @@ public class ProjectsController
 			model.addAttribute("priznakNew",priznakNewRecord);
 			model.addAttribute("typeName",typeName);
 			model.addAttribute("types",projectTypes);
+			model.addAttribute("contracts",contracts);
 			
 			model.addAttribute("quser",quser);
 			model.addAttribute("qperiod",qperiod);

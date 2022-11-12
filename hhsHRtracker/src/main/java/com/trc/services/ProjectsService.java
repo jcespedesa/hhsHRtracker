@@ -136,7 +136,7 @@ public class ProjectsService
 				newEntity.setSiteNumber2(entity.getSiteNumber2());
 				
 				newEntity.setHhsDivision(entity.getHhsDivision());
-				newEntity.setUdelnyBes(entity.getUdelnyBes());
+				//newEntity.setUdelnyBes(entity.getUdelnyBes());
 				
 				newEntity.setType(entity.getType());
 				newEntity.setContract(entity.getContract());

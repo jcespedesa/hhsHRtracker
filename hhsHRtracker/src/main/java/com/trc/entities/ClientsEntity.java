@@ -65,6 +65,9 @@ public class ClientsEntity
 	@Column(name="expiredcert")
 	private String expiredCert;
 	
+	@Column(name="employeenum")
+	private String employeeNum;
+	
 	@Column(name="datecreation",updatable=false, insertable=false)
 	private String dateCreation;
 
@@ -75,163 +78,211 @@ public class ClientsEntity
 		return "ClientsEntity[clientid="+ clientid +",cname="+ cname +",dateHire="+ dateHire +",realDateHire="+ realDateHire +",project="+ project +","
 				+" projectName="+ projectName +",contract="+ contract +",title="+ title +",status="+ status +","
 				+" antiBullRec="+ antiBullRec +",education="+ education +",period="+ period +","
-				+ "active="+ active +",program="+ program +",notes="+ notes +",expiredCert="+ expiredCert +",dateCreation="+ dateCreation +"]"; 				
+				+ "active="+ active +",program="+ program +",notes="+ notes +",expiredCert="+ expiredCert +",dateCreation="+ dateCreation +",employeeNum="+ employeeNum +"]"; 				
 		
 	}
 	
 	
 	//Getters and setters
 	
-	public String getNotes() {
+	public String getNotes() 
+	{
 		return notes;
 	}
 
 
-	public void setNotes(String notes) {
+	public void setNotes(String notes) 
+	{
 		this.notes = notes;
 	}
 
 
-	public String getProgram() {
+	public String getProgram() 
+	{
 		return program;
 	}
 
 
-	public void setProgram(String program) {
+	public void setProgram(String program) 
+	{
 		this.program = program;
 	}
 
 
-	public Long getClientid() {
+	public Long getClientid() 
+	{
 		return clientid;
 	}
 
-	public void setClientid(Long clientid) {
+	public void setClientid(Long clientid) 
+	{
 		this.clientid = clientid;
 	}
 
-	public String getCname() {
+	public String getCname() 
+	{
 		return cname;
 	}
 
-	public void setCname(String cname) {
+	public void setCname(String cname) 
+	{
 		this.cname = cname;
 	}
 
-	public String getDateHire() {
+	public String getDateHire() 
+	{
 		return dateHire;
 	}
 
 	
-	public void setDateHire(String dateHire) {
+	public void setDateHire(String dateHire) 
+	{
 		this.dateHire = dateHire;
 	}
 
-	public String getRealDateHire() {
+	public String getRealDateHire() 
+	{
 		return realDateHire;
 	}
 
-	public void setRealDateHire(String realDateHire) {
+	public void setRealDateHire(String realDateHire) 
+	{
 		this.realDateHire = realDateHire;
 	}
 
-	public String getProject() {
+	public String getProject() 
+	{
 		return project;
 	}
 
-	public void setProject(String project) {
+	public void setProject(String project) 
+	{
 		this.project = project;
 	}
 
-	public String getProjectName() {
+	public String getProjectName() 
+	{
 		return projectName;
 	}
 
-	public void setProjectName(String projectName) {
+	public void setProjectName(String projectName) 
+	{
 		this.projectName = projectName;
 	}
 
-	public String getContract() {
+	public String getContract() 
+	{
 		return contract;
 	}
 
-	public void setContract(String contract) {
+	public void setContract(String contract) 
+	{
 		this.contract = contract;
 	}
 
-	public String getTitle() {
+	public String getTitle() 
+	{
 		return title;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(String title) 
+	{
 		this.title = title;
 	}
 
-	public String getStatus() {
+	public String getStatus() 
+	{
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(String status) 
+	{
 		this.status = status;
 	}
 
 	
-	public String getLicensure() {
+	public String getLicensure() 
+	{
 		return licensure;
 	}
 
-	public void setLicensure(String licensure) {
+	public void setLicensure(String licensure) 
+	{
 		this.licensure = licensure;
 	}
 
-	public String getAntiBullRec() {
+	public String getAntiBullRec() 
+	{
 		return antiBullRec;
 	}
 
-	public void setAntiBullRec(String antiBullRec) {
+	public void setAntiBullRec(String antiBullRec) 
+	{
 		this.antiBullRec = antiBullRec;
 	}
 
-	public String getEducation() {
+	public String getEducation() 
+	{
 		return education;
 	}
 
-	public void setEducation(String education) {
+	public void setEducation(String education) 
+	{
 		this.education = education;
 	}
 
-	public String getPeriod() {
+	public String getPeriod() 
+	{
 		return period;
 	}
 
-	public void setPeriod(String period) {
+	public void setPeriod(String period) 
+	{
 		this.period = period;
 	}
 
-	public String getActive() {
+	public String getActive() 
+	{
 		return active;
 	}
 
-	public void setActive(String active) {
+	public void setActive(String active) 
+	{
 		this.active = active;
 	}
 
-	public String getDateCreation() {
+	public String getDateCreation() 
+	{
 		return dateCreation;
 	}
 
-	public void setDateCreation(String dateCreation) {
+	public void setDateCreation(String dateCreation) 
+	{
 		this.dateCreation = dateCreation;
 	}
 
 
-	public String getExpiredCert() {
+	public String getExpiredCert() 
+	{
 		return expiredCert;
 	}
 
 
-	public void setExpiredCert(String expiredCert) {
+	public void setExpiredCert(String expiredCert) 
+	{
 		this.expiredCert = expiredCert;
+	}
+
+
+	public String getEmployeeNum() 
+	{
+		return employeeNum;
+	}
+
+
+	public void setEmployeeNum(String employeeNum) 
+	{
+		this.employeeNum = employeeNum;
 	}
 
 

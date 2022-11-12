@@ -102,10 +102,10 @@
 			     				</tr>
 			     				<tr>
 			     					<td>	
-			     						<label for="udelnyBes" class="col-form-label"> Form Order:</label> 
-			                       		<select th:field="*{udelnyBes}" id="udelnyBes">
-			                       			<option th:value="*{udelnyBes}" th:text="*{udelnyBes}"></option>
-			                       			<option th:each="udelnyBes : ${udelnyBeses}" th:value="${udelnyBes}" th:text="${udelnyBes}" ></option>
+			     						<label for="contract" class="col-form-label"> Contract :</label> 
+			                       		<select th:field="*{contract}" id="contract">
+			                       			<option th:value="*{contract}" th:text="${contract}"></option>
+			                       			<option th:each="contract : ${contracts}" th:value="${contract.contract}" th:text="${contract.contract}" ></option>
 			                       			<option value=""></option>
 			                       		</select> 
 			                    	</td> 

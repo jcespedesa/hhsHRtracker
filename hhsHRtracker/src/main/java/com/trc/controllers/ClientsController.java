@@ -153,7 +153,7 @@ public class ClientsController
 	
 	@RequestMapping(path="/createClient", method=RequestMethod.POST)
 	public String createClient(Model model,Long quserId,String qperiod,Long qdivisionId,String qproject,Long projectId,
-			String lastName,String firstName,String dateHire,String contract,String titleNum,String status,String active) throws RecordNotFoundException
+			String lastName,String firstName,String dateHire,String contract,String titleNum,String status,String active,String employeeNum) throws RecordNotFoundException
 	{
 		String cname=null;
 		String repitaya=",";
@@ -191,6 +191,8 @@ public class ClientsController
 		client.setStatus(status);
 		client.setActive(active);
 		
+		client.setEmployeeNum(active);
+		
 		client.setProgram(qdivision.getDnumber());
 		client.setProject(projectEntity.getProject());
 		client.setProjectName(projectEntity.getProjectName());
@@ -222,6 +224,7 @@ public class ClientsController
 	{
 		
 		String titleNumber=null;
+		String projectName=null;
 		
 		//Retrieving user information
 		UsersEntity quser=serviceUsers.getUserById(quserId);
@@ -238,6 +241,9 @@ public class ClientsController
 		//Creating entity based in selected client ID
 		ClientsEntity entity=service.getClientById(id);
 		
+		//Retrieving home project and assigning the project definition
+		projectName=serviceProjects.getProjectNameByNumber(entity.getProject());
+		
 		titleNumber=serviceTitles.getTitleByNumber(titleNumber);
 							
 		model.addAttribute("client",entity);
@@ -247,6 +253,7 @@ public class ClientsController
 		model.addAttribute("titleNumber",titleNumber);
 		
 		model.addAttribute("clientId",id);
+		model.addAttribute("projectName",projectName);
 		
 		model.addAttribute("qproject",qproject);
 		model.addAttribute("quser",quser);

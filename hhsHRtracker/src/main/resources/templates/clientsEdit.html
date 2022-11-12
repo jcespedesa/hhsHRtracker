@@ -92,6 +92,10 @@
 			                       		<label for="lastName" class="col-form-label">Name<sup>*</sup>:</label> 
 			                       		<input type="text" th:field="*{cname}" id="cname" required  maxlength="30"/>
 			                    	</td>
+			                    	<td>
+			                       		<label for="employeeNum" class="col-form-label">Employee Number<sup>*</sup>:</label> 
+			                       		<input type="text" th:field="*{employeeNum}" id="employeeNum" maxlength="20"/>
+			                    	</td>
                     		                   				
                     			</tr>
                     			<tr>
@@ -105,13 +109,17 @@
 			                    	</td>
                         		</tr>	
                 	        	<tr>            
-			                    	<td colspan="2" noWrap>
+			                    	<td noWrap>
 			                       		<label for="title" class="col-form-label">Title : <sup>*</sup>:</label> 
 			                       		<select th:field="*{title}" id="title">
 			                       			<option th:value="${titleNumber}" th:text="*{title}"></option>
 			                       			<option th:each="title : ${titles}" th:value="${title.titleNum}" th:text="${title.titleDesc}" ></option>
 			                       			<option value=""></option>
 			                       		</select>
+			                    	</td>
+			                    	<td noWrap>
+			                       		<label for="title" class="col-form-label">Home Project : </label> 
+			                       		<input type="text" name="void" size="30" th:value="${projectName}" disabled/>
 			                    	</td>
 			                    </tr><tr>	
 			                    	<td>   	

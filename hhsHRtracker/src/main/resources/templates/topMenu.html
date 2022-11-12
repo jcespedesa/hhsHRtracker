@@ -11,8 +11,31 @@
 			<div id='hcssmenu'>
 				<ul>
 				   <li>
-				   		<div style="color:#008800;font-weight: bold;">HHS Credentials and Training Tracker</div>			  
+				   		<div style="color:#008800;font-weight: bold;">HHS Credentials and Training</div>			  
    					</li>
+   					
+   					<li>
+   						<form th:action="@{/trainings/search}" method="post">
+                            	
+	           				<button type="submit" class="btn btn-transparent" style="font-size:11px;">Training</button>	
+	           			
+	           				<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           				<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           				<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           			</form>
+   					</li>
+   					
+   					<li>
+   						<form th:action="@{/certs/search}" method="post">
+                            	
+	           				<button type="submit" class="btn btn-transparent" style="font-size:11px;">Certifications</button>	
+	           			
+	           				<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           				<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           				<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           			</form>
+   					</li>
+   					
    					<li class='active has-sub'>
    						<a href="#"><span>Projects</span></a>
    						
@@ -37,50 +60,8 @@
    					
    					<li class='active has-sub' th:if="${quser.role}=='admin'"><a href="#"><span>Lists</span></a>
    						<ul>
-         					<li>
-         						<form th:action="@{/hhsHRtracker/projects/list}" method="post">
-                            	
-	           						<button type="submit" class="btn btn-info" style="font-size:11px;">Projects</button>	
-	           			
-	           						<input type="hidden" th:value="${quser.userid}" name="quserId"> 
-	           						<input type="hidden" th:value="${qperiod}" name="qperiod">
-	           						<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
-	           					</form>
-         					</li>
-         					<li>
-         						<form th:action="@{/hhsHRtracker/users/list}" method="post">
-                            	
-	           						<button type="submit" class="btn btn-info" style="font-size:11px;">Users</button>	
-	           			
-	           						<input type="hidden" th:value="${quser.userid}" name="quserId"> 
-	           						<input type="hidden" th:value="${qperiod}" name="qperiod">
-	           						<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
-	           					</form>
-         					</li>
-         					
-         					<li>
-         						<form th:action="@{/hhsHRtracker/periods/list}" method="post">
-                            	
-	           						<button type="submit" class="btn btn-info" style="font-size:11px;">Periods</button>	
-	           			
-	           						<input type="hidden" th:value="${quser.userid}" name="quserId"> 
-	           						<input type="hidden" th:value="${qperiod}" name="qperiod">
-	           						<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
-	           					</form>
-         					</li>
-         					
-         					<li>
-         						<form th:action="@{/portfolios/list}" method="post">
-                            	
-	           						<button type="submit" class="btn btn-info" style="font-size:11px;">Portfolios</button>	
-	           			
-	           						<input type="hidden" th:value="${quser.userid}" name="quserId"> 
-	           						<input type="hidden" th:value="${qperiod}" name="qperiod">
-	           						<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
-	           					</form>
-         					</li>
-         					
-         					<li>
+   						
+   							<li>
          						<form th:action="@{/hhsHRtracker/certificates/list}" method="post">
                             	
 	           						<button type="submit" class="btn btn-info" style="font-size:11px;">Certificates</button>	
@@ -91,9 +72,29 @@
 	           					</form>
          					</li>
          					<li>
-         						<form th:action="@{/trainings/list}" method="post">
+         						<form th:action="@{/contracts/list}" method="post">
                             	
-	           						<button type="submit" class="btn btn-info" style="font-size:11px;">Training</button>	
+	           						<button type="submit" class="btn btn-info" style="font-size:11px;">Contracts</button>	
+	           			
+	           						<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           						<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           						<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           					</form>
+         					</li>
+         					<li>
+         						<form th:action="@{/hhsHRtracker/periods/list}" method="post">
+                            	
+	           						<button type="submit" class="btn btn-info" style="font-size:11px;">Periods</button>	
+	           			
+	           						<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           						<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           						<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           					</form>
+         					</li>
+         					<li>
+         						<form th:action="@{/hhsHRtracker/projects/list}" method="post">
+                            	
+	           						<button type="submit" class="btn btn-info" style="font-size:11px;">Projects</button>	
 	           			
 	           						<input type="hidden" th:value="${quser.userid}" name="quserId"> 
 	           						<input type="hidden" th:value="${qperiod}" name="qperiod">
@@ -111,16 +112,46 @@
 	           					</form>
          					</li>
          					<li>
-         						<form th:action="@{/contracts/list}" method="post">
+         						<form th:action="@{/portfolios/list}" method="post">
                             	
-	           						<button type="submit" class="btn btn-info" style="font-size:11px;">Contracts</button>	
+	           						<button type="submit" class="btn btn-info" style="font-size:11px;">Portfolios</button>	
 	           			
 	           						<input type="hidden" th:value="${quser.userid}" name="quserId"> 
 	           						<input type="hidden" th:value="${qperiod}" name="qperiod">
 	           						<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
 	           					</form>
          					</li>
-            			</ul>
+         					<li>
+         						<form th:action="@{/titles/list}" method="post">
+                            	
+	           						<button type="submit" class="btn btn-info" style="font-size:11px;">Titles</button>	
+	           			
+	           						<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           						<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           						<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           					</form>
+         					</li>
+         					<li>
+         						<form th:action="@{/trainings/list}" method="post">
+                            	
+	           						<button type="submit" class="btn btn-info" style="font-size:11px;">Training</button>	
+	           			
+	           						<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           						<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           						<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           					</form>
+         					</li>
+         					<li>
+         						<form th:action="@{/hhsHRtracker/users/list}" method="post">
+                            	
+	           						<button type="submit" class="btn btn-info" style="font-size:11px;">Users</button>	
+	           			
+	           						<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           						<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           						<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           					</form>
+         					</li>
+         				</ul>
    					</li>
    					
    					<li class='active has-sub' ><a href="#"><span>Reports</span></a>

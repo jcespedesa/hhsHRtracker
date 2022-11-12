@@ -89,6 +89,8 @@ public class ClientsService
 		
 		newEntity.setAntiBullRec(entity.getAntiBullRec());
 		newEntity.setNotes(entity.getNotes());
+		
+		newEntity.setEmployeeNum(entity.getEmployeeNum());
 						
 		newEntity=repository.save(newEntity);
 				
