@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.trc.entities.ClientsEntity;
+import com.trc.entities.ContractsEntity;
 import com.trc.repositories.AssigCertsRepository;
 import com.trc.repositories.ClientsRepository;
 
@@ -91,6 +92,7 @@ public class ClientsService
 		newEntity.setNotes(entity.getNotes());
 		
 		newEntity.setEmployeeNum(entity.getEmployeeNum());
+		newEntity.setEmail(entity.getEmail());
 						
 		newEntity=repository.save(newEntity);
 				
@@ -169,14 +171,85 @@ public class ClientsService
 		return expiredCert;
 	}
 	
+	
 	public void tranferringEmployee(Long clientId,String projectNumber,String projectName)
 	{
 		repository.tranferEmployee(clientId,projectNumber,projectName);
-		
-		
+	
 	}
 	
 	
+	public ClientsEntity createOrUpdate(ClientsEntity entity)
+	{
+		if(entity.getClientid()==null)
+		{
+						
+			entity=repository.save(entity);
+			
+			return entity;
+		}
+		else
+		{
+			Optional<ClientsEntity> client=repository.findById(entity.getClientid());
+			
+			if(client.isPresent())
+			{
+				
+				ClientsEntity newEntity=client.get();
+				
+				newEntity.setCname(entity.getCname());
+				
+				newEntity.setDateHire(entity.getDateHire());
+				newEntity.setRealDateHire(entity.getDateHire());
+						
+				newEntity.setContract(entity.getContract());
+				newEntity.setTitle(entity.getTitle());
+				newEntity.setStatus(entity.getStatus());
+						
+				newEntity.setPeriod(entity.getPeriod());
+				newEntity.setActive(entity.getActive());
+				
+				newEntity.setEducation(entity.getEducation());
+				newEntity.setLicensure(entity.getLicensure());
+				
+				newEntity.setAntiBullRec(entity.getAntiBullRec());
+				newEntity.setNotes(entity.getNotes());
+				
+				newEntity.setEmployeeNum(entity.getEmployeeNum());
+				newEntity.setEmail(entity.getEmail());
+					
+				newEntity=repository.save(newEntity);
+				
+				return newEntity;
+				
+			}
+			else
+			{
+						
+				entity=repository.save(entity);
+				
+				return entity;
+				
+			}
+			
+		}
+	}
 	
+	
+	public List<ClientsEntity> searchByName(String stringSearch)
+	{
+		List<ClientsEntity> result=(List<ClientsEntity>) repository.searchClientsByName(stringSearch);
+		
+		return result;
+				
+	}
+	
+	public List<ClientsEntity> searchBySelection(Long stringSearch)
+	{
+		List<ClientsEntity> result=(List<ClientsEntity>) repository.searchClientsBySelection(stringSearch);
+		
+		return result;
+				
+	}
 	
 }

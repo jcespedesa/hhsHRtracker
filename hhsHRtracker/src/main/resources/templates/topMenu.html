@@ -15,24 +15,30 @@
    					</li>
    					
    					<li>
-   						<form th:action="@{/trainings/search}" method="post">
+   						<form th:action="@{/clients/search}" method="post">
                             	
 	           				<button type="submit" class="btn btn-transparent" style="font-size:11px;">Training</button>	
 	           			
 	           				<input type="hidden" th:value="${quser.userid}" name="quserId"> 
 	           				<input type="hidden" th:value="${qperiod}" name="qperiod">
 	           				<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           				
+	           				<input type="hidden" value="trainining" name="priznakOp"> 
+	           				
 	           			</form>
    					</li>
    					
    					<li>
-   						<form th:action="@{/certs/search}" method="post">
+   						<form th:action="@{/clients/search}" method="post">
                             	
 	           				<button type="submit" class="btn btn-transparent" style="font-size:11px;">Certifications</button>	
 	           			
 	           				<input type="hidden" th:value="${quser.userid}" name="quserId"> 
 	           				<input type="hidden" th:value="${qperiod}" name="qperiod">
 	           				<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           				
+	           				<input type="hidden" value="cert" name="priznakOp"> 
+	           				
 	           			</form>
    					</li>
    					

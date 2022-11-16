@@ -68,6 +68,9 @@ public class ClientsEntity
 	@Column(name="employeenum")
 	private String employeeNum;
 	
+	@Column(name="email")
+	private String email;
+	
 	@Column(name="datecreation",updatable=false, insertable=false)
 	private String dateCreation;
 
@@ -76,7 +79,7 @@ public class ClientsEntity
 	public String toString()
 	{
 		return "ClientsEntity[clientid="+ clientid +",cname="+ cname +",dateHire="+ dateHire +",realDateHire="+ realDateHire +",project="+ project +","
-				+" projectName="+ projectName +",contract="+ contract +",title="+ title +",status="+ status +","
+				+" projectName="+ projectName +",contract="+ contract +",title="+ title +",status="+ status +"email="+ email +","
 				+" antiBullRec="+ antiBullRec +",education="+ education +",period="+ period +","
 				+ "active="+ active +",program="+ program +",notes="+ notes +",expiredCert="+ expiredCert +",dateCreation="+ dateCreation +",employeeNum="+ employeeNum +"]"; 				
 		
@@ -283,6 +286,18 @@ public class ClientsEntity
 	public void setEmployeeNum(String employeeNum) 
 	{
 		this.employeeNum = employeeNum;
+	}
+
+
+	public String getEmail() 
+	{
+		return email;
+	}
+
+
+	public void setEmail(String email) 
+	{
+		this.email=email;
 	}
 
 

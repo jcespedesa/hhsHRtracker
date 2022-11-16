@@ -26,64 +26,100 @@
 
   <!-- Navigation -->
   		<div id='hcssmenu'>
-			<ul>
-			   <li>
-			   		<form th:action="@{/hhsHRtracker/clients/list}" method="post">
+			<ul  th:switch="${path}">
+				
+			   <li th:case="'findByName'">
+			   			   
+			   		<form th:action="@{/clients/findByName}" method="post">
+			   					   		
                			<button type="submit" class="btn btn-light" style="font-size:11px;">Back</button>	
 	           			
-	           			<input type="hidden" th:value="${project.projectid}" name="projectId"> 
-	           			
-	           			<input type="hidden" th:value="${qproject}" name="qproject"> 
 	           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
 	           			<input type="hidden" th:value="${qperiod}" name="qperiod">
 	           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           			
+	           			<input type="hidden" th:value="${stringSearch}" name="stringSearch">
+	           			<input type="hidden" th:value="${path}" name="path">
+	           			
 	           		</form>
          		</li>
-         		<li th:if="${quser.role}=='admin'">
-			   		<form th:action="@{/hhsHRtracker/clients/transfer}" method="post">
+         		
+         		<li th:case="'findBySelection'">
+			   			   
+			   		<form th:action="@{/clients/search}" method="post">
+			   					   		
+               			<button type="submit" class="btn btn-light" style="font-size:11px;">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           			
+	           			<input type="hidden" th:value="${stringSearch}" name="stringSearch">
+	           			<input type="hidden" th:value="${path}" name="path">
+	           			
+	           		</form>
+         		</li>
+         		 		
+         		<li th:case="'neu'">
+			   			   
+			   		<form th:action="@{/clients/search}" method="post">
+			   					   		
+               			<button type="submit" class="btn btn-light" style="font-size:11px;">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           			
+	           			<input type="hidden" th:value="${stringSearch}" name="stringSearch">
+	           			<input type="hidden" th:value="${path}" name="path">
+	           			
+	           		</form>
+         		</li>
+         		         		
+         		<li th:if="${quser.role}=='admin' and ${priznakNew}=='false'">
+			   		<form th:action="@{/clients/transfer}" method="post">
                			<button type="submit" class="btn btn-light" style="font-size:11px;">Transfer to Other Project</button>	
 	           			
-	           			<input type="hidden" th:value="${project.projectid}" name="projectId"> 
-	           			
-	           			<input type="hidden" th:value="${qproject}" name="qproject"> 
+	           			<!--  <input type="hidden" th:value="${project.projectid}" name="projectId"> -->
+	           				           			
 	           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
 	           			<input type="hidden" th:value="${qperiod}" name="qperiod">
 	           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
 	           			
-	           			<input type="hidden" th:value="${client.clientid}" name="id">	
+	           			<input th:if="${priznakNew}=='No'" type="hidden" th:value="${client.clientid}" name="id">
 	           		</form>
          		</li>
-         		<li th:unless="${quser.role}=='admin'">
-			   		<button class="btn btn-light" style="font-size:11px;">Transfer to Other Project</button>	
-	           	</li>
-         		
+         		         		
 			</ul>
 		</div>   
   		
   		<div class="row">&nbsp;</div>
   		
   		<div class="row">
-  			<div class="col-lg-2" style="color:#000088;" th:text="'Period: '+ ${qperiod}">Edit Employee</div>
+  			<div class="col-lg-2" style="color:#000088;">Edit/Add Employee</div>
   		</div>
               
         <div class="row">
              <div class="col-lg-10">        
            		<div class="card">
 					<div class="card-body">
-						<label style="color:violet;font-size:9px;" th:text="${client.clientid}"></label>
+						<label th:if="${priznakNew}=='false'" style="color:violet;font-size:9px;" th:text="${client.clientid}"></label>
 						<table class="table-condensed table-bordered" style="background-color:palegoldenrod;">					        			
         					<tr>
         						<td noWrap style="padding:5px;"><label style="color:#880000;font-size:12px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></td>
         						<td style="padding:5px;"><label style="color:teal;font-size:12px;" th:text="${qdivision.dname}"></label></td>
         					</tr>
         					<tr>
-        						<td style="padding:5px;"><label style="color:#880000;font-size:12px;" th:text="'Project Number : '+ ${project.project}"></label></td>
-        						<td noWrap style="padding:5px;"><label style="color:teal;font-size:12px;" th:text="' Project Name : '+ ${project.projectName}"></label></td>
-        					</tr>
+        						<td colspan="2" noWrap>
+        							<label style="font-size:10px;" th:text="'Priznak Search is: '+ ${stringSearch}"></label>
+		    						<label style="font-size:10px;" th:text="'Returning Path is: '+ ${path}"></label>
+		    						<label style="font-size:10px;" th:text="'Priznak neu is: '+ ${priznakNew}"></label>
+		    					</td>
+		   					</tr>
         				 </table>
         				 <div class="row">&nbsp;</div>
         				 
-        				 <form class="form-main" th:action="@{/hhsHRtracker/clients/updateClient}" th:object="${client}" method="post">
+        				 <form class="form-main" th:action="@{/clients/updateClient}" th:object="${client}" method="post">
         				 
         				 	<table class="table-striped">					        			
         				
@@ -179,9 +215,9 @@
      						</table>
      			
      						<input type="hidden" id="id" th:field="*{clientid}">
-     						<input type="hidden" th:value="${project.projectid}" name="projectId">
-     					
-     						<input type="hidden" name="qproject" th:value="${qproject}">
+     						<input type="hidden" name="stringSearch" th:value="${stringSearch}">
+     						<input type="hidden" name="path" th:value="${path}">
+     						 						
 	     					<input type="hidden" name="qperiod" th:value="${qperiod}">
 	     					<input type="hidden" name="qdivisionId" th:value="${qdivision.divisionid}">
 	                        <input type="hidden" name="quserId" th:value="${quser.userid}">	

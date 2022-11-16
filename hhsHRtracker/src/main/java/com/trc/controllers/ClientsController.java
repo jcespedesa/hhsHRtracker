@@ -29,7 +29,7 @@ import com.trc.services.UsersService;
 
 
 @Controller
-@RequestMapping("hhsHRtracker/clients")
+@RequestMapping("/clients")
 public class ClientsController 
 {
 	@Autowired
@@ -50,8 +50,34 @@ public class ClientsController
 	@Autowired
 	LogsService serviceLogs;
 	
+	@RequestMapping(path="/search", method=RequestMethod.POST)
+	public String getSearchForm(Model model,Long quserId,String qperiod,Long qdivisionId,String priznakOp) throws RecordNotFoundException, ParseException
+	{
+				
+				
+		//Retrieving user information
+		UsersEntity quser=serviceUsers.getUserById(quserId);
+		
+		//Retrieving division
+		DivisionsEntity qdivision=serviceDivisions.getDivisionById(qdivisionId);	
+		
+				
+		//Retrieving list of employees
+		List<ClientsEntity> list=service.getAllActives();
+		
+		model.addAttribute("quser",quser);		
+		model.addAttribute("qperiod",qperiod);
+		model.addAttribute("qdivision",qdivision);
+				
+		model.addAttribute("employees",list);
+		model.addAttribute("priznakOp",priznakOp);
+					
+		return "clientsSearch";
+				
+	}
+	
 	@RequestMapping(path="/list", method=RequestMethod.POST)
-	public String getAllClients(Model model,Long quserId,String qperiod,Long qdivisionId,String qproject) throws RecordNotFoundException, ParseException
+	public String getAllClients(Model model,Long quserId,String qperiod,Long qdivisionId,String qproject,String stringSearch) throws RecordNotFoundException, ParseException
 	{
 		String projectName=null;
 		String todayDateString=null;
@@ -104,10 +130,12 @@ public class ClientsController
 		
 		model.addAttribute("clients",list);
 		model.addAttribute("project",projectEntity);
+		model.addAttribute("stringSearch",stringSearch);
 			
 		return "clientsList";
 				
-	}
+	}	
+	
 	
 	@RequestMapping(path="/add", method=RequestMethod.POST)
 	public String editNewClient(Model model,Optional<Long>id,Long quserId,String qperiod,Long qdivisionId,Long projectId,Long qproject) throws RecordNotFoundException 
@@ -153,7 +181,7 @@ public class ClientsController
 	
 	@RequestMapping(path="/createClient", method=RequestMethod.POST)
 	public String createClient(Model model,Long quserId,String qperiod,Long qdivisionId,String qproject,Long projectId,
-			String lastName,String firstName,String dateHire,String contract,String titleNum,String status,String active,String employeeNum) throws RecordNotFoundException
+			String lastName,String firstName,String dateHire,String contract,String titleNum,String status,String active,String employeeNum,String stringSearch) throws RecordNotFoundException
 	{
 		String cname=null;
 		String repitaya=",";
@@ -206,9 +234,9 @@ public class ClientsController
 		log.setObject(client.getCname());
 		
 		serviceLogs.saveLog(log);
-		
-					
+							
 		model.addAttribute("message",message);
+		model.addAttribute("stringSearch",stringSearch);
 		
 		model.addAttribute("qproject",qproject);
 		model.addAttribute("quserId",quserId);
@@ -220,11 +248,13 @@ public class ClientsController
 	}
 	
 	@RequestMapping(path="/edit", method=RequestMethod.POST)
-	public String editClientById(Model model,Long id,Long quserId,String qperiod,Long qdivisionId,Long projectId,Long qproject) throws RecordNotFoundException 
+	public String editClientById(Model model,Optional<Long> id,Long quserId,String qperiod,Long qdivisionId,String stringSearch,String path) throws RecordNotFoundException 
 	{
 		
 		String titleNumber=null;
+		String priznakNew="false";
 		String projectName=null;
+		
 		
 		//Retrieving user information
 		UsersEntity quser=serviceUsers.getUserById(quserId);
@@ -232,30 +262,37 @@ public class ClientsController
 		//Retrieving division
 		DivisionsEntity qdivision=serviceDivisions.getDivisionById(qdivisionId);	
 		
-		//Retrieving project
-		ProjectsEntity projectEntity=serviceProjects.getProjectById(projectId);
-		
+				
 		//Retrieving titles
 		List<TitlesEntity> titles=serviceTitles.getAllActives();	
 		
-		//Creating entity based in selected client ID
-		ClientsEntity entity=service.getClientById(id);
-		
-		//Retrieving home project and assigning the project definition
-		projectName=serviceProjects.getProjectNameByNumber(entity.getProject());
-		
+				
 		titleNumber=serviceTitles.getTitleByNumber(titleNumber);
-							
-		model.addAttribute("client",entity);
-						
-		model.addAttribute("project",projectEntity);
+		
+		if(id.isPresent())
+		{
+			ClientsEntity entity=service.getClientById(id.get());
+			model.addAttribute("client",entity);
+			
+			//Retrieving home project and assigning the project definition
+			projectName=serviceProjects.getProjectNameByNumber(entity.getProject());
+		}
+		else
+		{
+			model.addAttribute("client",new ClientsEntity());
+			
+			priznakNew="true";
+			path="neu";
+		}
+		
+				
 		model.addAttribute("titles",titles);
-		model.addAttribute("titleNumber",titleNumber);
-		
-		model.addAttribute("clientId",id);
 		model.addAttribute("projectName",projectName);
+		model.addAttribute("priznakNew",priznakNew);
 		
-		model.addAttribute("qproject",qproject);
+		model.addAttribute("stringSearch",stringSearch);
+		model.addAttribute("path",path);
+				
 		model.addAttribute("quser",quser);
 		model.addAttribute("qperiod",qperiod);
 		model.addAttribute("qdivision",qdivision);
@@ -264,7 +301,7 @@ public class ClientsController
 	}
 	
 	@RequestMapping(path="/updateClient", method=RequestMethod.POST)
-	public String updateClient(Model model,ClientsEntity client,Long quserId,String qperiod,Long qdivisionId,String qproject,Long projectId) throws RecordNotFoundException
+	public String updateClient(Model model,ClientsEntity client,Long quserId,String qperiod,Long qdivisionId,String qproject,Long projectId,String stringSearch,String path) throws RecordNotFoundException
 	{
 		String title=null;
 				
@@ -279,13 +316,16 @@ public class ClientsController
 		//finding title name
 		title=serviceTitles.getTitleByNumber(client.getTitle());
 		
+		//Retrieving division
+		DivisionsEntity qdivision=serviceDivisions.getDivisionById(qdivisionId);	
+		
 		client.setTitle(title);
 		
 		//System.out.println(client);
 		//System.out.println("The value of id is "+ id);
 						
 		//Updating client core information
-		service.save(client);
+		service.createOrUpdate(client);
 		
 		log.setSubject(quser.getEmail());
 		log.setAction("Updating client core information");
@@ -295,18 +335,20 @@ public class ClientsController
 		
 					
 		model.addAttribute("message",message);
+		model.addAttribute("stringSearch",stringSearch);
+		model.addAttribute("path",path);
 		
-		model.addAttribute("qproject",qproject);
-		model.addAttribute("quserId",quserId);
+		
+		model.addAttribute("quser",quser);
 		model.addAttribute("qperiod",qperiod);
-		model.addAttribute("qdivisionId",qdivisionId);
+		model.addAttribute("qdivision",qdivision);
 		
 		return "clientsRedirect";
 			
 	}
 	
 	@RequestMapping(path="/delete", method=RequestMethod.POST)
-	public String deleteClientById(Model model, Long id, Long quserId,String qperiod,Long qdivisionId,String qproject) throws RecordNotFoundException
+	public String deleteClientById(Model model, Long id, Long quserId,String qperiod,Long qdivisionId,String qproject,String stringSearch,String path) throws RecordNotFoundException
 	{
 		LogsEntity log=new LogsEntity();
 		
@@ -314,6 +356,9 @@ public class ClientsController
 		
 		//Retrieving user
 		UsersEntity quser=serviceUsers.getUserById(quserId);
+		
+		//Retrieving division
+		DivisionsEntity qdivision=serviceDivisions.getDivisionById(qdivisionId);	
 						
 		//Retrieving client information
 		ClientsEntity entity=service.getClientById(id);
@@ -331,11 +376,12 @@ public class ClientsController
 		serviceLogs.saveLog(log);
 		
 		model.addAttribute("message",message);
+		model.addAttribute("stringSearch",stringSearch);
+		model.addAttribute("path",path);
 		
-		model.addAttribute("qproject",qproject);
-		model.addAttribute("quserId",quserId);
+		model.addAttribute("quser",quser);
 		model.addAttribute("qperiod",qperiod);
-		model.addAttribute("qdivisionId",qdivisionId);
+		model.addAttribute("qdivision",qdivision);
 		
 		return "clientsRedirect";
 		
@@ -343,7 +389,7 @@ public class ClientsController
 	}
 	
 	@RequestMapping(path="/transfer", method=RequestMethod.POST)
-	public String transferClient(Model model,Long id,Long quserId,String qperiod,Long qdivisionId,Long projectId,Long qproject) throws RecordNotFoundException 
+	public String transferClient(Model model,Long id,Long quserId,String qperiod,Long qdivisionId,Long projectId,Long qproject,String stringSearch) throws RecordNotFoundException 
 	{
 		String department=null;
 		
@@ -371,6 +417,7 @@ public class ClientsController
 		model.addAttribute("projects",listProjects);
 				
 		model.addAttribute("clientId",id);
+		model.addAttribute("stringSearch",stringSearch);
 		
 		model.addAttribute("qproject",qproject);
 		model.addAttribute("quser",quser);
@@ -381,7 +428,7 @@ public class ClientsController
 	}
 	
 	@RequestMapping(path="/transferEmployee", method=RequestMethod.POST)
-	public String tranferringEmployee(Model model, Long id, Long quserId,String qperiod,Long qdivisionId,String qproject,String projectNumber) throws RecordNotFoundException
+	public String tranferringEmployee(Model model, Long id, Long quserId,String qperiod,Long qdivisionId,String qproject,String projectNumber,String stringSearch) throws RecordNotFoundException
 	{
 		LogsEntity log=new LogsEntity();
 		
@@ -422,5 +469,66 @@ public class ClientsController
 		
 	}
 	
+	@RequestMapping(path="/findByName", method=RequestMethod.POST)
+	public String findEmployeeByName(Model model, Long quserId,String qperiod,Long qdivisionId,String stringSearch,String path) throws RecordNotFoundException
+	{
+		LogsEntity log=new LogsEntity();
+						
+		//Retrieving user
+		UsersEntity quser=serviceUsers.getUserById(quserId);
+		
+		//Retrieving division
+		DivisionsEntity qdivision=serviceDivisions.getDivisionById(qdivisionId);	
+		
+		//Trying to find the list of employees
+		List<ClientsEntity> list=service.searchByName(stringSearch);
+		
+		log.setSubject(quser.getEmail());
+		log.setAction("Searching by client first or last name");
+		log.setObject("Training Section");
+		
+		serviceLogs.saveLog(log);
+		
+		model.addAttribute("qperiod",qperiod);
+		model.addAttribute("quser",quser);
+		model.addAttribute("qdivision",qdivision);
+		
+		model.addAttribute("path",path);
+		model.addAttribute("clients",list);
+		model.addAttribute("stringSearch",stringSearch);
+		
+		return "clientsView";
+	}
 	
+	@RequestMapping(path="/findBySelection", method=RequestMethod.POST)
+	public String findEmployeeBySelection(Model model, Long quserId,String qperiod,Long qdivisionId,Long stringSearch,String path) throws RecordNotFoundException
+	{
+		LogsEntity log=new LogsEntity();
+						
+		//Retrieving user
+		UsersEntity quser=serviceUsers.getUserById(quserId);
+		
+		//Retrieving division
+		DivisionsEntity qdivision=serviceDivisions.getDivisionById(qdivisionId);	
+		
+		//Trying to find the list of employees
+		List<ClientsEntity> list=service.searchBySelection(stringSearch);
+		
+		
+		log.setSubject(quser.getEmail());
+		log.setAction("Searching by client first or last name");
+		log.setObject("Training Section");
+		
+		serviceLogs.saveLog(log);
+		
+		model.addAttribute("qperiod",qperiod);
+		model.addAttribute("quser",quser);
+		model.addAttribute("qdivision",qdivision);
+		
+		model.addAttribute("path",path);
+		model.addAttribute("clients",list);
+		model.addAttribute("stringSearch",stringSearch);
+				
+		return "clientsView";
+	}
 }

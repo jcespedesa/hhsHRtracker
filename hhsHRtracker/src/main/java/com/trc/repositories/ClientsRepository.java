@@ -28,4 +28,10 @@ public interface ClientsRepository extends CrudRepository<ClientsEntity,Long>
 	
 	@Query("Select u.cname from ClientsEntity u where u.clientid=?1")
 	String  getNameById(Long id);
+	
+	@Query("Select u from ClientsEntity u WHERE u.cname LIKE ('%' || ?1 || '%') Order by cname")
+	List<ClientsEntity>  searchClientsByName(String stringSearch);
+	
+	@Query("Select u from ClientsEntity u WHERE u.clientid=?1")
+	List<ClientsEntity>  searchClientsBySelection(Long stringSearch);
 }
