@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="ISO-8859-1">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>hhsHRtracker</title>
+
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" th:href="@{/css/menus.css}">
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		
+  		    	  		
+	</head>
+
+	<body>
+
+  <!-- Navigation -->
+  		<div id='hcssmenu'>
+			<ul>
+			   <li>
+			   		<form th:action="@{/hhsHRtracker/mainMenu}" method="post">
+	               		<button type="submit" class="btn btn-light" style="font-size:11px;">Back</button>	
+		           			
+		           		<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+		           		<input type="hidden" th:value="${qperiod}" name="qperiod">
+		           		<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+		           	</form>
+         		</li>
+         		
+         		<li>
+			   		<form th:action="@{/clients/edit}" method="post">
+	               		<button type="submit" class="btn btn-light" style="font-size:11px;">New Employee</button>	
+		           			
+		           		<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+		           		<input type="hidden" th:value="${qperiod}" name="qperiod">
+		           		<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+		           		           		
+		           	</form>
+         		</li>
+         		
+			</ul>
+		</div>   
+  		
+  		<div class="row">&nbsp;</div>
+  		
+  		<table class="table-active">
+  			<tr>
+  				<td class="table-warning"style="color:#000088;">Search Clients</td>
+  			</tr>
+  		 
+  			<tr><td>&nbsp;</td></tr>
+  		
+  			<tr>
+  				<td class="table-danger" style="color:teal;" th:text="${priznakOp}"></td>
+  			</tr>
+  		</table>
+  		
+              
+        <div class="row">
+             <div class="col-lg-10">        
+           		<div class="card">
+					<div class="card-body">
+					
+						<table class="table-condensed table-bordered table-bordered">					        			
+	        				<tr>
+	        					<td noWrap style="padding:5px;"><label style="color:#880000;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></td>
+	        					<td style="padding:5px;"><label style="color:teal;font-size:11px;" th:text="${qdivision.dname}"></label></td>
+	        				</tr>
+	        			</table>
+					
+						<table class=" table table-hover">
+							<tr>
+								<td>
+									
+									<form class="form-main" th:action="@{/clients/findByName}" method="post">	
+										<table class="table table-condensed table-bordered table-striped">					        			
+			        						<tr>
+			        							<td>
+			        								<label class="label label-success">Part of Employee Name or Last Name<sup> [No spaces]</sup> : </label> 
+					                       			<input type="text" name="stringSearch" required  size="10" maxlength="10"/>
+			        							</td>	
+			                    			</tr>
+			                    			
+			                    			<tr>
+						                   		<td class="text-align:center;">
+						                   			<input type="submit" class="btn btn-success btn-sm" value=" Submit ">
+						                   		</td>
+			                   				</tr>
+			     						</table>
+			     			     					
+				     					<input type="hidden" name="qperiod" th:value="${qperiod}">
+				     					<input type="hidden" name="qdivisionId" th:value="${qdivision.divisionid}">
+				                    	<input type="hidden" name="quserId" th:value="${quser.userid}">	
+				                    	
+				                    	<input type="hidden" name="path" th:value="findByName">
+				                    	
+			            			</form>	 	
+  						       	</td>		 
+        						<td>
+			        				<form class="form-main" th:action="@{/clients/findBySelection}" method="post">	
+										<table class="table table-condensed table-bordered table-striped">					        			
+			        						<tr>
+			        							<td>
+			        								<label class="label label-success">Select an Employee : </label> 
+					                       			<select name="stringSearch">
+						                       			<option th:each="employee : ${employees}" th:value="${employee.clientid}" th:text="${employee.cname}" ></option>
+						                       			<option value=""></option>
+						                       		</select>
+			        							</td>	
+			                    			</tr>
+			                    			
+			                    			<tr>
+						                   		<td class="text-align:center;">
+						                   			<input type="submit" class="btn btn-success btn-sm" value=" Submit ">
+						                   		</td>
+			                   				</tr>
+			     						</table>
+			     			     					
+				     					<input type="hidden" name="qperiod" th:value="${qperiod}">
+				     					<input type="hidden" name="qdivisionId" th:value="${qdivision.divisionid}">
+				                    	<input type="hidden" name="quserId" th:value="${quser.userid}">	
+				                    	
+				                    	<input type="hidden" name="path" th:value="findBySelection">	
+			            			</form>	 	
+        				        </td>
+        				    </tr>
+        				</table>    				 
+               		</div>
+           		</div>
+       		</div>
+                  
+     	</div>
+       	
+	</body>
+</html>			

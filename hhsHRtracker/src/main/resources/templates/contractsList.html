@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="ISO-8859-1">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>hhsHRtracker</title>
+
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" th:href="@{/css/menus.css}">
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		
+  		<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>  
+    	  		
+	</head>
+
+	<body>
+	
+		<div id="container">
+
+  <!-- Navigation -->
+	  		<div id='hcssmenu'>
+				<ul>
+				   <li>
+				   		<form th:action="@{/hhsHRtracker/mainMenu}" method="post">
+	               			<button type="submit" class="btn btn-light" style="font-size:11px;">Back</button>	
+		           			
+		           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+		           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+		           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+		           		</form>
+	         		</li>
+	         		<li>
+				   		<form th:action="@{/contracts/edit}" method="post">
+	               			<button type="submit" class="btn btn-light" style="font-size:11px;">New</button>	
+		           			
+		           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+		           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+		           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+		           		</form>
+	         		</li>
+	         		
+				</ul>
+			</div>   
+	  		
+	  		<div class="row">&nbsp;</div>
+	  		
+	  		<div class="row">
+	  			<div class="col-lg-2" style="color:#000088;" th:if="${stringSearch==null}">Contracts List</div>
+	  			<div class="col-lg-2" style="color:#000088;" th:unless="${stringSearch==null}" th:text="'Results searching: '+ ${stringSearch}"></div>
+	  		</div>
+	              
+	        <div class="row">
+	             <div class="col-lg-8">        
+	           		<div class="card">
+						<div class="card-body">
+							<label style="color:violet;font-size:8px;" th:text="${qdivision.dnumber}"></label>
+							<table class="table-condensed table-bordered">					        			
+	        					<tr>
+	        						<td noWrap style="padding:5px;"><label style="color:#880000;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></td>
+	        						<td style="padding:5px;"><label style="color:teal;font-size:11px;" th:text="${qdivision.dname}"></label></td>
+	        					</tr>
+	        				 </table>
+	        				 <div class="row">&nbsp;</div>
+	        				 <table class="table-condensed table-striped table-bordered">					        			
+	        				 	<thead>
+	  						<tr>
+	  							<th style="color:#006400;font-size:12px;padding:10px;">#</th>
+	  							<th style="color:#006400;font-size:12px;text-align:center;padding:10px;">Contract</th>
+	  							<th style="color:#006400;font-size:12px;text-align:center;padding:10px;" noWrap>Program Type</th>
+	  							<th style="color:#006400;font-size:12px;text-align:center;padding:10px;">Date Initial</th>
+	  							<th style="color:#006400;font-size:12px;text-align:center;padding:10px;">Date Final</th>
+	  							<th style="color:#006400;font-size:12px;text-align:center;padding:10px;">Type</th>
+	  							<th style="color:#006400;font-size:12px;text-align:center;padding:10px;">Status</th>
+	  							<th style="color:#006400;font-size:12px;text-align:center;padding:10px;">Edit</th>
+	  							<th style="color:#006400;font-size:12px;text-align:center;padding:10px;">Delete</th>
+	  						</tr>
+	  					</thead>
+	  					<tbody>
+	  						<tr th:each="contract,itemNum : ${contracts}">
+	  							<td th:text="${itemNum.count}" style="font-size:12px;padding:5px;padding:5px;"></td>
+	  							<td th:text="${contract.contract}" style="font-size:12px;padding:5px;"></td>
+	  							<td th:text="${contract.project}" style="font-size:12px;padding:5px;"></td>
+	  							<td th:text="${contract.initialDate}" style="font-size:12px;padding:5px;"></td>
+	  							<td th:text="${contract.finalDate}" style="font-size:12px;padding:5px;"></td>
+	  							<td th:text="${contract.type}" style="font-size:12px;padding:5px;"></td>	  							  						  						
+	  							<td th:if="${contract.status}=='current'" th:text="${contract.status}" style="font-size:12px;text-align:center;padding:5px;"></td>
+	  							<td th:unless="${contract.status}=='current'" th:text="${contract.status}" style="font-size:12px;background-color: #ffcc99;text-align:center;padding:5px;"></td>
+	  							  							
+	  							<td>
+	                            	<form th:action="@{/contracts/edit}" method="post">
+	                            	
+		           						<button type="submit" style="border: 0; background: transparent">
+	 										<img th:src="@{/icons/iconEdit.png}" width="20" height="20" alt="Edit" />
+										</button>	
+		           			
+		           						<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+		           						<input type="hidden" th:value="${qperiod}" name="qperiod">
+		           						<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+		           						
+		           						<input type="hidden" th:value="${contract.contractid}" name="id">
+		           						
+		           					</form>	
+	                                                            
+	                            </td>
+	                            <td>
+	                                
+	                            	<form th:action="@{/contracts/delete}" method="post">
+	                            	
+		           						<button type="submit" style="border: 0; background: transparent;"  onClick="return confirmDelete();">
+	 										<img th:src="@{/icons/iconDeleteRed.png}" width="20" height="20" alt="Edit"/>
+	 									</button>	
+		           			
+		           						<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+		           						<input type="hidden" th:value="${qperiod}" name="qperiod">
+		           						<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+		           						
+		           						<input type="hidden" th:value="${contract.contractid}" name="id">
+		           						
+		           					</form>	
+	                            	
+	                            </td>
+	                                                                                   
+	  						</tr>	
+	  					</tbody>	        				 
+	        				 </table>
+	               		</div>
+	           		</div>
+	       		</div>
+	                  
+	     	</div>
+       	</div>
+	</body>
+</html>			

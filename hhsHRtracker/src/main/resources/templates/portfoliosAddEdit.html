@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="ISO-8859-1">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>hhsHRtracker</title>
+
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" th:href="@{/css/menus.css}">
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		
+  		    	  		
+	</head>
+
+	<body>
+
+  <!-- Navigation -->
+  		<div id='hcssmenu'>
+			<ul>
+			   <li>
+			   		<form th:action="@{/portfolios/list}" method="post">
+               			<button type="submit" class="btn btn-light" style="font-size:11px;">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           		</form>
+         		</li>
+         		
+			</ul>
+		</div>   
+  		
+  		<div class="row">&nbsp;</div>
+  		
+  		<div class="row">
+  			<div class="col-lg-2" style="color:#000088;">Add/Edit Portfolio</div>
+  		</div>
+              
+        <div class="row">
+             <div class="col-lg-7">        
+           		<div class="card">
+					<div class="card-body">
+						<label style="color:violet;font-size:9px;" th:text="${portfolio.pid}"></label>
+						<table class="table-condensed table-bordered">					        			
+        					<tr>
+        						<td noWrap style="padding:5px;"><label style="color:#880000;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></td>
+        						<td style="padding:5px;"><label style="color:teal;font-size:11px;" th:text="${qdivision.dname}"></label></td>
+        					</tr>
+        				 </table>
+        				 <div class="row">&nbsp;</div>
+        				 
+        				 <form class="form-main" th:action="@{/portfolios/createPortfolio}" th:object="${portfolio}" method="post">
+        				 
+        				 	<table class="table-striped">					        			
+        				
+        						<tr>
+			                    	<td th:if="${priznakNew}=='true'">
+			                       		<label for="pnumber" class="col-form-label">Portfolio Number<sup>*</sup>:</label> 
+			                       		<input type="text" th:field="*{pnumber}" id="pnumber" required  size="5" maxlength="5"/>
+			                    	</td>
+			                    	
+			                    	<td th:unless="${priznakNew}=='true'">
+			                       		<label for="pnumber" class="col-form-label">Portfolio Number<sup>*</sup>:</label> 
+			                       		<input type="text" th:field="*{pnumber}" id="pnumber" size="5" maxlength="5" readOnly/>
+			                    	</td>
+                    		
+			                    	<td>
+			                       		<label for="pname" class="col-form-label">Portfolio Name:</label> 
+			                       		<input type="text" th:field="*{pname}" id="pname" placeholder="Portfolio Name" size="50" maxlength="50"/>
+			                    	</td>
+                        		</tr>	
+                	        	
+			     				<tr>
+			     					<td colspan="2">	
+			     						<label for="directorId" class="col-form-label">Director:</label> 
+			                       		<select th:field="*{directorId}" id="directorId">
+			                       			<option th:value="*{directorId}" th:text="${directorName}"></option>
+			                       			<option th:each="client : ${clients}" th:value="${client.clientid}" th:text="${client.cname}" ></option>
+			                       			<option value=""></option>
+			                       		</select> 
+			                    	</td> 
+                    			</tr>
+                    			
+                    			<tr>
+			                    	<td colspan="2">
+			     						<label for="active">Active</label>
+			     						<select th:field="*{active}">
+								     		<option th:value="*{active}" th:text="*{active}"></option>
+								    		<option th:value="'Yes'" th:text="Yes"></option>
+								    		<option th:value="'No'" th:text="No"></option>
+			     						</select>    						
+									</td>
+                    
+                    			</tr>
+                    			<tr><td>&nbsp;</td></tr>
+                    			<tr>
+			                    	<td>
+			                       		<input type="submit" class="btn btn-secondary btn-sm" value=" Submit ">
+			                       	
+			                       	</td>
+                   				</tr>
+     						</table>
+     			
+     						<input type="hidden" id="id" th:field="*{pid}">
+     					
+	     					<input type="hidden" name="qperiod" th:value="${qperiod}">
+	     					<input type="hidden" name="qdivisionId" th:value="${qdivision.divisionid}">
+	                        <input type="hidden" name="quserId" th:value="${quser.userid}">	
+            			</form>	 	
+  						       				 
+        				 
+               		</div>
+           		</div>
+       		</div>
+                  
+     	</div>
+       	
+	</body>
+</html>

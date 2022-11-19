@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="ISO-8859-1">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>hhsHRtracker</title>
+
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" th:href="@{/css/menus.css}">
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		
+  		<!-- Custom scripts for this template -->
+  		<script th:src="@{/js/modalDelete.js}"></script>  
+    	  		
+	</head>
+
+	<body>
+
+  <!-- Navigation -->
+  		<div id='hcssmenu'>
+			<ul>
+			   <li>
+			   		<form th:action="@{/contracts/edit}" method="post">
+               			<button type="submit" class="btn btn-light" style="font-size:11px;">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${contract.contractid}" name="id">
+	           				           			        			
+	           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           		</form>
+         		</li>
+         		<li>
+			   		<form th:action="@{/contractAPs/edit}" method="post">
+               			<button type="submit" class="btn btn-light" style="font-size:11px;">Assign New Project</button>	
+	           			
+	           			<input type="hidden" th:value="${contract.contractid}" name="id">
+	           			
+	           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           		</form>
+         		</li>
+         		
+			</ul>
+		</div>   
+  		
+  		<div class="row">&nbsp;</div>
+  		<label style="color:violet;font-size:8px;" th:text="${qdivision.dnumber}"></label>
+  		
+  		<table class="table-condensed table-bordered">					        			
+        	<tr>
+        		<td noWrap style="padding:5px;background-color:lightyellow;"><label style="color:#880000;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></td>
+        		<td style="padding:5px;background-color:lightyellow;"><label style="color:teal;font-size:11px;" th:text="${qdivision.dname}"></label></td>
+        	</tr>
+        </table>
+              
+        <div class="row">
+             <div class="col-lg-8">        
+           		<div class="card">
+					<div class="card-body">
+						
+						<div class="row">
+  							<div class="col-lg-6" style="color:#330099;background-color:burlywood;" th:text="'Assigned Projects to contract: '+ ${contract.contract}"></div>
+  						</div>
+						
+        				 <div class="row">&nbsp;</div>
+        				 <table  class="table-condensed table-striped">					        			
+        				 	<thead>
+  						<tr>
+  							<th style="color:#006400;font-size:12px;">#</th>
+  							<th style="color:#006400;font-size:12px;text-align:center;">Project</th>
+  							<th style="color:#006400;font-size:12px;text-align:center;" noWrap>Project Name</th>
+  							<th style="color:#006400;font-size:12px;text-align:center;">Delete</th>
+  						</tr>
+  					</thead>
+  					<tbody>
+  						<tr th:each="project,itemNum : ${projects}">
+  							<td th:text="${itemNum.count}" style="font-size:12px;padding:5px;"></td>
+  							<td th:text="${project.projectNum}" style="font-size:12px;"></td>
+  							<td th:text="${project.bufferName}" style="font-size:12px;"></td>
+  							  							
+                            <td>
+                                
+                            	<form th:action="@{/contractAPs/delete}" method="post">
+                            	
+	           						<button type="submit" style="border: 0; background: transparent;"  onClick="return confirmDelete();">
+ 										<img th:src="@{/icons/iconDeleteRed.png}" width="20" height="20" alt="Edit"/>
+ 									</button>	
+	           			
+	           						<input type="hidden" th:value="${contract.contractid}" name="contractId">
+	           						<input type="hidden" th:value="${project.recordid}" name="id">
+	           							           						  
+	           						<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           						<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           						<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           						
+	           					</form>	
+                            	
+                            </td>
+                                                                                   
+  						</tr>	
+  					</tbody>	        				 
+        				 </table>
+               		</div>
+           		</div>
+       		</div>
+                  
+     	</div>
+       	
+	</body>
+</html>			
