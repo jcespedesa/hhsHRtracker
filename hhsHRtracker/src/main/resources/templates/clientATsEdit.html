@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"> 
+
+	<head>
+
+  		<meta charset="ISO-8859-1">
+  		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  		
+  		<title>hhsHRtracker</title>
+
+  		<!-- Bootstrap core CSS -->
+  		<link rel="stylesheet" th:href="@{/css/bootstrap-4.0.0.min.css}">
+  		
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<link rel="stylesheet" th:href="@{/css/menus.css}">
+		<link rel="stylesheet" th:href="@{/css/calendarControl.css}">
+		
+		<!-- Bootstrap core JavaScript -->
+  		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  		<script th:src="@{/js/calendarControl.js}"></script>
+  		
+  		    	  		
+	</head>
+
+	<body>
+
+  <!-- Navigation -->
+  		<div id='hcssmenu'>
+			<ul>
+			   <li>
+			   		<form th:action="@{/clientATs/list}" method="post">
+               			<button type="submit" class="btn btn-light" style="font-size:11px;">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${client.clientid}" name="id"> 
+	           			
+	           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           		</form>
+         		</li>
+         		
+			</ul>
+		</div>   
+  		
+  		<div class="row">&nbsp;</div>
+  		
+  		<table class="table-condensed table-bordered">					        			
+        	<tr>
+        		<td noWrap style="padding:5px;background-color:lightyellow;"><label style="color:#880000;font-size:11px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></td>
+        		<td style="padding:5px;background-color:lightyellow;"><label style="color:teal;font-size:11px;" th:text="${qdivision.dname}"></label></td>
+        		</tr>
+        	</table>
+              
+        <div class="row">
+             <div class="col-lg-10">        
+           		<div class="card">
+					<div class="card-body">
+						        				 
+        				 <div class="row">
+  							<div class="col-lg-6" style="color:#000088;background-color:burlywood;" th:text="'Details of Training to employee : '+ ${client.cname}"></div>
+  						</div>
+        				<div class="row">
+  							<div class="col-lg-6" style="color:#000088;background-color:gainsboro;" th:text="${clientAT.bufferName}"></div>
+  						</div> 
+  						
+  						<table><tr><td>&nbsp;</td></tr></table>
+  						
+        				 <table>
+        				 	<tr>
+        				 		<td>
+			        				 <form class="form-main" th:action="@{/clientATs/updateTraining}" th:object="${clientAT}" method="post">
+			        				 
+			        				 	<table class="table-striped">					        			
+			        						<tr>
+			        							<td>
+			     									<label for="completed">Training Completed?</label>
+			     									<select th:field="*{completed}">
+											     		<option th:value="*{completed}" th:text="*{completed}"></option>
+											    		<option th:value="'Yes'" th:text="Yes"></option>
+											    		<option th:value="'No'" th:text="No"></option>
+			     									</select>    						
+												</td>
+			        							<td>
+			                       					<label for="dateCompletion" class="col-form-label">Date Completion :</label> 
+			                       					<input type="text" th:field="*{dateCompletion}" id="dateCompletion" size="10" maxlength="10" onfocus="showCalendarControl(this);"/>
+			                    				</td>
+			                    				
+			                    			</tr><tr>
+			                    			
+			                    				<td>
+			     									<label for="certReceived">Certificate Received?</label>
+			     									<select th:field="*{certReceived}">
+											     		<option th:value="*{certReceived}" th:text="*{certReceived}"></option>
+											    		<option th:value="'Yes'" th:text="Yes"></option>
+											    		<option th:value="'No'" th:text="No"></option>
+			     									</select>    						
+												</td>	
+			                    				<td>
+			                       					<label for="dateCertRec" class="col-form-label">Date Certificate Received :</label> 
+			                       					<input type="text" th:field="*{dateCertRec}" id="dateCertRec" size="10" maxlength="10" onfocus="showCalendarControl(this);"/>
+			                    				</td>
+			                    			</tr>
+			                    			
+			                    			<tr><td>&nbsp;</td></tr>
+			                    			<tr>
+						                    	<td>
+						                       		<input type="submit" class="btn btn-secondary btn-sm" value=" Submit ">
+						                       	
+						                       	</td>
+			                   				</tr>
+			     						</table>
+			     						
+			     						<input type="hidden" id="contract" th:field="*{contract}">
+			     						<input type="hidden" id="trainingNum" th:field="*{trainingNum}">
+			     						<input type="hidden" id="id" th:field="*{recordid}">
+			     						     						
+			     						<input type="hidden" name="clientId" th:value="${client.clientid}">
+			     						<input type="hidden" name="qperiod" th:value="${qperiod}">
+				     					<input type="hidden" name="qdivisionId" th:value="${qdivision.divisionid}">
+				                        <input type="hidden" name="quserId" th:value="${quser.userid}">	
+			            			</form>
+			            		</td>
+			            		<td>
+			            		
+			            		</td>
+			            		<td style="border-spacing:30px;">&nbsp;</td>		
+	            			</tr>	 	
+	  					</table>       				 
+        				 
+               		</div>
+           		</div>
+       		</div>
+                  
+     	</div>
+       	
+	</body>
+</html>
