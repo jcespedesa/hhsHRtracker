@@ -63,31 +63,43 @@
         				 	<table class="table-striped">					        			
         				
         						<tr>
-			                    	<td th:if="${priznakNew}=='true'">
-			                       		<label for="tnumber" class="col-form-label">Training Number<sup>*</sup>:</label> 
-			                       		<input type="text" th:field="*{tnumber}" id="tnumber" required  size="5" maxlength="5"/>
-			                    	</td>
 			                    	
-			                    	<td th:unless="${priznakNew}=='true'">
-			                       		<label for="tnumber" class="col-form-label">Training Number<sup>*</sup>:</label> 
-			                       		<input type="text" th:field="*{tnumber}" id="tnumber" size="5" maxlength="5" readOnly/>
-			                    	</td>
+			                    	<td th:if="${priznakNew}=='true'">
+						            	<label for="tnumber" class="col-form-label">Training Number<sup>*</sup>:</label> 
+						                <select th:field="*{tnumber}" id="tnumber" required>
+						                	<option th:each="number : ${numbers}" th:value="${number}" th:text="${number}" ></option>
+						                </select>
+						            </td>
+						                    	
+						            <td th:unless="${priznakNew}=='true'">
+						            	<label for="tnumber" class="col-form-label">Training Number<sup>*</sup>:</label> 
+						               		<input type="text" th:field="*{tnumber}" id="tnumber" size="5" maxlength="5" readOnly/>
+						            </td>
+			                    	
                     		
 			                    	<td>
 			                       		<label for="tname" class="col-form-label">Training Definition:</label> 
-			                       		<input type="text" th:field="*{tname}" id="tname" placeholder="Name" size="50" maxlength="50"/>
+			                       		<input type="text" th:field="*{tname}" id="tname" placeholder="Name" size="70" maxlength="75"/>
 			                    	</td>
                         		</tr>	
                 	        	<tr>            
-			                    	<td noWrap>
+			                    	<td noWrap colspan="2">
 			                       		<label for="projectType" class="col-form-label">Applied to Projects Type : </label> 
 			                       		<select th:field="*{projectType}" id="projectType">
 			                       			<option th:value="${typeNumber}" th:text="${typeName}"></option>
 			                       			<option th:each="type : ${types}" th:value="${type.typeNumber}" th:text="${type.type}" ></option>
 			                       		</select>
 			                    	</td>
-			                  
-			                    	<td colspan="2">
+			                  	</tr><tr>
+			                  		<td>
+			     						<label for="active">Frame</label>
+			     						<select th:field="*{frame}">
+								     		<option th:value="*{frame}" th:text="*{frame}"></option>
+								    		<option th:value="'90 days of hire'" th:text="'90 days of hire'"></option>
+								    		<option th:value="''" th:text="''"></option>
+			     						</select>    						
+									</td>
+			                    	<td>
 			     						<label for="active">Active</label>
 			     						<select th:field="*{active}">
 								     		<option th:value="*{active}" th:text="*{active}"></option>

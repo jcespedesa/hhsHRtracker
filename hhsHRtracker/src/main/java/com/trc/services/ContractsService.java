@@ -133,6 +133,14 @@ public class ContractsService
 		
 		return priznakDuplicate;
 	}
+	
+	public String getType(String contract)
+	{
+		String typeContract=repository.getTypeContract(contract);
+		
+		return typeContract;
+				
+	}
 
 	
 }

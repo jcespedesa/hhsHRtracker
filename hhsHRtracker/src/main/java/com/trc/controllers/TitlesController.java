@@ -1,7 +1,11 @@
 package com.trc.controllers;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.trc.entities.DivisionsEntity;
 import com.trc.entities.LogsEntity;
+import com.trc.entities.TitleATsEntity;
 import com.trc.entities.TitlesEntity;
 import com.trc.entities.UsersEntity;
 
@@ -18,7 +23,9 @@ import com.trc.services.DivisionsService;
 import com.trc.services.LogsService;
 import com.trc.services.ProjectTypesService;
 import com.trc.services.RecordNotFoundException;
+import com.trc.services.TitleATsService;
 import com.trc.services.TitlesService;
+import com.trc.services.TrainingsService;
 import com.trc.services.UsersService;
 
 @Controller
@@ -40,6 +47,12 @@ public class TitlesController
 	@Autowired
 	ProjectTypesService serviceTypes;
 	
+	@Autowired
+	TitleATsService serviceTitleATs;
+	
+	@Autowired
+	TrainingsService serviceTrainings;
+	
 	@RequestMapping(path="/list", method=RequestMethod.POST)
 	public String getAll(Model model,Long quserId,String qperiod,Long qdivisionId) throws RecordNotFoundException
 	{
@@ -51,7 +64,7 @@ public class TitlesController
 		DivisionsEntity qdivision=serviceDivisions.getDivisionById(qdivisionId);	
 						
 		//Retrieving list of titles
-		List<TitlesEntity> list=service.getAllTitles();
+		List<TitlesEntity> list=service.getAllByName();
 		
 						
 		model.addAttribute("quser",quser);
@@ -67,8 +80,12 @@ public class TitlesController
 	@RequestMapping(path="/edit", method=RequestMethod.POST)
 	public String editTitleById(Model model,Optional<Long>id,Long quserId,String qperiod,Long qdivisionId) throws RecordNotFoundException 
 	{
+		List<Integer> listNumbers=IntStream.range(1,100).boxed().collect(Collectors.toList());
+		List<Integer> listOccupied=service.getOccupiedNumbers();
+		List<TitleATsEntity> assigTrainings=new ArrayList<TitleATsEntity>();
 		
 		String priznakNew="false";
+		String titleName=null;
 		
 		//Retrieving user information
 		UsersEntity quser=serviceUsers.getUserById(quserId);
@@ -78,13 +95,28 @@ public class TitlesController
 		
 		//Retrieving already existent titles list
 		List<TitlesEntity> listTitles=service.getAllTitles();
+		
+			
 						
 		if(id.isPresent())
 		{
 			TitlesEntity entity=service.getTitleById(id.get());
+						
+			//Retrieving the list of assigned training
+			assigTrainings=serviceTitleATs.getATbyTitle(entity.getTitleNum());
+			
+			//Getting training names
+			for(TitleATsEntity titleAT : assigTrainings)
+			{
+				titleName=serviceTrainings.getTrainingName(titleAT.getTrainingNum());
+				titleAT.setBufferName(titleName);
+			}
+			
+			//trying to sort the array of assigned projects
+			assigTrainings.sort(Comparator.comparing(TitleATsEntity::getBufferName));
+			
 			model.addAttribute("title",entity);
-			
-			
+						
 		}
 		else
 		{
@@ -93,6 +125,9 @@ public class TitlesController
 			priznakNew="true";
 			
 		}
+		
+		//Filtering already existing title numbers
+		listNumbers.removeAll(listOccupied);
 						
 		model.addAttribute("quser",quser);
 		model.addAttribute("qperiod",qperiod);
@@ -100,6 +135,9 @@ public class TitlesController
 		
 		model.addAttribute("titles",listTitles);
 		model.addAttribute("priznakNew",priznakNew);
+		model.addAttribute("numbers",listNumbers);
+		
+		model.addAttribute("assigTrainings",assigTrainings);
 		
 		return "titlesAddEdit";
 	}

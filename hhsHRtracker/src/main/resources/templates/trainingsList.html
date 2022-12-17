@@ -60,7 +60,7 @@
 	  		</div>
 	              
 	        <div class="row">
-	             <div class="col-lg-8">        
+	             <div class="col-lg-10">        
 	           		<div class="card">
 						<div class="card-body">
 							<label style="color:violet;font-size:8px;" th:text="${qdivision.dnumber}"></label>
@@ -78,6 +78,7 @@
 	  							<th style="color:#006400;font-size:12px;text-align:center;padding:10px;">Number</th>
 	  							<th style="color:#006400;font-size:12px;text-align:center;padding:10px;" noWrap>Training Name</th>
 	  							<th style="color:#006400;font-size:12px;text-align:center;padding:10px;">Project Type</th>
+	  							<th style="color:#006400;font-size:12px;text-align:center;padding:10px;">Frame</th>
 	  							<th style="color:#006400;font-size:12px;text-align:center;padding:10px;">Active</th>
 	  							<th style="color:#006400;font-size:12px;text-align:center;padding:10px;">Edit</th>
 	  							<th style="color:#006400;font-size:12px;text-align:center;padding:10px;">Delete</th>
@@ -89,6 +90,7 @@
 	  							<td th:text="${training.tnumber}" style="font-size:12px;"></td>
 	  							<td th:text="${training.tname}" style="font-size:12px;"></td>
 	  							<td th:text="${training.projectTypeDef}" style="font-size:12px;"></td>
+	  							<td th:text="${training.frame}" style="font-size:12px;"></td>
 	  								  							  						  						
 	  							<td th:if="${training.active}=='Yes'" th:text="${training.active}" style="font-size:12px;text-align:center;"></td>
 	  							<td th:if="${training.active}=='No'" th:text="${training.active}" style="font-size:12px;background-color: #ffcc99;text-align:center;"></td>

@@ -30,10 +30,13 @@ public class TrainingsEntity
 	@Column(name="active")
 	private String active;
 	
+	@Column(name="frame")
+	private String frame;
+	
 	@Override
 	public String toString()
 	{
-		return "TrainingsEntity[trainingid="+ trainingid +",tnumber="+ tnumber +",tname="+ tname +",projectType="+ projectType +",active="+ active +",projectTypeDef="+ projectTypeDef +"]";				
+		return "TrainingsEntity[trainingid="+ trainingid +",tnumber="+ tnumber +",tname="+ tname +",projectType="+ projectType +",active="+ active +",projectTypeDef="+ projectTypeDef +",frame="+ frame +"]";				
 		
 	}
 
@@ -95,6 +98,16 @@ public class TrainingsEntity
 	public void setProjectTypeDef(String projectTypeDef) 
 	{
 		this.projectTypeDef=projectTypeDef;
+	}
+
+	public String getFrame() 
+	{
+		return frame;
+	}
+
+	public void setFrame(String frame) 
+	{
+		this.frame=frame;
 	}
 	
 	

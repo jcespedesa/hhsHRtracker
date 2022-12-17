@@ -75,6 +75,22 @@
 	           			
 	           		</form>
          		</li>
+         		
+         		<li th:case="*">
+			   			   
+			   		<form th:action="@{/clients/search}" method="post">
+			   					   		
+               			<button type="submit" class="btn btn-light" style="font-size:11px;">Back</button>	
+	           			
+	           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           			
+	           			<input type="hidden" th:value="${stringSearch}" name="stringSearch">
+	           			<input type="hidden" th:value="${path}" name="path">
+	           			
+	           		</form>
+         		</li>
          		         		
          		<li th:if="${quser.role}=='admin' and ${priznakNew}=='false'">
 			   		<form th:action="@{/clients/transfer}" method="post">
@@ -89,6 +105,20 @@
 	           			<input th:if="${priznakNew}=='No'" type="hidden" th:value="${client.clientid}" name="id">
 	           		</form>
          		</li>
+         		
+         		<li th:if="${quser.role}=='admin' and ${priznakNew}=='false'">
+			   		<form th:action="@{/clientATs/list}" method="post">
+               			<button type="submit" class="btn btn-light" style="font-size:11px;">Assigned Training</button>	
+	           			
+	           			<!--  <input type="hidden" th:value="${project.projectid}" name="projectId"> -->
+	           				           			
+	           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           			
+	           			<input type="hidden" th:value="${client.clientid}" name="id">
+	           		</form>
+         		</li>
          		         		
 			</ul>
 		</div>   
@@ -96,19 +126,20 @@
   		<div class="row">&nbsp;</div>
   		
   		<div class="row">
-  			<div class="col-lg-2" style="color:#000088;">Edit/Add Employee</div>
+  			<div class="col-lg-2" style="color:#000088;">Edit Employee</div>
   		</div>
               
         <div class="row">
-             <div class="col-lg-10">        
+             <div class="col-lg-12">        
            		<div class="card">
 					<div class="card-body">
-						<label th:if="${priznakNew}=='false'" style="color:violet;font-size:9px;" th:text="${client.clientid}"></label>
+						<label th:if="${priznakNew}=='false'" style="color:violet;font-size:9px;" th:text="'Client ID: '+ ${client.clientid}"></label>
 						<table class="table-condensed table-bordered" style="background-color:palegoldenrod;">					        			
         					<tr>
         						<td noWrap style="padding:5px;"><label style="color:#880000;font-size:12px;" th:text="${quser.username} +' ('+ ${quser.role} +')'"></label></td>
         						<td style="padding:5px;"><label style="color:teal;font-size:12px;" th:text="${qdivision.dname}"></label></td>
         					</tr>
+        			<!--  
         					<tr>
         						<td colspan="2" noWrap>
         							<label style="font-size:10px;" th:text="'Priznak Search is: '+ ${stringSearch}"></label>
@@ -116,113 +147,154 @@
 		    						<label style="font-size:10px;" th:text="'Priznak neu is: '+ ${priznakNew}"></label>
 		    					</td>
 		   					</tr>
+		   			 -->		
+		   					
         				 </table>
-        				 <div class="row">&nbsp;</div>
         				 
-        				 <form class="form-main" th:action="@{/clients/updateClient}" th:object="${client}" method="post">
+        				 <table>
+        				 	<tr>
+        				 		<td style="padding: 15px;">
+        				 		
+			        				 <form class="form-main" th:action="@{/clients/updateClient}" th:object="${client}" method="post">
+			        				 
+			        				 	<table class="table-striped">					        			
+			        				
+			        						<tr>
+						                    	<td>
+						                       		<label for="lastName" class="col-form-label">Name<sup>*</sup>:</label> 
+						                       		<input type="text" th:field="*{cname}" id="cname" required  maxlength="30"/>
+						                    	</td>
+						                    	<td>
+						                       		<label for="employeeNum" class="col-form-label">Employee Number<sup>*</sup>:</label> 
+						                       		<input type="text" th:field="*{employeeNum}" id="employeeNum" maxlength="20"/>
+						                    	</td>
+			                    		                   				
+			                    			</tr>
+			                    			<tr>
+			                    		      	<td>
+						                       		<label for="dateHire" class="col-form-label">Date Hired :</label> 
+						                       		<input type="text" th:field="*{dateHire}" id="dateHire" size="10" maxlength="10" onfocus="showCalendarControl(this);"/>
+						                    	</td>
+						                       	<td>
+						                       		<label for="contract" class="col-form-label">Contract :</label> 
+						                       		<select th:field="*{contract}" id="contract">
+						                       			<option th:value="${contract}" th:text="*{contract}"></option>
+						                       			<option th:each="contract : ${contracts}" th:value="${contract.contract}" th:text="${contract.contract}" ></option>
+						                       			<option value=""></option>
+						                       		</select>
+						                       		<label for="type" th:text="'Type: '+ ${contractType}" class="col-form-label"></label>
+						                    	</td>
+			                        		</tr>	
+			                	        	<tr>            
+						                    	<td noWrap>
+						                       		<label for="title" class="col-form-label">Title : <sup>*</sup>:</label> 
+						                       		<select th:field="*{title}" id="title">
+						                       			<option th:value="${titleNumber}" th:text="*{title}"></option>
+						                       			<option th:each="title : ${titles}" th:value="${title.titleNum}" th:text="${title.titleDesc}" ></option>
+						                       			<option value=""></option>
+						                       		</select>
+						                    	</td>
+						                    	<td noWrap>
+						                       		<label for="title" class="col-form-label">Home Project : </label> 
+						                       		<input type="text" name="void" size="30" th:value="${projectName}" disabled/>
+						                       		
+						                    	</td>
+						                    </tr><tr>	
+						                    	<td>   	
+						                       		<label for="status">Status : </label>
+						     							<select th:field="*{status}" id="status">
+						     								<option th:value="*{status}" th:text="*{status}"></option>
+											     			<option th:value="'FT'" th:text="FT"></option>
+													    	<option th:value="'PT'" th:text="PT"></option>
+													    	<option value=""></option>
+						     							</select>
+						     					</td>
+						     					
+						     				   	<td>
+						     						<label for="active">Active</label>
+						     						<select th:field="*{active}" id="active">
+						     							<option th:value="*{active}" th:text="*{active}"></option>
+											     		<option th:value="'Yes'" th:text="Yes"></option>
+											    		<option th:value="'No'" th:text="No"></option>
+						     						</select>    						
+												</td>
+			                    
+			                    			</tr>
+			                    			
+			                    			<tr>
+			                    		      	<td>
+						                       		<label for="licensure" class="col-form-label">Licensure :</label> 
+						                       		<input type="text" th:field="*{licensure}" id="licensure" maxlength="100"/>
+						                    	</td>
+						                       	<td>
+						                       		<label for="antiBullRec" class="col-form-label">Anti-Bullying Receipt :</label> 
+						                       		<input type="text" th:field="*{antiBullRec}" id="antiBullRec" size="10" maxlength="50"/>
+						                    	</td>
+			                        		</tr>
+			                        		<tr>
+			                    		      	<td>
+						                       		<label for="education" class="col-form-label">Education :</label> 
+						                       		<input type="text" th:field="*{education}" id="education" maxlength="50"/>
+						                    	</td>
+						                    	<td>
+						                       		<label for="majorHumanServices" class="col-form-label">Major in Human Services :</label> 
+						                       		<select th:field="*{majorHumanServices}" id="majorHumanServices">
+						     							<option th:value="*{majorHumanServices}" th:text="*{majorHumanServices}"></option>
+											     		<option th:value="'Yes'" th:text="Yes"></option>
+											    		<option th:value="'No'" th:text="No"></option>
+						     						</select>    
+						                    	</td>
+						                       	
+			                        		</tr>
+			                        		
+			                        		<tr>
+			                        			<td colspan="2">
+			                        				 <div class="form-group"><label for="notes">Notes/Observations:</label><br>
+			      										<textarea id="notes" th:field="*{notes}" rows="5" cols="80"></textarea>
+													</div>
+			                           			</td>	
+			                        		</tr>    
+			                    			
+			                    			<tr><td>&nbsp;</td></tr>
+			                    			<tr>
+						                    	<td>
+						                       		<input type="submit" class="btn btn-secondary btn-sm" value=" Submit ">
+						                       	
+						                       	</td>
+			                   				</tr>
+			     						</table>
+			     			
+			     						<input type="hidden" id="id" th:field="*{clientid}">
+			     						<input type="hidden" name="stringSearch" th:value="${stringSearch}">
+			     						<input type="hidden" name="path" th:value="${path}">
+			     						 						
+				     					<input type="hidden" name="qperiod" th:value="${qperiod}">
+				     					<input type="hidden" name="qdivisionId" th:value="${qdivision.divisionid}">
+				                        <input type="hidden" name="quserId" th:value="${quser.userid}">	
+			            			</form>	 	
+			  						
+  								</td>
+  								<td valign="top" style="padding: 15px;">
+  								
+  									<table th:if="${priznakNew}=='false'" class="table table-bordered">
+  										<thead class="table-dark">
+  											<tr>
+  												<td valign="top">Assigned Training</td>
+  											</tr>	
+  										</thead>
+  										<tbody>
+  										  										
+  											<tr th:each="assigTraining : ${assigTrainings}">
+  												<td style="background-color:ivory; font-size:11px;" th:text="${assigTraining.bufferName} +' ('+ ${assigTraining.trainingNum} +')'"></td>
+  											</tr>
+  											
+  										</tbody>
+									</table>	
+  								
+  								</td>
+        				 	</tr>
         				 
-        				 	<table class="table-striped">					        			
-        				
-        						<tr>
-			                    	<td>
-			                       		<label for="lastName" class="col-form-label">Name<sup>*</sup>:</label> 
-			                       		<input type="text" th:field="*{cname}" id="cname" required  maxlength="30"/>
-			                    	</td>
-			                    	<td>
-			                       		<label for="employeeNum" class="col-form-label">Employee Number<sup>*</sup>:</label> 
-			                       		<input type="text" th:field="*{employeeNum}" id="employeeNum" maxlength="20"/>
-			                    	</td>
-                    		                   				
-                    			</tr>
-                    			<tr>
-                    		      	<td>
-			                       		<label for="dateHire" class="col-form-label">Date Hired :</label> 
-			                       		<input type="text" th:field="*{dateHire}" id="dateHire" size="10" maxlength="10" onfocus="showCalendarControl(this);"/>
-			                    	</td>
-			                       	<td>
-			                       		<label for="contract" class="col-form-label">Contract :</label> 
-			                       		<input type="text" th:field="*{contract}" id="contract" size="20" maxlength="20"/>
-			                    	</td>
-                        		</tr>	
-                	        	<tr>            
-			                    	<td noWrap>
-			                       		<label for="title" class="col-form-label">Title : <sup>*</sup>:</label> 
-			                       		<select th:field="*{title}" id="title">
-			                       			<option th:value="${titleNumber}" th:text="*{title}"></option>
-			                       			<option th:each="title : ${titles}" th:value="${title.titleNum}" th:text="${title.titleDesc}" ></option>
-			                       			<option value=""></option>
-			                       		</select>
-			                    	</td>
-			                    	<td noWrap>
-			                       		<label for="title" class="col-form-label">Home Project : </label> 
-			                       		<input type="text" name="void" size="30" th:value="${projectName}" disabled/>
-			                    	</td>
-			                    </tr><tr>	
-			                    	<td>   	
-			                       		<label for="status">Status : </label>
-			     							<select th:field="*{status}" id="status">
-			     								<option th:value="*{status}" th:text="*{status}"></option>
-								     			<option th:value="'FT'" th:text="FT"></option>
-										    	<option th:value="'PT'" th:text="PT"></option>
-										    	<option value=""></option>
-			     							</select>
-			     					</td>
-			     					
-			     				   	<td>
-			     						<label for="active">Active</label>
-			     						<select th:field="*{active}" id="active">
-			     							<option th:value="*{active}" th:text="*{active}"></option>
-								     		<option th:value="'Yes'" th:text="Yes"></option>
-								    		<option th:value="'No'" th:text="No"></option>
-			     						</select>    						
-									</td>
-                    
-                    			</tr>
-                    			
-                    			<tr>
-                    		      	<td>
-			                       		<label for="licensure" class="col-form-label">Licensure :</label> 
-			                       		<input type="text" th:field="*{licensure}" id="licensure" size="50" maxlength="100"/>
-			                    	</td>
-			                       	<td>
-			                       		<label for="antiBullRec" class="col-form-label">Anti-Bullying Receipt :</label> 
-			                       		<input type="text" th:field="*{antiBullRec}" id="antiBullRec" size="10" maxlength="50"/>
-			                    	</td>
-                        		</tr>
-                        		<tr>
-                    		      	<td colspan="2">
-			                       		<label for="education" class="col-form-label">Education :</label> 
-			                       		<input type="text" th:field="*{education}" id="education" size="50" maxlength="100"/>
-			                    	</td>
-			                       	
-                        		</tr>
-                        		
-                        		<tr>
-                        			<td colspan="2">
-                        				 <div class="form-group"><label for="notes">Notes/Observations:</label><br>
-      										<textarea id="notes" th:field="*{notes}" rows="5" cols="80"></textarea>
-										</div>
-                           			</td>	
-                        		</tr>    
-                    			
-                    			<tr><td>&nbsp;</td></tr>
-                    			<tr>
-			                    	<td>
-			                       		<input type="submit" class="btn btn-secondary btn-sm" value=" Submit ">
-			                       	
-			                       	</td>
-                   				</tr>
-     						</table>
-     			
-     						<input type="hidden" id="id" th:field="*{clientid}">
-     						<input type="hidden" name="stringSearch" th:value="${stringSearch}">
-     						<input type="hidden" name="path" th:value="${path}">
-     						 						
-	     					<input type="hidden" name="qperiod" th:value="${qperiod}">
-	     					<input type="hidden" name="qdivisionId" th:value="${qdivision.divisionid}">
-	                        <input type="hidden" name="quserId" th:value="${quser.userid}">	
-            			</form>	 	
-  						       				 
+        				 </table>       				 
         				 
                		</div>
            		</div>

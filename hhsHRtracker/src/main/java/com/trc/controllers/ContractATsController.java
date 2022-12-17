@@ -108,7 +108,7 @@ public class ContractATsController
 		
 		log.setSubject(quser.getEmail());
 		log.setAction("Removing assigned training from contract: "+ assignTraining.getContract());
-		log.setObject("Removed project was: "+assignTraining.getTrainingNum());
+		log.setObject("Removed training was: "+ assignTraining.getTrainingNum());
 		
 		serviceLogs.saveLog(log);
 		
@@ -159,13 +159,13 @@ public class ContractATsController
 			service.createContract(contractAT);
 		}
 		else
-			message="This project is already in the list of assigned projects. No changes were made to the list this time.";
+			message="This project is already in the list of assigned trainings. No changes were made to the list this time.";
 		
 		
 		
 		log.setSubject(quser.getEmail());
-		log.setAction("Assigning new project to Contract: "+ contract.getContract());
-		log.setObject("New Project is: "+ contractAT.getTrainingNum());
+		log.setAction("Assigning new training to Contract: "+ contract.getContract());
+		log.setObject("New Title is: "+ contractAT.getTrainingNum());
 		
 		serviceLogs.saveLog(log);
 		

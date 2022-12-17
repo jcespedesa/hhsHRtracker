@@ -24,12 +24,19 @@ public class TitlesEntity
 	@Column(name="active")
 	private String active;
 	
+	@Column(name="type")
+	private String type;
+	
+	//Constructors
+	
 	@Override
 	public String toString()
 	{
-		return "TitlesEntity[titleid="+ titleid +",titleDesc="+ titleDesc +",titleNum="+ titleNum +",active="+ active +"]";				
+		return "TitlesEntity[titleid="+ titleid +",titleDesc="+ titleDesc +",titleNum="+ titleNum +",active="+ active +",type="+ type +"]";				
 		
 	}
+	
+	//Getters and setters
 
 	public Long getTitleid() 
 	{
@@ -70,5 +77,17 @@ public class TitlesEntity
 	{
 		this.active=active;
 	}
+
+	public String getType() 
+	{
+		return type;
+	}
+
+	public void setType(String type) 
+	{
+		this.type=type;
+	}
+	
+	
 	
 }

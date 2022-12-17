@@ -36,6 +36,18 @@
 	           		</form>
          		</li>
          		
+         		<li th:if="${priznakNew}=='false'">
+			   		<form th:action="@{/titleATs/list}" method="post">
+               			<button type="submit" class="btn btn-light" style="font-size:11px;">Edit Training</button>	
+	           			
+	           			<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           			<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           			<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           			
+	           			<input type="hidden" th:value="${title.titleid}" name="id" >
+	           		</form>
+         		</li>
+         		
 			</ul>
 		</div>   
   		
@@ -58,54 +70,90 @@
         				 </table>
         				 <div class="row">&nbsp;</div>
         				 
-        				 <form class="form-main" th:action="@{/titles/createTitle}" th:object="${title}" method="post">
-        				 
-        				 	<table class="table-striped">					        			
-        				
-        						<tr>
-			                    	<td th:if="${priznakNew}=='true'">
-			                       		<label for="titleNum" class="col-form-label">Title Number<sup>*</sup>:</label> 
-			                       		<input type="text" th:field="*{titleNum}" id="titleNum" required  size="5" maxlength="5"/>
-			                    	</td>
-			                    	
-			                    	<td th:unless="${priznakNew}=='true'">
-			                       		<label for="titleNum" class="col-form-label">Title Number<sup>*</sup>:</label> 
-			                       		<input type="text" th:field="*{titleNum}" id="titleNum" size="5" maxlength="5" readOnly/>
-			                    	</td>
-                    		
-			                    	<td>
-			                       		<label for="titleDesc" class="col-form-label">Title Definition:</label> 
-			                       		<input type="text" th:field="*{titleDesc}" id="titleDesc" placeholder="Definition" size="50" maxlength="50"/>
-			                    	</td>
-                        		</tr>	
-                	        	<tr>            
-			                    				                  
-			                    	<td colspan="2">
-			     						<label for="active">Active</label>
-			     						<select th:field="*{active}">
-								     		<option th:value="*{active}" th:text="*{active}"></option>
-								    		<option th:value="'Yes'" th:text="Yes"></option>
-								    		<option th:value="'No'" th:text="No"></option>
-			     						</select>    						
-									</td>
-                    
-                    			</tr>
-                    			<tr><td>&nbsp;</td></tr>
-                    			<tr>
-			                    	<td>
-			                       		<input type="submit" class="btn btn-secondary btn-sm" value=" Submit ">
-			                       	
-			                       	</td>
-                   				</tr>
-     						</table>
-     			
-     						<input type="hidden" id="id" th:field="*{titleid}">
-     					
-	     					<input type="hidden" name="qperiod" th:value="${qperiod}">
-	     					<input type="hidden" name="qdivisionId" th:value="${qdivision.divisionid}">
-	                        <input type="hidden" name="quserId" th:value="${quser.userid}">	
-            			</form>	 	
-  						       				 
+        				 <table class="table table-striped table-condensed">
+        				 	<tr>
+        				 		<td>
+        				         				 
+			        				 <form class="form-main" th:action="@{/titles/createTitle}" th:object="${title}" method="post">
+			        				 
+			        				 	<table class="table-striped">					        			
+			        				
+			        						<tr>
+						                    	<td th:if="${priznakNew}=='true'">
+						                       		<label for="titleNum" class="col-form-label">Title Number<sup>*</sup>:</label> 
+						                       		<select th:field="*{titleNum}" id="titleNum" required>
+						                       			<option th:each="number : ${numbers}" th:value="${number}" th:text="${number}" ></option>
+						                       		</select>
+						                    	</td>
+						                    	
+						                    	<td th:unless="${priznakNew}=='true'">
+						                       		<label for="titleNum" class="col-form-label">Title Number<sup>*</sup>:</label> 
+						                       		<input type="text" th:field="*{titleNum}" id="titleNum" size="5" maxlength="5" readOnly/>
+						                    	</td>
+			                    		
+						                    	<td>
+						                       		<label for="titleDesc" class="col-form-label">Title Definition:</label> 
+						                       		<input type="text" th:field="*{titleDesc}" id="titleDesc" placeholder="Definition" size="50" maxlength="50"/>
+						                    	</td>
+			                        		</tr>	
+			                	        	<tr> 
+			                	        	
+			                	        		<td>
+									     			<label for="active">Contract Type</label>
+									     			<select th:field="*{type}">
+														<option th:value="*{type}" th:text="*{type}"></option>
+														<option th:value="'Operating'" th:text="Operating"></option>
+														<option th:value="'Supportive'" th:text="Supportive"></option>
+														<option th:value="'N/A'" th:text="'N/A'"></option>    		
+									     			</select>    						
+												</td>           
+						                    				                  
+						                    	<td>
+						     						<label for="active">Active</label>
+						     						<select th:field="*{active}">
+											     		<option th:value="*{active}" th:text="*{active}"></option>
+											    		<option th:value="'Yes'" th:text="Yes"></option>
+											    		<option th:value="'No'" th:text="No"></option>
+						     						</select>    						
+												</td>
+			                    
+			                    			</tr>
+			                    			<tr><td>&nbsp;</td></tr>
+			                    			<tr>
+						                    	<td>
+						                       		<input type="submit" class="btn btn-secondary btn-sm" value=" Submit ">
+						                       	
+						                       	</td>
+			                   				</tr>
+			     						</table>
+			     			
+			     						<input type="hidden" id="id" th:field="*{titleid}">
+			     					
+				     					<input type="hidden" name="qperiod" th:value="${qperiod}">
+				     					<input type="hidden" name="qdivisionId" th:value="${qdivision.divisionid}">
+				                        <input type="hidden" name="quserId" th:value="${quser.userid}">	
+			            			</form>	
+			            			
+			            			</td>
+			  						<td>
+			  					
+				  						
+										<table th:if="${priznakNew}=='false'" class="table table-bordered">
+	  										<thead class="table-dark">
+	  											<tr>
+	  												<td>Assigned Training</td>
+	  											</tr>	
+	  										</thead>
+	  										<tbody>
+	  											<tr th:each="assigTraining : ${assigTrainings}">
+	  												<td style="background-color:ivory; font-size:11px;" th:text="${assigTraining.bufferName} +' ('+ ${assigTraining.trainingNum} +')'"></td>
+	  											</tr>
+	  										</tbody>
+										</table>	 	
+				  						       	
+			  					</td>
+			  				</tr>
+			  			</table>       				 
         				 
                		</div>
            		</div>

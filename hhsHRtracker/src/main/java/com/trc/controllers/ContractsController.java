@@ -231,4 +231,37 @@ public class ContractsController
 			
 	}
 	
+	
+	@RequestMapping(path="/delete", method=RequestMethod.POST)
+	public String deleteProjectById(Model model, Long id, Long quserId,String qperiod,Long qdivisionId) throws RecordNotFoundException
+	{
+		LogsEntity log=new LogsEntity();
+		
+		//Retrieving user
+		UsersEntity quser=serviceUsers.getUserById(quserId);
+		
+		//Retrieving project
+		ContractsEntity entity=service.getContractById(id);
+		
+		String message="Item was deleted...";
+		
+		service.deleteContractById(id);
+		
+		log.setSubject(quser.getEmail());
+		log.setAction("Deleting contract");
+		log.setObject(entity.getContract());
+		
+		serviceLogs.saveLog(log);
+		
+		model.addAttribute("message",message);
+		
+		model.addAttribute("quserId",quserId);
+		model.addAttribute("qperiod",qperiod);
+		model.addAttribute("qdivisionId",qdivisionId);
+		
+		return "contractsRedirect";
+		
+		
+	}
+	
 }

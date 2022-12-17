@@ -69,6 +69,7 @@ public class TitlesService
 				newEntity.setTitleNum(entity.getTitleNum());
 								
 				newEntity.setActive(entity.getActive());
+				newEntity.setType(entity.getType());
 				
 				newEntity=repository.save(newEntity);
 				
@@ -131,4 +132,16 @@ public class TitlesService
 		
 		return priznakDuplicate;
 	}
+	
+	public List<Integer> getOccupiedNumbers()
+	{
+		List<Integer> result=(List<Integer>) repository.getOccupied();
+		
+		if(result.size() > 0)
+			return result;
+		else
+			return new ArrayList<Integer>();
+		
+	}
+	
 }

@@ -22,4 +22,7 @@ public interface TitlesRepository  extends CrudRepository<TitlesEntity,Long>
 	
 	@Query("Select count(u) from TitlesEntity u where u.titleNum=?1")
 	int findTitleDuplicity(String titleNum);
+	
+	@Query("Select u.titleNum from TitlesEntity u Order by u.titleNum")
+	List<Integer>  getOccupied();
 }

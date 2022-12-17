@@ -16,5 +16,8 @@ public interface ContractsRepository extends CrudRepository<ContractsEntity,Long
 		
 	@Query("Select count(u) from ContractsEntity u where u.contract=?1")
 	int findContractDuplicity(String contract);
+	
+	@Query("Select u.typeProject from ContractsEntity u where u.contract=?1")
+	String getTypeContract(String contract);
 		
 }

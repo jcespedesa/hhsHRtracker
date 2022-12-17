@@ -11,6 +11,9 @@ import com.trc.entities.TrainingsEntity;
 @Repository
 public interface TrainingsRepository extends CrudRepository<TrainingsEntity,Long> 
 {
+	@Query("Select u from TrainingsEntity u Order by u.tname")
+	List<TrainingsEntity>  getAllByName();
+	
 	@Query("Select u from TrainingsEntity u Where u.active='Yes' Order by u.tname")
 	List<TrainingsEntity>  getActives();
 		
@@ -19,4 +22,10 @@ public interface TrainingsRepository extends CrudRepository<TrainingsEntity,Long
 	
 	@Query("Select u.tname from TrainingsEntity u where u.tnumber=?1")
 	String  getTname(String tnumber);
+	
+	@Query("Select u.frame from TrainingsEntity u where u.tnumber=?1")
+	String  getTframe(String tframe);
+	
+	@Query("Select u.tnumber from TrainingsEntity u Order by u.tnumber")
+	List<Integer>  getOccupied();
 }

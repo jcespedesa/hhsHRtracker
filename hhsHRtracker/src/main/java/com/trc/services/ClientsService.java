@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.trc.entities.ClientsEntity;
-import com.trc.entities.ContractsEntity;
 import com.trc.repositories.AssigCertsRepository;
 import com.trc.repositories.ClientsRepository;
 
@@ -93,6 +92,8 @@ public class ClientsService
 		
 		newEntity.setEmployeeNum(entity.getEmployeeNum());
 		newEntity.setEmail(entity.getEmail());
+		
+		newEntity.setMajorHumanServices(entity.getMajorHumanServices());
 						
 		newEntity=repository.save(newEntity);
 				
@@ -251,5 +252,7 @@ public class ClientsService
 		return result;
 				
 	}
+	
+	
 	
 }

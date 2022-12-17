@@ -3,6 +3,8 @@ package com.trc.controllers;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,18 +14,24 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.trc.entities.ClientATsEntity;
 import com.trc.entities.ClientsEntity;
+import com.trc.entities.ContractsEntity;
 import com.trc.entities.DivisionsEntity;
 import com.trc.entities.LogsEntity;
 import com.trc.entities.ProjectsEntity;
 import com.trc.entities.TitlesEntity;
 import com.trc.entities.UsersEntity;
+import com.trc.services.ClientATsService;
 import com.trc.services.ClientsService;
+import com.trc.services.ContractsService;
 import com.trc.services.DivisionsService;
 import com.trc.services.LogsService;
+import com.trc.services.ProjectTypesService;
 import com.trc.services.ProjectsService;
 import com.trc.services.RecordNotFoundException;
 import com.trc.services.TitlesService;
+import com.trc.services.TrainingsService;
 import com.trc.services.UsersService;
 
 
@@ -49,6 +57,18 @@ public class ClientsController
 	
 	@Autowired
 	LogsService serviceLogs;
+	
+	@Autowired
+	ContractsService serviceContracts;
+	
+	@Autowired
+	ProjectTypesService serviceProjectTypes;
+	
+	@Autowired
+	ClientATsService serviceClientATs;
+	
+	@Autowired
+	TrainingsService serviceTrainings;
 	
 	@RequestMapping(path="/search", method=RequestMethod.POST)
 	public String getSearchForm(Model model,Long quserId,String qperiod,Long qdivisionId,String priznakOp) throws RecordNotFoundException, ParseException
@@ -123,6 +143,7 @@ public class ClientsController
         	client.setProjectName(projectName);
         }
 		
+				
 		model.addAttribute("quser",quser);
 		model.addAttribute("qperiod",qperiod);
 		model.addAttribute("qdivision",qdivision);
@@ -200,7 +221,7 @@ public class ClientsController
 		//Retrieving user
 		UsersEntity quser=serviceUsers.getUserById(quserId);
 							
-		String message="Client was created successfully...";
+		String message="Employee was created successfully...";
 		
 		//Creating new client entity
 		ClientsEntity client=new ClientsEntity();
@@ -250,11 +271,15 @@ public class ClientsController
 	@RequestMapping(path="/edit", method=RequestMethod.POST)
 	public String editClientById(Model model,Optional<Long> id,Long quserId,String qperiod,Long qdivisionId,String stringSearch,String path) throws RecordNotFoundException 
 	{
+		List<ClientATsEntity> assigTrainings=new ArrayList<>();
 		
 		String titleNumber=null;
 		String priznakNew="false";
 		String projectName=null;
-		
+		String contractType=null;
+		String contractTypeNum=null;
+		String clientIdString=null;
+		String trainingName=null;
 		
 		//Retrieving user information
 		UsersEntity quser=serviceUsers.getUserById(quserId);
@@ -266,16 +291,41 @@ public class ClientsController
 		//Retrieving titles
 		List<TitlesEntity> titles=serviceTitles.getAllActives();	
 		
+		//Retrieving list of contracts
+		List<ContractsEntity> contracts=serviceContracts.getAll();
+		
 				
 		titleNumber=serviceTitles.getTitleByNumber(titleNumber);
 		
 		if(id.isPresent())
 		{
 			ClientsEntity entity=service.getClientById(id.get());
-			model.addAttribute("client",entity);
 			
+			clientIdString=String.valueOf(entity.getClientid());
+						
 			//Retrieving home project and assigning the project definition
 			projectName=serviceProjects.getProjectNameByNumber(entity.getProject());
+			
+			//Retrieving type of project
+			contractTypeNum=serviceContracts.getType(entity.getContract());
+			contractType=serviceProjectTypes.getTypeName(contractTypeNum);
+			
+			//Retrieving the list of assigned training
+			assigTrainings=serviceClientATs.getATbyClient(clientIdString);
+					
+			//Getting training names
+			for(ClientATsEntity clientAT : assigTrainings)
+			{
+				trainingName=serviceTrainings.getTrainingName(clientAT.getTrainingNum());
+				clientAT.setBufferName(trainingName);
+			}
+					
+			//trying to sort the array of assigned projects
+			assigTrainings.sort(Comparator.comparing(ClientATsEntity::getBufferName));
+			
+			model.addAttribute("client",entity);
+			
+			
 		}
 		else
 		{
@@ -287,11 +337,16 @@ public class ClientsController
 		
 				
 		model.addAttribute("titles",titles);
+		model.addAttribute("contracts",contracts);
+		
 		model.addAttribute("projectName",projectName);
 		model.addAttribute("priznakNew",priznakNew);
 		
 		model.addAttribute("stringSearch",stringSearch);
 		model.addAttribute("path",path);
+		model.addAttribute("contractType",contractType);
+		
+		model.addAttribute("assigTrainings",assigTrainings);
 				
 		model.addAttribute("quser",quser);
 		model.addAttribute("qperiod",qperiod);
@@ -311,7 +366,7 @@ public class ClientsController
 		//Retrieving user
 		UsersEntity quser=serviceUsers.getUserById(quserId);
 							
-		String message="Client was updated successfully...";
+		String message="Employee was updated successfully...";
 		
 		//finding title name
 		title=serviceTitles.getTitleByNumber(client.getTitle());
@@ -328,7 +383,7 @@ public class ClientsController
 		service.createOrUpdate(client);
 		
 		log.setSubject(quser.getEmail());
-		log.setAction("Updating client core information");
+		log.setAction("Updating employee core information");
 		log.setObject(client.getCname());
 		
 		serviceLogs.saveLog(log);
@@ -370,7 +425,7 @@ public class ClientsController
 		service.deleteClientById(id);
 				
 		log.setSubject(quser.getEmail());
-		log.setAction("Deleting client from the system");
+		log.setAction("Deleting employee from the system");
 		log.setObject(clientName);
 		
 		serviceLogs.saveLog(log);
@@ -483,6 +538,7 @@ public class ClientsController
 		//Trying to find the list of employees
 		List<ClientsEntity> list=service.searchByName(stringSearch);
 		
+		
 		log.setSubject(quser.getEmail());
 		log.setAction("Searching by client first or last name");
 		log.setObject("Training Section");
@@ -514,9 +570,9 @@ public class ClientsController
 		//Trying to find the list of employees
 		List<ClientsEntity> list=service.searchBySelection(stringSearch);
 		
-		
+				
 		log.setSubject(quser.getEmail());
-		log.setAction("Searching by client first or last name");
+		log.setAction("Searching by employee first or last name");
 		log.setObject("Training Section");
 		
 		serviceLogs.saveLog(log);
@@ -527,6 +583,7 @@ public class ClientsController
 		
 		model.addAttribute("path",path);
 		model.addAttribute("clients",list);
+		
 		model.addAttribute("stringSearch",stringSearch);
 				
 		return "clientsView";

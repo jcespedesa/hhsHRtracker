@@ -18,7 +18,7 @@ public class TrainingsService
 	
 	public List<TrainingsEntity> getAllTrainings()
 	{
-		List<TrainingsEntity> result=(List<TrainingsEntity>) repository.findAll();
+		List<TrainingsEntity> result=(List<TrainingsEntity>) repository.getAllByName();
 		
 		if(result.size() > 0)
 			return result;
@@ -67,6 +67,7 @@ public class TrainingsService
 				
 				newEntity.setTnumber(entity.getTnumber());
 				newEntity.setTname(entity.getTname());
+				newEntity.setFrame(entity.getFrame());
 				
 				newEntity.setProjectType(entity.getProjectType());
 				newEntity.setActive(entity.getActive());
@@ -118,5 +119,26 @@ public class TrainingsService
 		tname=repository.getTname(tnumber);
 		
 		return tname;
+	}
+	
+	public String getTimeFrame(String tnumber) 
+	{
+		String tframe=null;
+		
+		tframe=repository.getTframe(tnumber);
+		
+		return tframe;
+	}
+	
+	
+	public List<Integer> getOccupiedNumbers()
+	{
+		List<Integer> result=(List<Integer>) repository.getOccupied();
+		
+		if(result.size() > 0)
+			return result;
+		else
+			return new ArrayList<Integer>();
+		
 	}
 }

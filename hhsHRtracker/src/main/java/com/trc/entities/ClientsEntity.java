@@ -71,6 +71,9 @@ public class ClientsEntity
 	@Column(name="email")
 	private String email;
 	
+	@Column(name="majorhumanservices")
+	private String majorHumanServices;
+	
 	@Column(name="datecreation",updatable=false, insertable=false)
 	private String dateCreation;
 
@@ -80,7 +83,7 @@ public class ClientsEntity
 	{
 		return "ClientsEntity[clientid="+ clientid +",cname="+ cname +",dateHire="+ dateHire +",realDateHire="+ realDateHire +",project="+ project +","
 				+" projectName="+ projectName +",contract="+ contract +",title="+ title +",status="+ status +"email="+ email +","
-				+" antiBullRec="+ antiBullRec +",education="+ education +",period="+ period +","
+				+" antiBullRec="+ antiBullRec +",education="+ education +",period="+ period +",majorHumanServices="+ majorHumanServices +","
 				+ "active="+ active +",program="+ program +",notes="+ notes +",expiredCert="+ expiredCert +",dateCreation="+ dateCreation +",employeeNum="+ employeeNum +"]"; 				
 		
 	}
@@ -96,7 +99,7 @@ public class ClientsEntity
 
 	public void setNotes(String notes) 
 	{
-		this.notes = notes;
+		this.notes=notes;
 	}
 
 
@@ -108,7 +111,7 @@ public class ClientsEntity
 
 	public void setProgram(String program) 
 	{
-		this.program = program;
+		this.program=program;
 	}
 
 
@@ -119,7 +122,7 @@ public class ClientsEntity
 
 	public void setClientid(Long clientid) 
 	{
-		this.clientid = clientid;
+		this.clientid=clientid;
 	}
 
 	public String getCname() 
@@ -129,7 +132,7 @@ public class ClientsEntity
 
 	public void setCname(String cname) 
 	{
-		this.cname = cname;
+		this.cname=cname;
 	}
 
 	public String getDateHire() 
@@ -140,7 +143,7 @@ public class ClientsEntity
 	
 	public void setDateHire(String dateHire) 
 	{
-		this.dateHire = dateHire;
+		this.dateHire=dateHire;
 	}
 
 	public String getRealDateHire() 
@@ -150,7 +153,7 @@ public class ClientsEntity
 
 	public void setRealDateHire(String realDateHire) 
 	{
-		this.realDateHire = realDateHire;
+		this.realDateHire=realDateHire;
 	}
 
 	public String getProject() 
@@ -160,7 +163,7 @@ public class ClientsEntity
 
 	public void setProject(String project) 
 	{
-		this.project = project;
+		this.project=project;
 	}
 
 	public String getProjectName() 
@@ -170,7 +173,7 @@ public class ClientsEntity
 
 	public void setProjectName(String projectName) 
 	{
-		this.projectName = projectName;
+		this.projectName=projectName;
 	}
 
 	public String getContract() 
@@ -180,7 +183,7 @@ public class ClientsEntity
 
 	public void setContract(String contract) 
 	{
-		this.contract = contract;
+		this.contract=contract;
 	}
 
 	public String getTitle() 
@@ -190,7 +193,7 @@ public class ClientsEntity
 
 	public void setTitle(String title) 
 	{
-		this.title = title;
+		this.title=title;
 	}
 
 	public String getStatus() 
@@ -200,7 +203,7 @@ public class ClientsEntity
 
 	public void setStatus(String status) 
 	{
-		this.status = status;
+		this.status=status;
 	}
 
 	
@@ -211,7 +214,7 @@ public class ClientsEntity
 
 	public void setLicensure(String licensure) 
 	{
-		this.licensure = licensure;
+		this.licensure=licensure;
 	}
 
 	public String getAntiBullRec() 
@@ -221,7 +224,7 @@ public class ClientsEntity
 
 	public void setAntiBullRec(String antiBullRec) 
 	{
-		this.antiBullRec = antiBullRec;
+		this.antiBullRec=antiBullRec;
 	}
 
 	public String getEducation() 
@@ -231,7 +234,7 @@ public class ClientsEntity
 
 	public void setEducation(String education) 
 	{
-		this.education = education;
+		this.education=education;
 	}
 
 	public String getPeriod() 
@@ -241,7 +244,7 @@ public class ClientsEntity
 
 	public void setPeriod(String period) 
 	{
-		this.period = period;
+		this.period=period;
 	}
 
 	public String getActive() 
@@ -251,7 +254,7 @@ public class ClientsEntity
 
 	public void setActive(String active) 
 	{
-		this.active = active;
+		this.active=active;
 	}
 
 	public String getDateCreation() 
@@ -261,7 +264,7 @@ public class ClientsEntity
 
 	public void setDateCreation(String dateCreation) 
 	{
-		this.dateCreation = dateCreation;
+		this.dateCreation=dateCreation;
 	}
 
 
@@ -273,7 +276,7 @@ public class ClientsEntity
 
 	public void setExpiredCert(String expiredCert) 
 	{
-		this.expiredCert = expiredCert;
+		this.expiredCert=expiredCert;
 	}
 
 
@@ -285,7 +288,7 @@ public class ClientsEntity
 
 	public void setEmployeeNum(String employeeNum) 
 	{
-		this.employeeNum = employeeNum;
+		this.employeeNum=employeeNum;
 	}
 
 
@@ -301,6 +304,18 @@ public class ClientsEntity
 	}
 
 
+	public String getMajorHumanServices() 
+	{
+		return majorHumanServices;
+	}
+
+
+	public void setMajorHumanServices(String majorHumanServices) 
+	{
+		this.majorHumanServices=majorHumanServices;
+	}
+
+	
 	
 	
 }

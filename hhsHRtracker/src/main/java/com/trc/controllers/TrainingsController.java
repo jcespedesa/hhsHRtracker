@@ -2,6 +2,8 @@ package com.trc.controllers;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -53,7 +55,7 @@ public class TrainingsController
 		//Retrieving division
 		DivisionsEntity qdivision=serviceDivisions.getDivisionById(qdivisionId);	
 						
-		//Retrieving list of trainings
+		//Retrieving list of training
 		List<TrainingsEntity> list=service.getAllTrainings();
 		
 		//Updating the type of project definitions
@@ -77,6 +79,8 @@ public class TrainingsController
 	@RequestMapping(path="/edit", method=RequestMethod.POST)
 	public String editTrainingById(Model model,Optional<Long>id,Long quserId,String qperiod,Long qdivisionId) throws RecordNotFoundException 
 	{
+		List<Integer> listNumbers=IntStream.range(1,100).boxed().collect(Collectors.toList());
+		List<Integer> listOccupied=service.getOccupiedNumbers();
 		
 		String priznakNew="false";
 		
@@ -95,6 +99,7 @@ public class TrainingsController
 		if(id.isPresent())
 		{
 			TrainingsEntity entity=service.getTrainingById(id.get());
+									
 			model.addAttribute("training",entity);
 			
 			
@@ -106,6 +111,9 @@ public class TrainingsController
 			priznakNew="true";
 			
 		}
+		
+		//Filtering already existing title numbers
+		listNumbers.removeAll(listOccupied);
 						
 		model.addAttribute("quser",quser);
 		model.addAttribute("qperiod",qperiod);
@@ -114,6 +122,7 @@ public class TrainingsController
 		model.addAttribute("trainings",listTrainings);
 		model.addAttribute("types",types);
 		model.addAttribute("priznakNew",priznakNew);
+		model.addAttribute("numbers",listNumbers);
 		
 		return "trainingsAddEdit";
 	}
