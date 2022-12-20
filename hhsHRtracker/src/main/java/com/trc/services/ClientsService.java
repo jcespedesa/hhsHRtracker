@@ -79,6 +79,7 @@ public class ClientsService
 				
 		newEntity.setContract(entity.getContract());
 		newEntity.setTitle(entity.getTitle());
+		newEntity.setTitleNum(entity.getTitleNum());
 		newEntity.setStatus(entity.getStatus());
 				
 		newEntity.setPeriod(entity.getPeriod());
@@ -204,7 +205,7 @@ public class ClientsService
 				newEntity.setRealDateHire(entity.getDateHire());
 						
 				newEntity.setContract(entity.getContract());
-				newEntity.setTitle(entity.getTitle());
+				newEntity.setTitleNum(entity.getTitleNum());
 				newEntity.setStatus(entity.getStatus());
 						
 				newEntity.setPeriod(entity.getPeriod());

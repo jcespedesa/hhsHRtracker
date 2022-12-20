@@ -36,6 +36,9 @@ public class ClientsEntity
 	@Column(name="title")
 	private String title;
 	
+	@Column(name="titlenum")
+	private String titleNum;
+	
 	@Column(name="status")
 	private String status;
 	
@@ -82,7 +85,7 @@ public class ClientsEntity
 	public String toString()
 	{
 		return "ClientsEntity[clientid="+ clientid +",cname="+ cname +",dateHire="+ dateHire +",realDateHire="+ realDateHire +",project="+ project +","
-				+" projectName="+ projectName +",contract="+ contract +",title="+ title +",status="+ status +"email="+ email +","
+				+" projectName="+ projectName +",contract="+ contract +",title="+ title +",status="+ status +"email="+ email +",titleNum="+ titleNum +","
 				+" antiBullRec="+ antiBullRec +",education="+ education +",period="+ period +",majorHumanServices="+ majorHumanServices +","
 				+ "active="+ active +",program="+ program +",notes="+ notes +",expiredCert="+ expiredCert +",dateCreation="+ dateCreation +",employeeNum="+ employeeNum +"]"; 				
 		
@@ -313,6 +316,18 @@ public class ClientsEntity
 	public void setMajorHumanServices(String majorHumanServices) 
 	{
 		this.majorHumanServices=majorHumanServices;
+	}
+
+
+	public String getTitleNum() 
+	{
+		return titleNum;
+	}
+
+
+	public void setTitleNum(String titleNum) 
+	{
+		this.titleNum=titleNum;
 	}
 
 	

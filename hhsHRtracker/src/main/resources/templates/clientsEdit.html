@@ -153,7 +153,7 @@
         				 
         				 <table>
         				 	<tr>
-        				 		<td style="padding: 15px;">
+        				 		<td style="padding: 15px;" valign="top">
         				 		
 			        				 <form class="form-main" th:action="@{/clients/updateClient}" th:object="${client}" method="post">
 			        				 
@@ -188,8 +188,8 @@
 			                	        	<tr>            
 						                    	<td noWrap>
 						                       		<label for="title" class="col-form-label">Title : <sup>*</sup>:</label> 
-						                       		<select th:field="*{title}" id="title">
-						                       			<option th:value="${titleNumber}" th:text="*{title}"></option>
+						                       		<select th:field="*{titleNum}" id="titleNum">
+						                       			<option th:value="${titleNum}" th:text="${titleName}"></option>
 						                       			<option th:each="title : ${titles}" th:value="${title.titleNum}" th:text="${title.titleDesc}" ></option>
 						                       			<option value=""></option>
 						                       		</select>

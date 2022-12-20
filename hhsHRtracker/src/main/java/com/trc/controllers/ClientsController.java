@@ -102,6 +102,7 @@ public class ClientsController
 		String projectName=null;
 		String todayDateString=null;
 		String clientIdString=null;
+		String titleName=null;
 		
 		//Retrieving project information
 		ProjectsEntity projectEntity=serviceProjects.getProjectByNumber(qproject);
@@ -129,18 +130,21 @@ public class ClientsController
 		DateFormat todayDateFormat=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");  
 		todayDateString=todayDateFormat.format(todayDate); 
 						
-		//Trying to get project name
+		//Trying to get project name, same time trying to get title name(s)
 		for(ClientsEntity client : list)
         {
         	projectName=serviceProjects.getProjectNameByNumber(client.getProject());
         	
         	clientIdString=String.valueOf(client.getClientid());
         	
+        	titleName=serviceTitles.getTitleByNumber(client.getTitleNum());
+        	
         	//Finding expired certs
         	String expiredCert=service.findingNumExpiredCerts(clientIdString,todayDateString,qperiod);
         	
         	client.setExpiredCert(expiredCert);
         	client.setProjectName(projectName);
+        	client.setTitle(titleName);
         }
 		
 				
@@ -273,7 +277,7 @@ public class ClientsController
 	{
 		List<ClientATsEntity> assigTrainings=new ArrayList<>();
 		
-		String titleNumber=null;
+		String titleName=null;
 		String priznakNew="false";
 		String projectName=null;
 		String contractType=null;
@@ -295,7 +299,6 @@ public class ClientsController
 		List<ContractsEntity> contracts=serviceContracts.getAll();
 		
 				
-		titleNumber=serviceTitles.getTitleByNumber(titleNumber);
 		
 		if(id.isPresent())
 		{
@@ -310,6 +313,9 @@ public class ClientsController
 			contractTypeNum=serviceContracts.getType(entity.getContract());
 			contractType=serviceProjectTypes.getTypeName(contractTypeNum);
 			
+			//Getting the title name
+			titleName=serviceTitles.getTitleByNumber(entity.getTitleNum());
+			
 			//Retrieving the list of assigned training
 			assigTrainings=serviceClientATs.getATbyClient(clientIdString);
 					
@@ -321,10 +327,15 @@ public class ClientsController
 			}
 					
 			//trying to sort the array of assigned projects
-			assigTrainings.sort(Comparator.comparing(ClientATsEntity::getBufferName));
+			if(assigTrainings.isEmpty())
+			{
+				//do nothing
+			}
+			else
+				assigTrainings.sort(Comparator.comparing(ClientATsEntity::getBufferName));
 			
 			model.addAttribute("client",entity);
-			
+			model.addAttribute("titleName",titleName);
 			
 		}
 		else
@@ -340,6 +351,7 @@ public class ClientsController
 		model.addAttribute("contracts",contracts);
 		
 		model.addAttribute("projectName",projectName);
+		model.addAttribute("titleName",titleName);
 		model.addAttribute("priznakNew",priznakNew);
 		
 		model.addAttribute("stringSearch",stringSearch);
@@ -378,6 +390,7 @@ public class ClientsController
 		
 		//System.out.println(client);
 		//System.out.println("The value of id is "+ id);
+		//System.out.println("The value of path is "+ path);
 						
 		//Updating client core information
 		service.createOrUpdate(client);
@@ -529,6 +542,8 @@ public class ClientsController
 	{
 		LogsEntity log=new LogsEntity();
 						
+		String titleName=null;
+		
 		//Retrieving user
 		UsersEntity quser=serviceUsers.getUserById(quserId);
 		
@@ -538,7 +553,14 @@ public class ClientsController
 		//Trying to find the list of employees
 		List<ClientsEntity> list=service.searchByName(stringSearch);
 		
+		//Trying to get title name(s)
+		for(ClientsEntity client : list)
+		{
+			titleName=serviceTitles.getTitleByNumber(client.getTitleNum());
+			client.setTitle(titleName);
+		}   
 		
+		//Generating the log file record
 		log.setSubject(quser.getEmail());
 		log.setAction("Searching by client first or last name");
 		log.setObject("Training Section");
@@ -560,6 +582,8 @@ public class ClientsController
 	public String findEmployeeBySelection(Model model, Long quserId,String qperiod,Long qdivisionId,Long stringSearch,String path) throws RecordNotFoundException
 	{
 		LogsEntity log=new LogsEntity();
+		
+		String titleName=null;
 						
 		//Retrieving user
 		UsersEntity quser=serviceUsers.getUserById(quserId);
@@ -570,6 +594,15 @@ public class ClientsController
 		//Trying to find the list of employees
 		List<ClientsEntity> list=service.searchBySelection(stringSearch);
 		
+		
+		//Trying to get title name(s)
+		for(ClientsEntity client : list)
+		{
+		   	titleName=serviceTitles.getTitleByNumber(client.getTitleNum());
+		   	client.setTitle(titleName);
+		}   	
+				
+		//Generating the log file record
 				
 		log.setSubject(quser.getEmail());
 		log.setAction("Searching by employee first or last name");

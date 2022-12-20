@@ -100,4 +100,15 @@ public class TitleATsService
 		
 		return priznakDuplicate;
 	}
+	
+	public List<TitleATsEntity> getATsByTitle(String titleNum)
+	{
+		List<TitleATsEntity> result=(List<TitleATsEntity>) repository.getATsByTitle(titleNum);
+		
+		if(result.size() > 0)
+			return result;
+		else
+			return new ArrayList<TitleATsEntity>();
+		
+	}
 }

@@ -20,6 +20,7 @@ import com.trc.entities.ClientATsEntity;
 import com.trc.entities.ClientsEntity;
 import com.trc.entities.DivisionsEntity;
 import com.trc.entities.LogsEntity;
+import com.trc.entities.TitleATsEntity;
 import com.trc.entities.TrainingsEntity;
 import com.trc.entities.UsersEntity;
 
@@ -30,6 +31,8 @@ import com.trc.services.DivisionsService;
 import com.trc.services.LogsService;
 import com.trc.services.ProjectTypesService;
 import com.trc.services.RecordNotFoundException;
+import com.trc.services.TitleATsService;
+import com.trc.services.TitlesService;
 import com.trc.services.TrainingsService;
 import com.trc.services.TranscriptPDFexporter;
 import com.trc.services.UsersService;
@@ -62,6 +65,12 @@ public class ClientATsController
 	@Autowired
 	ProjectTypesService serviceProjectTypes;
 	
+	@Autowired
+	TitleATsService serviceTitleATs;
+	
+	@Autowired
+	TitlesService serviceTitles;
+	
 	@RequestMapping(path="/list", method=RequestMethod.POST)
 	public String getAllTrainings(Model model,Long quserId,String qperiod,Long qdivisionId,Long id) throws RecordNotFoundException
 	{
@@ -69,6 +78,7 @@ public class ClientATsController
 		String clientId=null;
 		String contractType=null;
 		String contractTypeNum=null;
+		String titleName=null;
 		
 		//Converting id long to string
 		clientId=String.valueOf(id);  
@@ -90,10 +100,21 @@ public class ClientATsController
 		{
 			trainingName=serviceTrainings.getTrainingName(clientAT.getTrainingNum());
 			clientAT.setBufferName(trainingName);
+		
 		}
 		
+		//Getting title name
+		titleName=serviceTitles.getTitleByNumber(client.getTitleNum());
+		client.setTitle(titleName);
+		
+		
 		//trying to sort the array of assigned projects
-		list.sort(Comparator.comparing(ClientATsEntity::getBufferName));
+		if(list.isEmpty())
+		{	
+			//Do nothing
+		}	
+		else	
+			list.sort(Comparator.comparing(ClientATsEntity::getBufferName));
 		
 		//Retrieving contract, type of contract
 		
@@ -111,6 +132,8 @@ public class ClientATsController
 		return "clientATsList";
 				
 	}
+	
+	
 	
 	@RequestMapping(path="/delete", method=RequestMethod.POST)
 	public String deleteTrainingById(Model model, Long id, Long clientId,Long quserId,String qperiod,Long qdivisionId) throws RecordNotFoundException
@@ -177,7 +200,7 @@ public class ClientATsController
 		//Retrieving qdivision
 		DivisionsEntity qdivision=serviceDivisions.getDivisionById(qdivisionId);
 		
-		//Checking if this project is not already assigned
+		//Checking if this training is not already assigned
 		duplicates=service.findDuplicates(clientAT.getTrainingNum(),clientId);
 		
 		if(duplicates==0)
@@ -400,6 +423,81 @@ public class ClientATsController
 		log.setSubject(quser.getEmail());
 		log.setAction("Generating transcrip for employee: "+ client.getCname());
 		log.setObject("Type of contract is: ");
+		
+		serviceLogs.saveLog(log);
+		
+		model.addAttribute("message",message);
+		model.addAttribute("client",client);
+		
+		model.addAttribute("quser",quser);
+		model.addAttribute("qperiod",qperiod);
+		model.addAttribute("qdivision",qdivision);
+		
+				
+		return "clientATsRedirect";
+		
+	}
+	
+	
+	@RequestMapping(path="/autoAssig", method=RequestMethod.POST)
+	public String generateAutoAssig(Model model,Long id,Long quserId,String qperiod,Long qdivisionId) throws RecordNotFoundException, DocumentException, IOException
+	{
+		LogsEntity log=new LogsEntity();
+		
+		int duplicates=0;
+		
+		String clientId=null;
+		String message=null;
+		
+		//Converting id long to string
+		clientId=String.valueOf(id);  
+				
+		//Retrieving quser
+		UsersEntity quser=serviceUsers.getUserById(quserId);
+		
+		//Retrieving qdivision
+		DivisionsEntity qdivision=serviceDivisions.getDivisionById(qdivisionId);
+		
+		//Retrieving client
+		ClientsEntity client=serviceClients.getClientById(id);
+		
+		//Retrieving list of mandatory training for current title
+		List<TitleATsEntity> trainings=serviceTitleATs.getATsByTitle(client.getTitleNum());
+		
+		//System.out.println("Clients details are "+ client);
+		//System.out.println("Title number is "+ client.getTitleNum());
+		//System.out.println(trainings);
+		
+		for(TitleATsEntity training : trainings)
+		{
+			//Checking if this training is not already assigned
+			duplicates=service.findDuplicates(training.getTrainingNum(),clientId);
+			
+			if(duplicates==0)
+			{
+				//Creating a new entity
+				ClientATsEntity clientAT=new ClientATsEntity();
+				
+				//Finalizing to set up the entity
+				clientAT.setContract(client.getContract());
+				clientAT.setClientId(clientId);
+				clientAT.setTrainingNum(training.getTrainingNum());
+												
+				message="The Training List was updated for this employee...";
+			
+				service.createOrUpdate(clientAT);
+			}	
+			
+		}
+			
+						
+		message="Mandatory training by title were assigned...";
+		
+		
+		
+		log.setSubject(quser.getEmail());
+		log.setAction("Generating automatic assignation for employee based in title: "+ client.getCname());
+		log.setObject("Title type was: "+ client.getTitle());
 		
 		serviceLogs.saveLog(log);
 		

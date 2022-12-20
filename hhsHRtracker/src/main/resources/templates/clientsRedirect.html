@@ -109,6 +109,31 @@
 		           				
 							</form>
 						
+							<form th:case="*" th:action="@{/clients/search}" method="post">
+	        			
+		        				<table class="table-bordered">
+		        					<tr>
+		        						<td><label for="title" th:text="${message}" class="col-form-label"> :</label></td> 
+		                       	   	</tr>	
+		                       		<tr><td colspan="2">&nbsp;</td></tr>
+		                       		<tr>
+		                       			<td><label style="font-size:10px;" th:text="'Priznak Search is: '+ ${stringSearch}"></label><br>
+		                       				<label style="font-size:10px;">Error: Path value is lost at this point</label>
+		                       			</td>
+		                       		</tr>	                       	
+		           					<tr><td colspan="2"><input class="btn btn-secondary" type="submit" value="Continue"/></td></tr>
+		           				
+		           				</table>
+		           					           			
+		           				<input type="hidden" th:value="${quser.userid}" name="quserId"> 
+	           					<input type="hidden" th:value="${qperiod}" name="qperiod">
+	           					<input type="hidden" th:value="${qdivision.divisionid}" name="qdivisionId">
+	           			
+	           					<input type="hidden" th:value="${stringSearch}" name="stringSearch">
+	           					<input type="hidden" th:value="${path}" name="path">
+		           				
+							</form>
+						
 												  
 						</div>
 						   	                    
